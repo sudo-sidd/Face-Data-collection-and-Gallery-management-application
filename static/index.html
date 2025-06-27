@@ -307,13 +307,13 @@
                                 <div class="card-body">
                                     <p class="mb-3">Launch the face data collection application for student biometric data collection.</p>
                                     <div class="d-flex gap-3">
-                                        <button class="btn btn-info" onclick="launchCollectionAppWithServer()">
+                                        <button id="launchCollectionBtn" class="btn btn-info">
                                             <i class="fas fa-external-link-alt me-2"></i>Launch Collection App
                                         </button>
-                                        <button class="btn btn-outline-secondary" onclick="checkCollectionAppStatus()">
+                                        <button id="checkStatusBtn" class="btn btn-outline-secondary">
                                             <i class="fas fa-sync me-2"></i>Check Status
                                         </button>
-                                        <button class="btn btn-outline-danger" onclick="stopCollectionAppServer()">
+                                        <button id="stopCollectionBtn" class="btn btn-outline-danger">
                                             <i class="fas fa-stop me-2"></i>Stop App
                                         </button>
                                         <div id="collectionAppStatus" class="align-self-center">

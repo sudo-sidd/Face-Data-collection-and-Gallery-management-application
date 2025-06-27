@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Configuration
     const config = {
-        videoLength: 15,  // Changed from 10 to 15
+        videoLength: 8,  // Changed from 10 to 15
         apiBase: '/api'
     };
     

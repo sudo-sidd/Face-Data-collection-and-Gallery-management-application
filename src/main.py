@@ -963,104 +963,306 @@ async def recognize_image(
 
 import subprocess
 import threading
+import time
+import signal
+import psutil
 
 # Global variable to track collection app process
 collection_app_process = None
+collection_app_lock = threading.Lock()
+
+def is_port_in_use(port):
+    """Check if a port is in use"""
+    import socket
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
+
+def check_process_running(process):
+    """Check if a process is running, handling both subprocess.Popen and psutil.Process"""
+    if process is None:
+        return False
+    
+    try:
+        if hasattr(process, 'poll'):
+            # subprocess.Popen object
+            return process.poll() is None
+        elif hasattr(process, 'is_running'):
+            # psutil.Process object
+            return process.is_running()
+        else:
+            return False
+    except (psutil.NoSuchProcess, AttributeError):
+        return False
+
+def get_process_pid(process):
+    """Get PID from either subprocess.Popen or psutil.Process"""
+    try:
+        return process.pid if process else None
+    except (AttributeError, psutil.NoSuchProcess):
+        return None
+
+def find_collection_app_process():
+    """Find if the collection app is already running by checking port 5001"""
+    try:
+        for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+            try:
+                # Check if this is our collection app process
+                cmdline = proc.info['cmdline']
+                if cmdline and 'app.py' in ' '.join(cmdline) and any('data_collection' in arg for arg in cmdline):
+                    return proc
+            except (psutil.NoSuchProcess, psutil.AccessDenied):
+                continue
+    except Exception:
+        pass
+    return None
 
 @app.post("/api/start-collection-app", summary="Start the face collection application")
 async def start_collection_app():
     """Start the face collection application server"""
     global collection_app_process
     
-    try:
-        # Check if already running
-        if collection_app_process and collection_app_process.poll() is None:
-            return {
-                "success": True,
-                "message": "Face Collection App is already running"
-            }
-        
-        # Path to the face collection app
-        collection_app_path = os.path.join(
-            BASE_DIR, 
-            "data_collection",
-            "server",
-            "app.py"
-        )
-        
-        if not os.path.exists(collection_app_path):
-            return {
-                "success": False,
-                "message": "Face Collection App not found at expected location"
-            }
-        
-        # Start the collection app in a subprocess
-        def start_app():
-            global collection_app_process
-            try:
-                # Change to the collection app directory and run the launch script
-                collection_app_dir = os.path.join(BASE_DIR, "data_collection")
-                launch_script = os.path.join(collection_app_dir, "launch.sh")
+    with collection_app_lock:
+        try:
+            # Check if process is already running
+            if check_process_running(collection_app_process):
+                return {
+                    "success": True,
+                    "message": "Face Collection App is already running",
+                    "pid": get_process_pid(collection_app_process)
+                }
+            
+            # Check if another instance is running on port 5001
+            if is_port_in_use(5001):
+                existing_proc = find_collection_app_process()
+                if existing_proc:
+                    collection_app_process = existing_proc
+                    return {
+                        "success": True,
+                        "message": "Face Collection App is already running (found existing process)",
+                        "pid": existing_proc.pid
+                    }
+            
+            # Path to the face collection app
+            collection_app_path = os.path.join(
+                BASE_DIR, 
+                "data_collection",
+                "server",
+                "app.py"
+            )
+            
+            if not os.path.exists(collection_app_path):
+                return {
+                    "success": False,
+                    "message": "Face Collection App not found at expected location"
+                }
+            
+            # Start the collection app
+            collection_app_dir = os.path.join(BASE_DIR, "data_collection")
+            launch_script = os.path.join(collection_app_dir, "launch.sh")
+            
+            if os.path.exists(launch_script):
+                # Use launch script if it exists
                 collection_app_process = subprocess.Popen(
                     ["bash", "launch.sh"],
                     cwd=collection_app_dir,
                     stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE
+                    stderr=subprocess.PIPE,
+                    preexec_fn=os.setsid  # Create new process group
                 )
-                print(f"Started Face Collection App with PID: {collection_app_process.pid}")
-            except Exception as e:
-                print(f"Error starting Face Collection App: {e}")
-        
-        # Start in a separate thread
-        threading.Thread(target=start_app, daemon=True).start()
-        
-        return {
-            "success": True,
-            "message": "Face Collection App server is starting..."
-        }
-        
-    except Exception as e:
-        return {
-            "success": False,
-            "message": f"Error starting Face Collection App: {str(e)}"
-        }
+            else:
+                # Fallback: run app.py directly
+                collection_app_process = subprocess.Popen(
+                    ["python", "server/app.py"],
+                    cwd=collection_app_dir,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    preexec_fn=os.setsid  # Create new process group
+                )
+            
+            # Give it a moment to start
+            time.sleep(2)
+            
+            # Check if it started successfully
+            if collection_app_process.poll() is None:
+                return {
+                    "success": True,
+                    "message": "Face Collection App started successfully",
+                    "pid": collection_app_process.pid
+                }
+            else:
+                stdout, stderr = collection_app_process.communicate()
+                return {
+                    "success": False,
+                    "message": f"Face Collection App failed to start. Error: {stderr.decode()}"
+                }
+                
+        except Exception as e:
+            return {
+                "success": False,
+                "message": f"Error starting Face Collection App: {str(e)}"
+            }
 
 @app.post("/api/stop-collection-app", summary="Stop the face collection application")
 async def stop_collection_app():
     """Stop the face collection application server"""
     global collection_app_process
     
-    try:
-        if collection_app_process and collection_app_process.poll() is None:
-            collection_app_process.terminate()
-            collection_app_process.wait(timeout=10)
-            collection_app_process = None
+    with collection_app_lock:
+        try:
+            stopped = False
+            
+            # First, try to stop our tracked process
+            if collection_app_process:
+                try:
+                    if hasattr(collection_app_process, 'terminate'):
+                        print(f"Terminating tracked process with PID: {get_process_pid(collection_app_process)}")
+                        collection_app_process.terminate()
+                        
+                        # Wait for graceful termination
+                        try:
+                            if hasattr(collection_app_process, 'wait'):
+                                collection_app_process.wait(timeout=3)
+                        except Exception as timeout_error:
+                            print(f"Graceful termination timed out: {timeout_error}, forcing kill...")
+                            if hasattr(collection_app_process, 'kill'):
+                                collection_app_process.kill()
+                        
+                        stopped = True
+                        print("Successfully stopped tracked process")
+                        
+                except (psutil.NoSuchProcess, ProcessLookupError):
+                    print("Tracked process already terminated")
+                    stopped = True
+                except Exception as e:
+                    print(f"Error stopping tracked process: {e}")
+                
+                collection_app_process = None
+            
+            # Also try to find and stop any existing collection app processes
+            try:
+                existing_processes = []
+                for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                    try:
+                        cmdline = proc.info['cmdline']
+                        if cmdline:
+                            cmdline_str = ' '.join(cmdline)
+                            # Look for Python processes running the collection app
+                            if ('app.py' in cmdline_str and 
+                                ('data_collection' in cmdline_str or 
+                                 'server' in cmdline_str or
+                                 '5001' in cmdline_str)):
+                                existing_processes.append(proc)
+                    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+                        continue
+                
+                # Stop all found processes
+                for proc in existing_processes:
+                    try:
+                        print(f"Found existing collection app process with PID: {proc.pid}")
+                        proc.terminate()
+                        try:
+                            proc.wait(timeout=3)
+                        except psutil.TimeoutExpired:
+                            print(f"Force killing process {proc.pid}")
+                            proc.kill()
+                        stopped = True
+                        print(f"Successfully stopped process {proc.pid}")
+                    except (psutil.NoSuchProcess, psutil.AccessDenied):
+                        continue
+                    except Exception as e:
+                        print(f"Error stopping process {proc.pid}: {e}")
+                        
+            except Exception as e:
+                print(f"Error searching for existing processes: {e}")
+            
+            # Additional cleanup: kill any process using port 5001
+            try:
+                result = subprocess.run(['lsof', '-t', '-i:5001'], 
+                                      capture_output=True, text=True, timeout=5)
+                if result.returncode == 0 and result.stdout.strip():
+                    pids = result.stdout.strip().split('\n')
+                    for pid in pids:
+                        try:
+                            pid_int = int(pid.strip())
+                            print(f"Killing process using port 5001: PID {pid_int}")
+                            os.kill(pid_int, signal.SIGTERM)
+                            time.sleep(1)
+                            # Check if still running and force kill
+                            try:
+                                os.kill(pid_int, 0)  # Check if process exists
+                                print(f"Force killing stubborn process: PID {pid_int}")
+                                os.kill(pid_int, signal.SIGKILL)
+                            except ProcessLookupError:
+                                pass  # Process already dead
+                            stopped = True
+                        except (ValueError, ProcessLookupError, PermissionError) as e:
+                            print(f"Could not kill process {pid}: {e}")
+            except (subprocess.TimeoutExpired, FileNotFoundError):
+                pass  # lsof not available or timed out
+            except Exception as e:
+                print(f"Error using lsof to find port usage: {e}")
+            
+            if stopped:
+                return {
+                    "success": True,
+                    "message": "Face Collection App stopped successfully"
+                }
+            else:
+                return {
+                    "success": True,
+                    "message": "Face Collection App was not running"
+                }
+                
+        except Exception as e:
+            print(f"Error in stop_collection_app: {e}")
             return {
-                "success": True,
-                "message": "Face Collection App stopped successfully"
+                "success": False,
+                "message": f"Error stopping Face Collection App: {str(e)}"
             }
-        else:
-            return {
-                "success": True,
-                "message": "Face Collection App is not running"
-            }
-    except Exception as e:
-        return {
-            "success": False,
-            "message": f"Error stopping Face Collection App: {str(e)}"
-        }
 
 @app.get("/api/collection-app-status", summary="Check face collection app status")
 async def get_collection_app_status():
     """Check if the face collection application is running"""
     global collection_app_process
     
-    is_running = collection_app_process and collection_app_process.poll() is None
-    
-    return {
-        "running": is_running,
-        "pid": collection_app_process.pid if is_running else None
-    }
+    with collection_app_lock:
+        try:
+            # Check our tracked process
+            is_running = False
+            pid = None
+            
+            if collection_app_process:
+                is_running = check_process_running(collection_app_process)
+                if is_running:
+                    pid = get_process_pid(collection_app_process)
+                else:
+                    # Process died, clear the reference
+                    collection_app_process = None
+            
+            # If no tracked process, check if there's an existing one
+            if not is_running:
+                existing_proc = find_collection_app_process()
+                if existing_proc:
+                    collection_app_process = existing_proc
+                    is_running = True
+                    pid = existing_proc.pid
+            
+            # Double-check by testing the port
+            if not is_running:
+                is_running = is_port_in_use(5001)
+            
+            return {
+                "running": is_running,
+                "pid": pid,
+                "port_in_use": is_port_in_use(5001)
+            }
+        except Exception as e:
+            return {
+                "running": False,
+                "pid": None,
+                "port_in_use": False,
+                "error": str(e)
+            }
 
 # Check processing status endpoint could be added here if needed
 

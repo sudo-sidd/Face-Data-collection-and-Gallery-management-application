@@ -1,5 +1,26 @@
 const API_BASE_URL = '';  // Empty string for same-origin requests
 
+// State management for collection app
+const collectionAppState = {
+    isStarting: false,
+    isStopping: false,
+    lastStatusCheck: 0,
+    statusCheckThrottle: 2000 // 2 seconds
+};
+
+// Debounce utility function
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 // DOM ready event
 document.addEventListener('DOMContentLoaded', function() {
     // Add debug logging
@@ -90,6 +111,31 @@ document.addEventListener('DOMContentLoaded', function() {
         createGalleryForm.addEventListener('submit', handleCreateGallery);
     } else {
         console.log("Create gallery form not found");
+    }
+    
+    // Add event listeners for collection app buttons
+    const launchCollectionBtn = document.getElementById('launchCollectionBtn');
+    if (launchCollectionBtn) {
+        launchCollectionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            launchCollectionAppWithServer();
+        });
+    }
+    
+    const checkStatusBtn = document.getElementById('checkStatusBtn');
+    if (checkStatusBtn) {
+        checkStatusBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            checkCollectionAppStatus();
+        });
+    }
+    
+    const stopCollectionBtn = document.getElementById('stopCollectionBtn');
+    if (stopCollectionBtn) {
+        stopCollectionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            stopCollectionAppServer();
+        });
     }
     
     // Add reload button to galleries section
@@ -1129,8 +1175,15 @@ function launchCollectionApp() {
     showAlert('success', 'Face Collection App opened in new tab');
 }
 
-// Add manual status check function
+// Add manual status check function with throttling
 async function checkCollectionAppStatus() {
+    const now = Date.now();
+    if (now - collectionAppState.lastStatusCheck < collectionAppState.statusCheckThrottle) {
+        console.log('Status check throttled');
+        return false;
+    }
+    
+    collectionAppState.lastStatusCheck = now;
     updateCollectionAppStatus('Checking...');
     
     try {
@@ -1143,10 +1196,12 @@ async function checkCollectionAppStatus() {
             } else {
                 showAlert('info', 'Face Collection App is not running');
             }
+            return status.running;
         }
     } catch (error) {
         updateCollectionAppStatus('Unknown');
         showAlert('error', 'Could not check Face Collection App status');
+        return false;
     }
 }
 
@@ -1158,23 +1213,17 @@ function updateCollectionAppStatus(status) {
     }
 }
 
-// Check if collection app is accessible
-async function checkCollectionAppStatus() {
-    try {
-        const response = await fetch('http://localhost:5001', { 
-            method: 'HEAD', 
-            mode: 'no-cors',
-            timeout: 5000 
-        });
-        return true;
-    } catch (error) {
-        return false;
-    }
-}
-
-// Add API endpoint to start collection app server
+// Add API endpoint to start collection app server with state management
 async function startCollectionAppServer() {
+    if (collectionAppState.isStarting) {
+        console.log('Already starting collection app, ignoring request');
+        return;
+    }
+    
+    collectionAppState.isStarting = true;
+    
     try {
+        updateCollectionAppStatus('Starting...');
         const response = await fetch('/api/start-collection-app', {
             method: 'POST',
             headers: {
@@ -1185,24 +1234,37 @@ async function startCollectionAppServer() {
         if (response.ok) {
             const result = await response.json();
             if (result.success) {
-                showAlert('success', 'Face Collection App server started');
+                showAlert('success', result.message);
+                updateCollectionAppStatus('Running');
                 // Wait a moment then launch the app
                 setTimeout(() => {
                     launchCollectionApp();
                 }, 2000);
             } else {
                 showAlert('error', 'Failed to start Face Collection App server: ' + result.message);
+                updateCollectionAppStatus('Not Running');
             }
         }
     } catch (error) {
         console.error('Error starting collection app server:', error);
         showAlert('error', 'Error starting Face Collection App server');
+        updateCollectionAppStatus('Unknown');
+    } finally {
+        collectionAppState.isStarting = false;
     }
 }
 
-// Add API endpoint to stop collection app server
+// Add API endpoint to stop collection app server with state management
 async function stopCollectionAppServer() {
+    if (collectionAppState.isStopping) {
+        console.log('Already stopping collection app, ignoring request');
+        return;
+    }
+    
+    collectionAppState.isStopping = true;
+    
     try {
+        updateCollectionAppStatus('Stopping...');
         const response = await fetch('/api/stop-collection-app', {
             method: 'POST',
             headers: {
@@ -1213,7 +1275,7 @@ async function stopCollectionAppServer() {
         if (response.ok) {
             const result = await response.json();
             if (result.success) {
-                showAlert('success', 'Face Collection App server stopped');
+                showAlert('success', result.message);
                 updateCollectionAppStatus('Not Running');
             } else {
                 showAlert('error', 'Failed to stop Face Collection App server: ' + result.message);
@@ -1222,11 +1284,18 @@ async function stopCollectionAppServer() {
     } catch (error) {
         console.error('Error stopping collection app server:', error);
         showAlert('error', 'Error stopping Face Collection App server');
+    } finally {
+        collectionAppState.isStopping = false;
     }
 }
 
 // Enhanced launch function that tries to start the server if needed
-async function launchCollectionAppWithServer() {
+const launchCollectionAppWithServer = debounce(async function() {
+    if (collectionAppState.isStarting || collectionAppState.isStopping) {
+        console.log('Collection app operation in progress, ignoring request');
+        return;
+    }
+    
     updateCollectionAppStatus('Checking...');
     
     // First check if the app is already running
@@ -1239,4 +1308,11 @@ async function launchCollectionAppWithServer() {
         showAlert('info', 'Starting Face Collection App server...');
         await startCollectionAppServer();
     }
+}, 1000); // 1 second debounce
+
+// Simple launch function that opens the app in a new tab
+function launchCollectionApp() {
+    const url = 'http://localhost:5001';
+    window.open(url, '_blank');
+    showAlert('info', 'Opening Face Collection App in new tab');
 }

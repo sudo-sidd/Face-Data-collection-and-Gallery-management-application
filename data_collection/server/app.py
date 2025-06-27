@@ -109,8 +109,8 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
     processed_frames = 0
     
     # Use a lower sample rate to process more frames
-    sample_rate = 10  # Process every 5th frame
-    frames_per_sample = 5
+    sample_rate = 8  # Process every 3th frame
+    frames_per_sample = 3
     
     
     # Process each frame in the video
