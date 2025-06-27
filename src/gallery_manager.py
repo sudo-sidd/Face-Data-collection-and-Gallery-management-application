@@ -136,7 +136,7 @@ def extract_embedding(model, img_path, device):
         print(f"Error processing {img_path}: {e}")
         return None
 
-def create_gallery(model_path, data_dir, output_path):
+def create_gallery(model_path, data_dir, output_path, augment_ratio=0.0, augs_per_image=2):
     """Create a face recognition gallery from preprocessed face images"""
     # Load model
     model, device = load_model(model_path)
@@ -166,6 +166,30 @@ def create_gallery(model_path, data_dir, output_path):
             embedding = extract_embedding(model, img_path, device)
             if embedding is not None:
                 embeddings.append(embedding)
+                
+                # Apply augmentation if specified
+                if augment_ratio > 0 and random.random() < augment_ratio:
+                    try:
+                        # Load original image as numpy array for augmentation
+                        img = cv2.imread(img_path)
+                        if img is not None:
+                            # Generate augmented versions
+                            augmented_images = augment_face_image(img, augs_per_image)
+                            
+                            # Extract embeddings from augmented images
+                            for aug_img in augmented_images:
+                                # Convert numpy array to PIL Image
+                                aug_pil = Image.fromarray(cv2.cvtColor(aug_img, cv2.COLOR_BGR2GRAY))
+                                
+                                # Transform and extract embedding
+                                aug_tensor = transform(aug_pil).unsqueeze(0).to(device)
+                                with torch.no_grad():
+                                    _, aug_embedding = model(aug_tensor)
+                                    aug_embedding = aug_embedding.cpu().squeeze().numpy()
+                                    embeddings.append(aug_embedding)
+                    except Exception as e:
+                        print(f"Warning: Failed to augment {img_path}: {e}")
+                        continue
         
         if not embeddings:
             print(f"Warning: No valid embeddings extracted for {identity}")
@@ -182,7 +206,7 @@ def create_gallery(model_path, data_dir, output_path):
     print(f"Gallery saved to {output_path}")
     return gallery
 
-def update_gallery(model_path, gallery_path, new_data_dir, output_path=None):
+def update_gallery(model_path, gallery_path, new_data_dir, output_path=None, augment_ratio=0.0, augs_per_image=2):
     """Update an existing gallery with new identities"""
     if output_path is None:
         output_path = gallery_path
@@ -237,6 +261,30 @@ def update_gallery(model_path, gallery_path, new_data_dir, output_path=None):
             embedding = extract_embedding(model, img_path, device)
             if embedding is not None:
                 embeddings.append(embedding)
+                
+                # Apply augmentation if specified
+                if augment_ratio > 0 and random.random() < augment_ratio:
+                    try:
+                        # Load original image as numpy array for augmentation
+                        img = cv2.imread(img_path)
+                        if img is not None:
+                            # Generate augmented versions
+                            augmented_images = augment_face_image(img, augs_per_image)
+                            
+                            # Extract embeddings from augmented images
+                            for aug_img in augmented_images:
+                                # Convert numpy array to PIL Image
+                                aug_pil = Image.fromarray(cv2.cvtColor(aug_img, cv2.COLOR_BGR2GRAY))
+                                
+                                # Transform and extract embedding
+                                aug_tensor = transform(aug_pil).unsqueeze(0).to(device)
+                                with torch.no_grad():
+                                    _, aug_embedding = model(aug_tensor)
+                                    aug_embedding = aug_embedding.cpu().squeeze().numpy()
+                                    embeddings.append(aug_embedding)
+                    except Exception as e:
+                        print(f"Warning: Failed to augment {img_path}: {e}")
+                        continue
         
         if not embeddings:
             print(f"Warning: No valid embeddings extracted for {identity}")
@@ -530,6 +578,62 @@ def test_gallery_batch(model_path, gallery_path, test_dir, output_dir, threshold
     print(f"\nProcessed {len(image_files)} images")
     print(f"Results saved to {output_dir}")
     print(f"Summary report saved to {summary_path}")
+
+def create_gallery_from_embeddings(gallery_path, embeddings_dict):
+    """Create a gallery from a dictionary of embeddings"""
+    try:
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(gallery_path), exist_ok=True)
+        
+        # Save embeddings dictionary directly
+        torch.save(embeddings_dict, gallery_path)
+        print(f"Gallery created at {gallery_path} with {len(embeddings_dict)} identities")
+        return embeddings_dict
+    except Exception as e:
+        print(f"Error creating gallery from embeddings: {e}")
+        return None
+
+def update_gallery_from_embeddings(gallery_path, new_embeddings_dict):
+    """Update an existing gallery with new embeddings"""
+    try:
+        # Load existing gallery if it exists
+        existing_gallery = {}
+        if os.path.exists(gallery_path):
+            try:
+                gallery_data = torch.load(gallery_path)
+                
+                # Handle both the old format (dict of embeddings) and new format (separate lists)
+                if isinstance(gallery_data, dict) and "identities" in gallery_data:
+                    identities = gallery_data["identities"]
+                    embeddings = gallery_data["embeddings"]
+                    for i, identity in enumerate(identities):
+                        existing_gallery[identity] = embeddings[i]
+                else:
+                    existing_gallery = gallery_data
+                    
+                print(f"Loaded existing gallery with {len(existing_gallery)} identities")
+            except Exception as e:
+                print(f"Error loading existing gallery: {e}")
+                existing_gallery = {}
+        else:
+            print("No existing gallery found, creating new one")
+        
+        # Merge with new embeddings
+        updated_gallery = existing_gallery.copy()
+        updated_gallery.update(new_embeddings_dict)
+        
+        # Create directory if it doesn't exist
+        os.makedirs(os.path.dirname(gallery_path), exist_ok=True)
+        
+        # Save updated gallery
+        torch.save(updated_gallery, gallery_path)
+        print(f"Updated gallery saved to {gallery_path}")
+        print(f"Gallery now contains {len(updated_gallery)} identities")
+        return updated_gallery
+        
+    except Exception as e:
+        print(f"Error updating gallery from embeddings: {e}")
+        return None
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Face gallery manager")

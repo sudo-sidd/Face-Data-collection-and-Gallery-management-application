@@ -27,7 +27,7 @@ GALLERY_DIR = os.path.join(BASE_DIR, 'gallery')
 
 # Add gallery directory to system path
 sys.path.append(GALLERY_DIR)
-from gallery_manager import create_gallery, update_gallery, load_model, extract_embedding
+from gallery_manager import create_gallery, update_gallery, load_model, extract_embedding, create_gallery_from_embeddings, update_gallery_from_embeddings
 import database
 
 # Default paths using relative paths
@@ -355,10 +355,10 @@ def process_videos_directory(videos_dir: str, year: str, department: str) -> Pro
     if student_embeddings:
         if os.path.exists(gallery_path):
             # Update existing gallery
-            update_gallery(gallery_path, student_embeddings)
+            update_gallery_from_embeddings(gallery_path, student_embeddings)
         else:
             # Create new gallery
-            create_gallery(gallery_path, student_embeddings)
+            create_gallery_from_embeddings(gallery_path, student_embeddings)
         gallery_updated = True
     
     return ProcessingResult(
@@ -780,11 +780,15 @@ async def create_gallery_endpoint(
         
         # Get gallery info
         gallery_info = get_gallery_info(gallery_path)
+        identity_count = gallery_info.count if gallery_info else 0
+        
+        # Register gallery in database
+        database.register_gallery(year, department, gallery_path, identity_count)
         
         return {
             "message": message,
             "gallery_path": gallery_path,
-            "identities_count": gallery_info.count if gallery_info else 0,
+            "identities_count": identity_count,
             "augmentation_applied": augment_ratio > 0 and augs_per_image > 0,
             "augment_ratio": augment_ratio,
             "augs_per_image": augs_per_image,
@@ -808,16 +812,14 @@ async def add_batch_year(year_data: dict):
 
 @app.delete("/batches/year/{year}", status_code=200, summary="Delete a batch year")
 async def delete_batch_year(year: str):
-    # Check if any galleries are using this year
-    galleries = []
-    for filename in os.listdir(BASE_GALLERY_DIR):
-        if filename.endswith(".pth") and f"_{year}." in filename:
-            galleries.append(filename)
+    # Check if any galleries are using this year in the database
+    galleries = database.list_all_galleries()
+    year_galleries = [g for g in galleries if g['year'] == year]
     
-    if galleries:
+    if year_galleries:
         raise HTTPException(
             status_code=400,
-            detail=f"Cannot delete year '{year}' as it is used by {len(galleries)} galleries"
+            detail=f"Cannot delete year '{year}' as it is used by {len(year_galleries)} galleries"
         )
     
     if year not in database.get_batch_years():
@@ -843,16 +845,14 @@ async def add_department(dept_data: dict):
 
 @app.delete("/batches/department/{department}", status_code=200, summary="Delete a department")
 async def delete_department(department: str):
-    # Check if any galleries are using this department
-    galleries = []
-    for filename in os.listdir(BASE_GALLERY_DIR):
-        if filename.endswith(".pth") and f"_{department}_" in filename:
-            galleries.append(filename)
+    # Check if any galleries are using this department in the database
+    galleries = database.list_all_galleries()
+    dept_galleries = [g for g in galleries if g['department_name'] == department]
     
-    if galleries:
+    if dept_galleries:
         raise HTTPException(
             status_code=400,
-            detail=f"Cannot delete department '{department}' as it is used by {len(galleries)} galleries"
+            detail=f"Cannot delete department '{department}' as it is used by {len(dept_galleries)} galleries"
         )
     
     if department not in database.get_departments():
@@ -893,6 +893,87 @@ async def check_directories():
         "data_dir_files": data_dir_files,
         "gallery_dir_files": gallery_dir_files
     }
+
+@app.get("/galleries/registered", summary="Get all registered galleries from database")
+async def list_registered_galleries():
+    """List all galleries registered in the database with their metadata"""
+    galleries = database.list_all_galleries()
+    return {
+        "galleries": galleries,
+        "count": len(galleries)
+    }
+
+@app.get("/database/stats", summary="Get database statistics")
+async def get_database_stats():
+    """Get comprehensive database statistics"""
+    return database.get_database_stats()
+
+@app.delete("/galleries/{year}/{department}", status_code=200, summary="Delete a gallery")
+async def delete_gallery(year: str, department: str):
+    """Delete a gallery file and remove it from the database"""
+    # Validate batch year and department
+    if year not in database.get_batch_years():
+        raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
+    if department not in database.get_departments():
+        raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
+    
+    # Get gallery path
+    gallery_path = get_gallery_path(year, department)
+    
+    # Check if gallery exists
+    if not os.path.exists(gallery_path):
+        raise HTTPException(status_code=404, detail=f"No gallery found for {department} {year}")
+    
+    try:
+        # Remove gallery file
+        os.remove(gallery_path)
+        
+        # Remove from database
+        database.remove_gallery(year, department)
+        
+        return {
+            "message": f"Deleted gallery for {department} {year}",
+            "success": True
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to delete gallery: {str(e)}")
+
+@app.post("/galleries/{year}/{department}/sync", summary="Sync gallery file with database")
+async def sync_gallery_with_database(year: str, department: str):
+    """Sync an existing gallery file with the database"""
+    # Validate batch year and department
+    if year not in database.get_batch_years():
+        raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
+    if department not in database.get_departments():
+        raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
+    
+    # Get gallery path
+    gallery_path = get_gallery_path(year, department)
+    
+    # Check if gallery exists
+    if not os.path.exists(gallery_path):
+        raise HTTPException(status_code=404, detail=f"No gallery found for {department} {year}")
+    
+    try:
+        # Get gallery info
+        gallery_info = get_gallery_info(gallery_path)
+        if not gallery_info:
+            raise HTTPException(status_code=500, detail="Failed to read gallery file")
+        
+        # Register/update in database
+        success = database.register_gallery(year, department, gallery_path, gallery_info.count)
+        
+        if success:
+            return {
+                "message": f"Successfully synced gallery for {department} {year}",
+                "identities_count": gallery_info.count,
+                "success": True
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Failed to register gallery in database")
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to sync gallery: {str(e)}")
 
 @app.post("/recognize", summary="Recognize faces in an uploaded image")
 async def recognize_image(

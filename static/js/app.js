@@ -279,7 +279,7 @@ async function loadBatchYearsAndDepartments() {
     }
 }
 
-// Load galleries for the galleries section
+// Load galleries for the galleries section - Enhanced with database integration
 async function loadGalleries() {
     const galleriesList = document.getElementById('galleriesList');
     const galleriesPlaceholder = document.getElementById('galleriesPlaceholder');
@@ -291,82 +291,154 @@ async function loadGalleries() {
     
     console.log("Loading galleries...");
     try {
-        const response = await fetch(`${API_BASE_URL}/galleries`);
-        console.log("Galleries API response status:", response.status);
+        // Try to load from enhanced database endpoint first
+        let response = await fetch(`${API_BASE_URL}/galleries/registered`);
+        let useDatabase = response.ok;
+        let data;
         
-        const data = await response.json();
-        console.log("Galleries data:", data);
+        if (useDatabase) {
+            data = await response.json();
+            console.log("Registered galleries data:", data);
+        } else {
+            // Fallback to file-based listing
+            response = await fetch(`${API_BASE_URL}/galleries`);
+            data = await response.json();
+            console.log("File-based galleries data:", data);
+        }
         
         if (galleriesPlaceholder) {
             galleriesPlaceholder.style.display = 'none';
         }
         
-        if (!data.galleries || data.galleries.length === 0) {
-            console.log("No galleries found");
-            galleriesList.innerHTML = '<div class="alert alert-info">No galleries available. Process some videos first.</div>';
-            return;
-        }
-        
-        // Clear the list
-        galleriesList.innerHTML = '';
-        console.log(`Found ${data.galleries.length} galleries. Adding to list...`);
-        
-        // Add each gallery
-        for (const galleryFile of data.galleries) {
-            // Extract year and department from filename
-            // Format: gallery_DEPARTMENT_YEAR.pth
-            const parts = galleryFile.replace('gallery_', '').replace('.pth', '').split('_');
-            console.log(`Processing gallery file: ${galleryFile}, parts:`, parts);
-            
-            const department = parts[0];
-            const year = parts[1];
-            
-            if (!department || !year) {
-                console.warn(`Invalid gallery filename format: ${galleryFile}`);
-                continue;
+        if (useDatabase) {
+            // Handle database response
+            if (!data.galleries || data.galleries.length === 0) {
+                console.log("No registered galleries found");
+                galleriesList.innerHTML = '<div class="alert alert-info">No galleries registered in database. Process some videos and create galleries first.</div>';
+                return;
             }
             
-            console.log(`Adding gallery for ${department} - ${year} Year`);
+            // Clear the list
+            galleriesList.innerHTML = '';
+            console.log(`Found ${data.galleries.length} registered galleries. Adding to list...`);
             
-            const listItem = document.createElement('a');
-            listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
-            listItem.href = '#';
-            listItem.setAttribute('data-year', year);
-            listItem.setAttribute('data-department', department);
-            
-            listItem.innerHTML = `
-                <div>
-                    <h5 class="mb-1">${department} - ${year} Year</h5>
-                    <small class="text-muted">Click to view details</small>
-                </div>
-                <span class="badge bg-primary rounded-pill gallery-count">...</span>
-            `;
-            
-            // Add click event
-            listItem.addEventListener('click', async function(e) {
-                e.preventDefault();
-                const year = this.getAttribute('data-year');
-                const department = this.getAttribute('data-department');
+            // Add each registered gallery
+            for (const gallery of data.galleries) {
+                console.log(`Adding registered gallery for ${gallery.department_name} - ${gallery.year}`);
                 
-                // Fetch gallery details
-                try {
-                    const detailResponse = await fetch(`${API_BASE_URL}/galleries/${year}/${department}`);
-                    const galleryInfo = await detailResponse.json();
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                listItem.href = '#';
+                listItem.setAttribute('data-year', gallery.year);
+                listItem.setAttribute('data-department', gallery.department_name);
+                
+                // Format the creation/update time
+                const updatedDate = new Date(gallery.updated_at).toLocaleDateString();
+                
+                listItem.innerHTML = `
+                    <div>
+                        <h5 class="mb-1">${gallery.department_name} - ${gallery.year} Year</h5>
+                        <small class="text-muted">Updated: ${updatedDate} | Click to view details</small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-primary rounded-pill me-2">${gallery.identity_count}</span>
+                        <div class="btn-group btn-group-sm">
+                            <button class="btn btn-outline-info btn-sm sync-gallery" data-year="${gallery.year}" data-department="${gallery.department_name}" title="Sync with file">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm delete-gallery" data-year="${gallery.year}" data-department="${gallery.department_name}" title="Delete gallery">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event for details
+                listItem.addEventListener('click', async function(e) {
+                    // Don't trigger on button clicks
+                    if (e.target.closest('button')) return;
                     
-                    // Show modal with gallery details
-                    // For simplicity, just show an alert
-                    alert(`Gallery: ${department} - ${year} Year\nIdentities: ${galleryInfo.count}\n${galleryInfo.identities.join(', ')}`);
-                } catch (error) {
-                    console.error('Error fetching gallery details:', error);
-                    showAlert('error', 'Failed to load gallery details');
+                    e.preventDefault();
+                    const year = this.getAttribute('data-year');
+                    const department = this.getAttribute('data-department');
+                    
+                    // Fetch gallery details
+                    try {
+                        const detailResponse = await fetch(`${API_BASE_URL}/galleries/${year}/${department}`);
+                        const galleryInfo = await detailResponse.json();
+                        
+                        // Show enhanced gallery details
+                        showGalleryDetailsModal(department, year, galleryInfo);
+                    } catch (error) {
+                        console.error('Error fetching gallery details:', error);
+                        showAlert('error', 'Failed to load gallery details');
+                    }
+                });
+                
+                galleriesList.appendChild(listItem);
+            }
+            
+            // Add event listeners for action buttons
+            addGalleryActionListeners();
+            
+        } else {
+            // Handle file-based response (fallback)
+            if (!data.galleries || data.galleries.length === 0) {
+                console.log("No galleries found");
+                galleriesList.innerHTML = '<div class="alert alert-info">No galleries available. Process some videos first.</div>';
+                return;
+            }
+            
+            // Clear the list
+            galleriesList.innerHTML = '';
+            console.log(`Found ${data.galleries.length} gallery files. Adding to list...`);
+            
+            // Add each gallery file
+            for (const galleryFile of data.galleries) {
+                // Extract year and department from filename
+                const parts = galleryFile.replace('gallery_', '').replace('.pth', '').split('_');
+                const department = parts[0];
+                const year = parts[1];
+                
+                if (!department || !year) {
+                    console.warn(`Invalid gallery filename format: ${galleryFile}`);
+                    continue;
                 }
-            });
+                
+                const listItem = document.createElement('a');
+                listItem.className = 'list-group-item list-group-item-action d-flex justify-content-between align-items-center';
+                listItem.href = '#';
+                listItem.setAttribute('data-year', year);
+                listItem.setAttribute('data-department', department);
+                
+                listItem.innerHTML = `
+                    <div>
+                        <h5 class="mb-1">${department} - ${year} Year</h5>
+                        <small class="text-muted">Click to view details | <em>Not registered in database</em></small>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-secondary rounded-pill me-2 gallery-count">...</span>
+                        <button class="btn btn-outline-success btn-sm sync-gallery" data-year="${year}" data-department="${department}" title="Register in database">
+                            <i class="fas fa-database"></i> Register
+                        </button>
+                    </div>
+                `;
+                
+                galleriesList.appendChild(listItem);
+                
+                // Fetch count for this gallery
+                fetchGalleryCount(department, year, listItem.querySelector('.gallery-count'));
+            }
             
-            galleriesList.appendChild(listItem);
-            
-            // Fetch count for this gallery
-            fetchGalleryCount(department, year, listItem.querySelector('.gallery-count'));
+            // Add event listeners for sync buttons
+            addGalleryActionListeners();
         }
+        
+        // Add database stats display
+        if (useDatabase) {
+            addDatabaseStatsDisplay();
+        }
+        
     } catch (error) {
         console.error('Error loading galleries:', error);
         galleriesList.innerHTML = '<div class="alert alert-danger">Failed to load galleries: ' + error.message + '</div>';
@@ -1315,4 +1387,129 @@ function launchCollectionApp() {
     const url = 'http://localhost:5001';
     window.open(url, '_blank');
     showAlert('info', 'Opening Face Collection App in new tab');
+}
+
+// Enhanced gallery management functions for database integration
+function addGalleryActionListeners() {
+    // Add event listeners for sync buttons
+    document.querySelectorAll('.sync-gallery').forEach(button => {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const year = this.getAttribute('data-year');
+            const department = this.getAttribute('data-department');
+            
+            await syncGalleryWithDatabase(year, department);
+        });
+    });
+    
+    // Add event listeners for delete buttons
+    document.querySelectorAll('.delete-gallery').forEach(button => {
+        button.addEventListener('click', async function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const year = this.getAttribute('data-year');
+            const department = this.getAttribute('data-department');
+            
+            await deleteGalleryFromDatabase(year, department);
+        });
+    });
+}
+
+async function syncGalleryWithDatabase(year, department) {
+    if (!confirm(`Sync gallery for ${department} - ${year} with database?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/galleries/${year}/${department}/sync`, {
+            method: 'POST'
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            showAlert('success', result.message);
+            await loadGalleries();
+        } else {
+            const error = await response.json();
+            showAlert('error', error.detail || 'Failed to sync gallery');
+        }
+    } catch (error) {
+        console.error('Error syncing gallery:', error);
+        showAlert('error', 'Failed to sync gallery');
+    }
+}
+
+async function deleteGalleryFromDatabase(year, department) {
+    if (!confirm(`Are you sure you want to delete the gallery for ${department} - ${year}?`)) {
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/galleries/${year}/${department}`, {
+            method: 'DELETE'
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            showAlert('success', result.message);
+            await loadGalleries();
+            await loadGalleryCheckboxes();
+        } else {
+            const error = await response.json();
+            showAlert('error', error.detail || 'Failed to delete gallery');
+        }
+    } catch (error) {
+        console.error('Error deleting gallery:', error);
+        showAlert('error', 'Failed to delete gallery');
+    }
+}
+
+function showGalleryDetailsModal(department, year, galleryInfo) {
+    // Simple alert for now - can be enhanced later
+    const identitiesList = galleryInfo.identities.slice(0, 10).join(', ');
+    const moreText = galleryInfo.identities.length > 10 ? `... and ${galleryInfo.identities.length - 10} more` : '';
+    
+    alert(`Gallery: ${department} - ${year} Year\nIdentities: ${galleryInfo.count}\nSample identities: ${identitiesList}${moreText}`);
+}
+
+async function addDatabaseStatsDisplay() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/database/stats`);
+        if (response.ok) {
+            const stats = await response.json();
+            
+            // Add stats display to galleries section
+            const galleriesList = document.getElementById('galleriesList');
+            const statsHTML = `
+                <div class="alert alert-light mt-3">
+                    <h6><i class="fas fa-database"></i> Database Statistics</h6>
+                    <div class="row text-center">
+                        <div class="col-3">
+                            <div class="fw-bold">${stats.batch_years_count}</div>
+                            <small class="text-muted">Years</small>
+                        </div>
+                        <div class="col-3">
+                            <div class="fw-bold">${stats.departments_count}</div>
+                            <small class="text-muted">Depts</small>
+                        </div>
+                        <div class="col-3">
+                            <div class="fw-bold">${stats.galleries_count}</div>
+                            <small class="text-muted">Galleries</small>
+                        </div>
+                        <div class="col-3">
+                            <div class="fw-bold">${stats.total_identities}</div>
+                            <small class="text-muted">Identities</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            galleriesList.insertAdjacentHTML('afterend', statsHTML);
+        }
+    } catch (error) {
+        console.error('Error loading database stats:', error);
+    }
 }
