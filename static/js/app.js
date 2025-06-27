@@ -169,8 +169,84 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Add toast notification demo buttons
+    const demoSuccessToast = document.getElementById('demoSuccessToast');
+    if (demoSuccessToast) {
+        demoSuccessToast.addEventListener('click', function() {
+            showToast('success', 'Operation completed successfully!', {
+                title: 'Success',
+                duration: 5000
+            });
+        });
+    }
+    
+    const demoErrorToast = document.getElementById('demoErrorToast');
+    if (demoErrorToast) {
+        demoErrorToast.addEventListener('click', function() {
+            showToast('error', 'An error occurred while processing your request.', {
+                title: 'Error',
+                duration: 6000
+            });
+        });
+    }
+    
+    const demoWarningToast = document.getElementById('demoWarningToast');
+    if (demoWarningToast) {
+        demoWarningToast.addEventListener('click', function() {
+            showToast('warning', 'This action might have unintended consequences.', {
+                title: 'Warning',
+                duration: 5500
+            });
+        });
+    }
+    
+    const demoInfoToast = document.getElementById('demoInfoToast');
+    if (demoInfoToast) {
+        demoInfoToast.addEventListener('click', function() {
+            showToast('info', 'The system will be updated tonight at 12:00 AM.', {
+                title: 'Information',
+                duration: 5000
+            });
+        });
+    }
+    
+    const demoCustomToast = document.getElementById('demoCustomToast');
+    if (demoCustomToast) {
+        demoCustomToast.addEventListener('click', function() {
+            // Creating a more complex custom toast notification
+            showToast('info', `
+                <div class="mb-2">Processing complete for all videos.</div>
+                <div class="progress" style="height: 5px">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-2">
+                    <small class="text-light-emphasis">100% Complete</small>
+                    <button class="btn btn-sm btn-light" onclick="activateSection('galleries')">
+                        View Results
+                    </button>
+                </div>
+            `, {
+                title: 'Custom Notification',
+                duration: 8000,
+                timestamp: 'Just now',
+                onClose: function() {
+                    console.log('Custom toast was closed');
+                }
+            });
+        });
+    }
+    
     // Initialize the application
     init();
+    
+    // Check if toast notifications system is working
+    setTimeout(() => {
+        // Show a welcome toast when the app first loads
+        showToast('info', 'Welcome to Face Recognition Gallery Manager', {
+            title: 'Welcome',
+            duration: 5000
+        });
+    }, 1000);
 });
 
 // Initialize the application - update to include new gallery form selects
@@ -1128,27 +1204,277 @@ function selectDatasetForGallery(year, department) {
     }
 }
 
-// Helper function to show alerts
+/**
+ * Toast Notification System
+ * A modern, customizable toast notification system with different styles and options
+ */
+
+// Global counter for unique toast IDs
+let toastCounter = 0;
+
+// Toast configuration - can be customized
+const toastConfig = {
+    duration: 5000,       // Default duration in ms
+    position: 'top-end',  // Position of toasts (top-end, top-center, bottom-end, bottom-center)
+    maxToasts: 5,         // Maximum number of toasts to display at once
+    newestOnTop: true     // Whether to show newest toasts on top
+};
+
+// Ensure toast container exists with proper positioning
+function createToastContainer() {
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        
+        // Set position based on configuration
+        if (toastConfig.position === 'top-end') {
+            container.style.top = '20px';
+            container.style.right = '20px';
+            container.style.left = 'auto';
+            container.style.bottom = 'auto';
+        } else if (toastConfig.position === 'top-center') {
+            container.style.top = '20px';
+            container.style.left = '50%';
+            container.style.transform = 'translateX(-50%)';
+            container.style.right = 'auto';
+            container.style.bottom = 'auto';
+        } else if (toastConfig.position === 'bottom-end') {
+            container.style.bottom = '20px';
+            container.style.right = '20px';
+            container.style.top = 'auto';
+            container.style.left = 'auto';
+        } else if (toastConfig.position === 'bottom-center') {
+            container.style.bottom = '20px';
+            container.style.left = '50%';
+            container.style.transform = 'translateX(-50%)';
+            container.style.top = 'auto';
+            container.style.right = 'auto';
+        }
+        
+        document.body.appendChild(container);
+    }
+    
+    // Limit number of toasts if needed
+    const toasts = container.querySelectorAll('.toast');
+    if (toasts.length >= toastConfig.maxToasts) {
+        // Remove oldest toast to make room
+        if (toastConfig.newestOnTop) {
+            container.removeChild(container.lastChild);
+        } else {
+            container.removeChild(container.firstChild);
+        }
+    }
+    
+    return container;
+}
+
+/**
+ * Show a toast notification
+ * @param {string} type - The toast type: 'success', 'error', 'warning', 'info'
+ * @param {string} message - The message to display
+ * @param {Object} options - Optional configuration overrides
+ * @param {number} options.duration - Duration in ms to show the toast
+ * @param {string} options.title - Optional title for the toast
+ * @param {boolean} options.closeButton - Whether to show a close button
+ * @param {function} options.onClose - Callback when toast is closed
+ */
+function showToast(type, message, options = {}) {
+    const container = createToastContainer();
+    const toastId = `toast-${Date.now()}-${toastCounter++}`;
+    
+    // Determine toast type and styles
+    let toastClass, iconClass, title;
+    
+    switch(type) {
+        case 'success':
+            toastClass = 'toast-success';
+            iconClass = 'fa-check-circle';
+            title = options.title || 'Success';
+            break;
+        case 'error':
+            toastClass = 'toast-error';
+            iconClass = 'fa-exclamation-circle';
+            title = options.title || 'Error';
+            break;
+        case 'warning':
+            toastClass = 'toast-warning';
+            iconClass = 'fa-exclamation-triangle';
+            title = options.title || 'Warning';
+            break;
+        case 'info':
+        default:
+            toastClass = 'toast-info';
+            iconClass = 'fa-info-circle';
+            title = options.title || 'Information';
+            break;
+    }
+    
+    // Create the toast element
+    const toast = document.createElement('div');
+    toast.id = toastId;
+    toast.className = `toast ${toastClass}`;
+    toast.setAttribute('role', 'alert');
+    toast.setAttribute('aria-live', 'assertive');
+    toast.setAttribute('aria-atomic', 'true');
+    
+    // Add the show class immediately to display the toast
+    toast.classList.add('show');
+    
+    // Determine if we should show the title/header
+    const showHeader = options.title !== false;
+    
+    // Create toast content
+    let toastHTML = '';
+    
+    if (showHeader) {
+        toastHTML += `
+            <div class="toast-header">
+                <i class="fas ${iconClass} me-2"></i>
+                <strong class="me-auto">${title}</strong>
+                <small>${options.timestamp || new Date().toLocaleTimeString()}</small>
+                ${options.closeButton !== false ? '<button type="button" class="btn-close ms-2" aria-label="Close"></button>' : ''}
+            </div>
+        `;
+    }
+    
+    toastHTML += `
+        <div class="toast-body">
+            <div class="d-flex align-items-center">
+                ${!showHeader ? `<div class="toast-icon"><i class="fas ${iconClass}"></i></div>` : ''}
+                <div>${message}</div>
+                ${!showHeader && options.closeButton !== false ? '<button type="button" class="btn-close ms-auto" aria-label="Close"></button>' : ''}
+            </div>
+        </div>
+        <div class="toast-progress"></div>
+    `;
+    
+    toast.innerHTML = toastHTML;
+    
+    // Handle inserting based on newest position preference
+    if (toastConfig.newestOnTop) {
+        container.insertBefore(toast, container.firstChild);
+    } else {
+        container.appendChild(toast);
+    }
+    
+    // Add click event to close button if it exists
+    const closeBtn = toast.querySelector('.btn-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            dismissToast(toast, options.onClose);
+        });
+    }
+    
+    // Try to initialize using Bootstrap's Toast API if available
+    try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Toast) {
+            const bsToast = new bootstrap.Toast(toast, {
+                autohide: true,
+                delay: options.duration || toastConfig.duration
+            });
+            bsToast.show();
+        } else {
+            // Fallback to our manual implementation
+            const duration = options.duration || toastConfig.duration;
+            setTimeout(() => {
+                dismissToast(toast, options.onClose);
+            }, duration);
+        }
+    } catch (e) {
+        console.error('Error initializing Bootstrap toast:', e);
+        // Fallback to our manual implementation
+        const duration = options.duration || toastConfig.duration;
+        setTimeout(() => {
+            dismissToast(toast, options.onClose);
+        }, duration);
+    }
+    
+    // Return the toast ID so it can be referenced later
+    return toastId;
+}
+
+/**
+ * Helper function to dismiss a toast with animation
+ */
+function dismissToast(toast, callback) {
+    if (!toast || toast.classList.contains('fade-out')) return;
+    
+    toast.classList.add('fade-out');
+    
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+            if (typeof callback === 'function') callback();
+        }
+    }, 300);
+}
+
+/**
+ * Maintain backward compatibility with existing showAlert function
+ * by making it call our new showToast function
+ */
 function showAlert(type, message) {
+    // Convert old type parameter to new format
+    let toastType;
+    switch (type) {
+        case 'error':
+            toastType = 'error';
+            break;
+        case 'success':
+            toastType = 'success';
+            break;
+        case 'warning':
+            toastType = 'warning';
+            break;
+        default:
+            toastType = 'info';
+    }
+    
+    // Call new function with equivalent parameters
+    return showToast(toastType, message, {
+        title: false, // Don't show header for backward compatibility
+        closeButton: true
+    });
+}
+
+// Make functions available globally so they can be used from other scripts
+window.showToast = showToast;
+window.showAlert = showAlert;
+window.showPageAlert = showPageAlert;
+
+/**
+ * Show an in-page alert message (as opposed to toast notifications)
+ * This replaces the showAlertMessage function from dropdown-debug.js
+ * @param {string} message - Message to display
+ * @param {string} type - Alert type: 'info', 'success', 'warning', 'danger'
+ */
+function showPageAlert(message, type = 'info') {
     const alertDiv = document.createElement('div');
-    alertDiv.className = `alert alert-${type === 'error' ? 'danger' : 'success'} alert-dismissible fade show`;
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
     alertDiv.innerHTML = `
         ${message}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     `;
     
-    // Insert at the top of the current active section
-    const activeSection = document.querySelector('.content-section.active');
-    if (activeSection) {
-        activeSection.insertBefore(alertDiv, activeSection.firstChild);
+    // Find a good place to show the alert
+    const target = document.querySelector('.content-section.active .card-body');
+    if (target) {
+        target.insertBefore(alertDiv, target.firstChild);
+    } else {
+        document.body.insertBefore(alertDiv, document.body.firstChild);
     }
     
-    // Auto-dismiss after 5 seconds
+    // Auto-dismiss after 8 seconds
     setTimeout(() => {
         alertDiv.classList.remove('show');
         setTimeout(() => alertDiv.remove(), 300);
-    }, 5000);
+    }, 8000);
+    
+    // Return the alert div in case the caller wants to do something with it
+    return alertDiv;
 }
+
 
 // Add this function to manually reload galleries
 function manuallyReloadGalleries() {

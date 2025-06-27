@@ -1,0 +1,141 @@
+/* Toast Notification Styles */
+#toastContainer {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1055;
+  max-width: 350px;
+  transition: all 0.3s ease;
+}
+
+.toast {
+  opacity: 0;
+  transform: translateX(15px);
+  margin-bottom: 15px;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(0);
+  animation: toast-in 0.3s ease forwards;
+}
+
+@keyframes toast-in {
+  0% {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.toast.fade-out {
+  animation: toast-out 0.3s ease forwards;
+}
+
+@keyframes toast-out {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+}
+
+.toast .toast-header {
+  padding: 0.75rem 1rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.toast .toast-body {
+  padding: 1rem;
+  font-weight: 400;
+}
+
+.toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.toast-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.4);
+  animation: toast-progress 5s linear forwards;
+}
+
+@keyframes toast-progress {
+  0% {
+    width: 100%;
+  }
+  100% {
+    width: 0;
+  }
+}
+
+/* Toast types */
+.toast.toast-info {
+  background-color: #17a2b8;
+  border-left: 5px solid #138496;
+  color: white;
+}
+
+.toast.toast-success {
+  background-color: #28a745;
+  border-left: 5px solid #218838;
+  color: white;
+}
+
+.toast.toast-warning {
+  background-color: #ffc107;
+  border-left: 5px solid #e0a800;
+  color: #212529;
+}
+
+.toast.toast-error {
+  background-color: #dc3545;
+  border-left: 5px solid #c82333;
+  color: white;
+}
+
+/* Close button styling */
+.toast .btn-close {
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.toast .btn-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  #toastContainer {
+    top: auto;
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    max-width: none;
+  }
+}

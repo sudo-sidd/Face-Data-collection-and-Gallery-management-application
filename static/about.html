@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Face Recognition Gallery Manager</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Toast Notifications CSS -->
+    <link rel="stylesheet" href="/static/css/toast.css">
+    
+    <!-- About Page Specific CSS -->
+    <style>
+        .about-hero {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4eaf1 100%);
+            padding: 80px 0;
+            margin-bottom: 50px;
+            border-radius: 0 0 30px 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .project-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 30px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .team-section {
+            padding: 50px 0;
+            background-color: #f8f9fa;
+            border-radius: 30px;
+            margin: 50px 0;
+        }
+        
+        .team-member {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 5px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .team-member img:hover {
+            transform: scale(1.05);
+        }
+        
+        .team-member h5 {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        .team-member p {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: #fff;
+            color: #0d6efd;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background-color: #0d6efd;
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .feature-icon {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            background-color: #e7f1ff;
+            color: #0d6efd;
+            font-size: 24px;
+        }
+        
+        .technology {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .technology:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        
+        .technology img {
+            height: 60px;
+            margin-bottom: 15px;
+        }
+        
+        .back-to-home {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #0d6efd;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-to-home:hover {
+            background-color: #0b5ed7;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Header Component -->
+    <header class="header">
+        <div class="header-container">
+            <div class="nba">
+                <img src="/static/image.png" class="nba-logo" alt="College Logo">
+            </div>
+            
+            <div class="college-info">
+                <h1>SRI SHAKTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY</h1>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom custom-navbar">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="fas fa-user-circle me-2 text-primary fs-4"></i>
+                <span class="fw-bold text-primary">Face Recognition Gallery</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h1 class="display-4 fw-bold mb-3">About Our Project</h1>
+                    <p class="lead text-secondary mb-4">
+                        The Face Recognition Gallery Manager is a comprehensive solution designed to streamline the process of collecting, processing, and managing face data for academic institutions.
+                    </p>
+                    <a href="/" class="btn btn-primary btn-lg">Back to Application</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section class="container mb-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Project Overview</h2>
+            <p class="text-muted">A modern approach to facial data collection and management</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="project-card card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Data Collection</h5>
+                        <p class="card-text">Efficient system for capturing and collecting face data from students or personnel with video recording capabilities.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="project-card card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Face Recognition</h5>
+                        <p class="card-text">Advanced face recognition using LightCNN models to extract features and identify individuals with high accuracy.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="project-card card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Gallery Management</h5>
+                        <p class="card-text">Organize and manage galleries by department or custom categories for easy access and identification.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Used -->
+    <section class="container mb-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Technologies Used</h2>
+            <p class="text-muted">Cutting-edge technologies powering our application</p>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python">
+                    <h5 class="mt-2">Python</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" alt="Flask" style="background:#fff;">
+                    <h5 class="mt-2">Flask</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI">
+                    <h5 class="mt-2">FastAPI</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg" alt="PyTorch">
+                    <h5 class="mt-2">PyTorch</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap">
+                    <h5 class="mt-2">Bootstrap</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5">
+                    <h5 class="mt-2">HTML5</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3">
+                    <h5 class="mt-2">CSS3</h5>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="technology">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript">
+                    <h5 class="mt-2">JavaScript</h5>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Meet Our Team</h2>
+                <p class="text-muted">The talented students behind this project</p>
+            </div>
+            <div class="row">
+                <!-- Team Member 1 -->
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="/static/mithrajith.png" alt="Team Member">
+                        <h5>Mithrajith K S</h5>
+                        <p class="text-muted">Fronend Developer, Data Organizer</p>
+                        <div class="social-links">
+                            <a href="https://github.com/mithrajith"><i class="fab fa-github"></i></a>
+                            <a href="linkedin.com/in/mithrajith-k-s-050986293"><i class="fab fa-linkedin"></i></a>
+                            <a href="mailto:ksmithun94@gmail.com"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 2 -->
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="/static/sai.png" alt="Team Member">
+                        <h5>Sai Dhinakar S</h5>
+                        <p class="text-muted">Backend Developer, Project Management</p>
+                        <div class="social-links">
+                            <a href="https://github.com/SaiDhinakar"><i class="fab fa-github"></i></a>
+                            <a href="https://www.linkedin.com/in/saidhinakar-s/"><i class="fab fa-linkedin"></i></a>
+                            <a href="mailto:saidhinakar@gmail.com"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Team Member 3 -->
+                <div class="col-md-4">
+                    <div class="team-member">
+                        <img src="/static/siddharth.png" alt="Team Member">
+                        <h5>Siddharth T</h5>
+                        <p class="text-muted">ML-Developer, Backend Developer</p>
+                        <div class="social-links">
+                            <a href="https://github.com/sudo-sidd"><i class="fab fa-github"></i></a>
+                            <a href="https://www.linkedin.com/in/sudo-sidd/"><i class="fab fa-linkedin"></i></a>
+                            <a href="mailto:theprosidd@gmail.com"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Features -->
+    <section class="container mb-5">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Key Features</h2>
+            <p class="text-muted">Comprehensive tools for face data management</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+                        <i class="fas fa-video text-primary fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold">Video Data Collection</h5>
+                        <p class="text-muted">Record video data from users that can be processed for face extraction and gallery creation.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+                        <i class="fas fa-face-smile text-primary fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold">Face Detection</h5>
+                        <p class="text-muted">Uses YOLO detection models to accurately detect and extract faces from video frames.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+                        <i class="fas fa-database text-primary fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold">Gallery Organization</h5>
+                        <p class="text-muted">Create and manage galleries by department, section, or custom groups for efficient recognition.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex align-items-start">
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-3 me-3">
+                        <i class="fas fa-search text-primary fs-4"></i>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold">Real-time Recognition Test</h5>
+                        <p class="text-muted">Identify individuals in real-time by comparing against stored galleries with high accuracy.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="container mb-5">
+        <div class="card border-0 bg-gradient shadow-sm" style="background-color: #f8f9fa; border-radius: 20px;">
+            <div class="card-body p-5 text-center">
+                <h2 class="fw-bold mb-4">Get In Touch</h2>
+                <p class="mb-4">Have questions about our project or interested in similar technology? Feel free to reach out.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Enhanced Footer -->
+    <footer class="footer bg-gradient mt-5 py-4" style="background-color: #f8f9fa; border-top: 1px solid rgba(0,0,0,0.05);">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-user-circle text-primary fa-2x me-3"></i>
+                        <div>
+                            <h5 class="mb-0 fw-bold">Face Recognition</h5>
+                            <p class="mb-0 text-muted small">Gallery Manager</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="mb-0">
+                        <span class="text-muted">Designed & Developed with ❤️ by</span>
+                        <span class="fw-medium ms-1">AI & ML Students</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Home Button -->
+    <a href="/" class="back-to-home">
+        <i class="fas fa-home"></i>
+    </a>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

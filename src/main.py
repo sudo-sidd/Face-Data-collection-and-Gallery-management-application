@@ -620,6 +620,10 @@ def recognize_faces(
 async def serve_spa():
     return FileResponse("static/index.html")
 
+@app.get("/about", response_class=FileResponse)
+async def about():
+    return FileResponse(os.path.join("static", "about.html"))
+
 @app.get("/batches", summary="Get available batch years and departments")
 async def get_batches():
     """Get available batch years and departments."""

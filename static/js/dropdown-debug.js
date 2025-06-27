@@ -92,28 +92,17 @@ function populateSelect(id, items, suffix = '') {
     console.log(`Populated ${id} with ${items.length} options`);
 }
 
-// Helper to show alert messages
+// Helper to show alert messages - using the centralized function from app.js
 function showAlertMessage(message, type = 'info') {
-    // const alertDiv = document.createElement('div');
-    // alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-    // alertDiv.innerHTML = `
-    //     ${message}
-    //     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    // `;
-    
-    // // Find a good place to show the alert
-    // const target = document.querySelector('.content-section.active .card-body');
-    // if (target) {
-    //     target.insertBefore(alertDiv, target.firstChild);
-    // } else {
-    //     document.body.insertBefore(alertDiv, document.body.firstChild);
-    // }
-    
-    // Auto-dismiss after 5 seconds
-    setTimeout(() => {
-        alertDiv.classList.remove('show');
-        setTimeout(() => alertDiv.remove(), 300);
-    }, 8000);
+    // Use showToast from app.js for unified notification system
+    if (type === 'error') type = 'danger';
+    if (window.showToast) {
+        window.showToast(type === 'danger' ? 'error' : type, message, { title: false });
+    } else if (window.showAlert) {
+        window.showAlert(type === 'danger' ? 'error' : 'success', message);
+    } else {
+        console.log(`${type.toUpperCase()}: ${message}`);
+    }
 }
 
 // Initialize on page load
