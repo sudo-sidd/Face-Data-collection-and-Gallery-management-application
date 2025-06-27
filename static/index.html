@@ -15,88 +15,138 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <!-- Enhanced Header Component -->
+    <header class="header">
+        <div class="header-container">
+            <div class="nba">
+                <img src="/static/image.png" class="nba-logo" alt="College Logo">
+            </div>
+            
+            <div class="college-info">
+                <h1>SRI SHAKTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY</h1>
+            </div>
+            
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom custom-navbar">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-user-circle me-2"></i>Face Recognition Gallery
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <i class="fas fa-user-circle me-2 text-primary fs-4"></i>
+                <span class="fw-bold text-primary">Face Recognition Gallery</span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" data-section="home">Home</a>
+                        <a class="nav-link active" href="#" data-section="home">
+                            <i class="fas fa-home me-1"></i> Home
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="upload">Process Videos</a>
+                        <a class="nav-link" href="#" data-section="upload">
+                            <i class="fas fa-video me-1"></i> Process Videos
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="createGalleries">Create Galleries</a>
+                        <a class="nav-link" href="#" data-section="createGalleries">
+                            <i class="fas fa-database me-1"></i> Create Galleries
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="galleries">View Galleries</a>
+                        <a class="nav-link" href="#" data-section="galleries">
+                            <i class="fas fa-images me-1"></i> View Galleries
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="recognition">Face Recognition</a>
+                        <a class="nav-link" href="#" data-section="recognition">
+                            <i class="fas fa-user-check me-1"></i> Face Recognition
+                        </a>
                     </li>
+
                     <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="admin">Admin</a>
+                        <a class="nav-link" href="#" data-section="admin">
+                            <i class="fas fa-cog me-1"></i> Admin
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
+
     <!-- Main Content -->
-    <div class="container mt-4">
+    <div class="container py-4">
         <!-- Home Section -->
-        <section id="home" class="content-section active">
-            <div class="jumbotron p-4 bg-light rounded">
-                <h1 class="display-4">Face Recognition Gallery Manager</h1>
+        <section id="home" class="content-section active mb-4">
+            <div class="bg-light p-5 rounded shadow-sm">
+                <h1 class="display-4 fw-bold text-primary mb-3">Face Recognition Gallery Manager</h1>
                 <p class="lead">Create and manage face recognition galleries for students by batch and department.</p>
                 <hr class="my-4">
-                <p>This application helps you process videos to create face galleries and perform face recognition.</p>
-                <div class="d-flex justify-content-center mt-4">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card text-center mb-4">
-                                <div class="card-body">
-                                    <i class="fas fa-video fa-3x mb-3 text-primary"></i>
-                                    <h5 class="card-title">Process Videos</h5>
-                                    <p class="card-text">Extract faces from videos and prepare for gallery creation.</p>
-                                    <button class="btn btn-primary" data-section="upload">Process Videos</button>
+                <p class="mb-4">This application helps you process videos to create face galleries and perform accurate face recognition for student identification.</p>
+
+                <div class="row g-4 mt-4">
+                    <div class="col-md-3">
+                        <div class="card home-card text-center h-100">
+                            <div class="card-body">
+                                <div class="icon-circle bg-primary-subtle p-3 mb-3 mx-auto" style="width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-video fa-2x text-primary"></i>
                                 </div>
+                                <h5 class="card-title fw-bold">Process Videos</h5>
+                                <p class="card-text">Extract faces from videos and prepare for gallery creation.</p>
+                                <button class="btn btn-primary mt-3" data-section="upload">
+                                    <i class="fas fa-arrow-right me-2"></i>Get Started
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card text-center mb-4">
-                                <div class="card-body">
-                                    <i class="fas fa-database fa-3x mb-3 text-success"></i>
-                                    <h5 class="card-title">Create Galleries</h5>
-                                    <p class="card-text">Build face recognition galleries from processed data.</p>
-                                    <button class="btn btn-success" data-section="createGalleries">Create Galleries</button>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card home-card text-center h-100">
+                            <div class="card-body">
+                                <div class="icon-circle bg-success-subtle p-3 mb-3 mx-auto" style="width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-database fa-2x text-success"></i>
                                 </div>
+                                <h5 class="card-title fw-bold">Create Galleries</h5>
+                                <p class="card-text">Build face recognition galleries from processed data.</p>
+                                <button class="btn btn-success mt-3" data-section="createGalleries">
+                                    <i class="fas fa-arrow-right me-2"></i>Start Building
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card text-center mb-4">
-                                <div class="card-body">
-                                    <i class="fas fa-images fa-3x mb-3 text-info"></i>
-                                    <h5 class="card-title">View Galleries</h5>
-                                    <p class="card-text">Browse and manage existing face recognition galleries.</p>
-                                    <button class="btn btn-info" data-section="galleries">View Galleries</button>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card home-card text-center h-100">
+                            <div class="card-body">
+                                <div class="icon-circle bg-info-subtle p-3 mb-3 mx-auto" style="width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-images fa-2x text-info"></i>
                                 </div>
+                                <h5 class="card-title fw-bold">View Galleries</h5>
+                                <p class="card-text">Browse and manage existing face recognition galleries.</p>
+                                <button class="btn btn-info text-white mt-3" data-section="galleries">
+                                    <i class="fas fa-arrow-right me-2"></i>View Now
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="card text-center mb-4">
-                                <div class="card-body">
-                                    <i class="fas fa-user-check fa-3x mb-3 text-danger"></i>
-                                    <h5 class="card-title">Face Recognition</h5>
-                                    <p class="card-text">Upload an image to identify faces using your galleries.</p>
-                                    <button class="btn btn-danger" data-section="recognition">Try Recognition</button>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card home-card text-center h-100">
+                            <div class="card-body">
+                                <div class="icon-circle bg-danger-subtle p-3 mb-3 mx-auto" style="width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-user-check fa-2x text-danger"></i>
                                 </div>
+                                <h5 class="card-title fw-bold">Face Recognition</h5>
+                                <p class="card-text">Upload an image to identify faces using your galleries.</p>
+                                <button class="btn btn-danger mt-3" data-section="recognition">
+                                    <i class="fas fa-arrow-right me-2"></i>Try It Now
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -106,42 +156,69 @@
 
         <!-- Upload Videos Section -->
         <section id="upload" class="content-section">
-            <div class="card">
-                <div class="card-header bg-primary text-white">
-                    <h4><i class="fas fa-video me-2"></i>Process Videos</h4>
-                    <small class="text-light">Step 1: Extract faces from videos</small>
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon bg-white text-primary rounded-circle p-3 me-3">
+                            <i class="fas fa-video fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">Process Videos</h4>
+                            <p class="mb-0 opacity-75"><i class="fas fa-info-circle me-1"></i> Step 1: Extract faces from videos</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <form id="processVideosForm">
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="batchYear" class="form-label">Batch Year</label>
-                                <select id="batchYear" class="form-select" required>
-                                    <option value="" selected disabled>Select Batch Year</option>
-                                    <!-- Will be populated dynamically -->
-                                </select>
+                <div class="card-body p-4">
+                    <div class="row mb-4">
+                        <div class="col-md-7">
+                            <form id="processVideosForm">
+                                <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <label for="batchYear" class="form-label fw-bold"><i class="fas fa-calendar-alt me-2"></i>Batch Year</label>
+                                        <select id="batchYear" class="form-select form-control-lg" required>
+                                            <option value="" selected disabled>Select Batch Year</option>
+                                            <!-- Will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="department" class="form-label fw-bold"><i class="fas fa-building me-2"></i>Department</label>
+                                        <select id="department" class="form-select form-control-lg" required>
+                                            <option value="" selected disabled>Select Department</option>
+                                            <!-- Will be populated dynamically -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="videosDir" class="form-label fw-bold"><i class="fas fa-folder-open me-2"></i>Videos Directory Path</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="fas fa-folder"></i></span>
+                                        <input type="text" id="videosDir" class="form-control form-control-lg" placeholder="/path/to/videos" required>
+                                    </div>
+                                    <div class="form-text text-muted mt-2 bg-light p-3 rounded">
+                                        <i class="fas fa-info-circle me-2 text-primary"></i>
+                                        Extract frames and faces from videos. Each video filename should be the student's name. After processing, you'll need to create a gallery from the extracted data.
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" id="btnProcess" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-cog me-2"></i>Process Video Frames
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="bg-light h-100 p-4 rounded">
+                                <h5 class="border-bottom pb-2"><i class="fas fa-lightbulb text-warning me-2"></i>How It Works</h5>
+                                <ol class="mt-3">
+                                    <li class="mb-2">Select the <strong>batch year</strong> and <strong>department</strong> for the students</li>
+                                    <li class="mb-2">Provide the directory path where your student videos are stored</li>
+                                    <li class="mb-2">Click "Process Video Frames" to extract faces</li>
+                                    <li>Once complete, proceed to "Create Galleries" to build a face recognition gallery</li>
+                                </ol>
                             </div>
-                            <div class="col-md-6">
-                                <label for="department" class="form-label">Department</label>
-                                <select id="department" class="form-select" required>
-                                    <option value="" selected disabled>Select Department</option>
-                                    <!-- Will be populated dynamically -->
-                                </select>
-                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="videosDir" class="form-label">Videos Directory Path</label>
-                            <input type="text" id="videosDir" class="form-control" placeholder="/path/to/videos" required>
-                            <small class="form-text text-muted">
-                                Extract frames and faces from videos. Each video filename should be the student's name. After processing, you'll need to create a gallery from the extracted data.
-                            </small>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" id="btnProcess" class="btn btn-primary">
-                                <i class="fas fa-cog me-2"></i>Process Video Frames
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+                    
                     <div id="processingResult" class="mt-4"></div>
                 </div>
             </div>
@@ -149,29 +226,40 @@
 
         <!-- Create/Update Galleries Section -->
         <section id="createGalleries" class="content-section">
-            <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h4><i class="fas fa-database me-2"></i>Create/Update Galleries</h4>
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon bg-white text-success rounded-circle p-3 me-3">
+                            <i class="fas fa-database fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">Create/Update Galleries</h4>
+                            <p class="mb-0 opacity-75"><i class="fas fa-info-circle me-1"></i> Step 2: Build face recognition galleries</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="card mb-4">
-                                <div class="card-header bg-light">
-                                    <h5>Create/Update Gallery</h5>
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-header bg-light border-0 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-plus-circle text-success fa-lg me-2"></i>
+                                        <h5 class="mb-0">Create/Update Gallery</h5>
+                                    </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-4">
                                     <form id="createGalleryForm">
-                                        <div class="mb-3">
-                                            <label for="galleryYear" class="form-label">Batch Year</label>
-                                            <select id="galleryYear" class="form-select" required>
+                                        <div class="mb-4">
+                                            <label for="galleryYear" class="form-label fw-bold"><i class="fas fa-calendar-alt me-2"></i>Batch Year</label>
+                                            <select id="galleryYear" class="form-select form-control-lg" required>
                                                 <option value="" selected disabled>Select Batch Year</option>
                                                 <!-- Will be populated dynamically -->
                                             </select>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="galleryDepartment" class="form-label">Department</label>
-                                            <select id="galleryDepartment" class="form-select" required>
+                                        <div class="mb-4">
+                                            <label for="galleryDepartment" class="form-label fw-bold"><i class="fas fa-building me-2"></i>Department</label>
+                                            <select id="galleryDepartment" class="form-select form-control-lg" required>
                                                 <option value="" selected disabled>Select Department</option>
                                                 <!-- Will be populated dynamically -->
                                             </select>
@@ -181,32 +269,37 @@
                                                 <i class="fas fa-bug me-2"></i>Debug Database & Dropdowns
                                             </button>
                                         </div> -->
-                                        <div class="mb-3 form-check">
+                                        <div class="mb-4 form-check">
                                             <input type="checkbox" class="form-check-input" id="updateExisting">
-                                            <label class="form-check-label" for="updateExisting">Update existing gallery (if available)</label>
+                                            <label class="form-check-label fw-bold" for="updateExisting">
+                                                <i class="fas fa-sync me-2"></i>Update existing gallery (if available)
+                                            </label>
                                         </div>
                                         <div class="d-grid">
-                                            <button type="submit" id="btnCreateGallery" class="btn btn-success">
+                                            <button type="submit" id="btnCreateGallery" class="btn btn-success btn-lg">
                                                 <i class="fas fa-database me-2"></i>Create/Update Gallery
                                             </button>
                                         </div>
                                     </form>
-                                    <div id="galleryCreationResult" class="mt-4"></div>
+                                    <div id="galleryCreationResult" class="mt-4 p-3 rounded"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="card">
-                                <div class="card-header bg-light">
-                                    <h5>Processed Data Sets</h5>
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-light border-0 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-list-check text-primary fa-lg me-2"></i>
+                                        <h5 class="mb-0">Processed Data Sets</h5>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <div id="processedDatasets">
-                                        <div class="text-center py-3">
-                                            <div class="spinner-border text-primary" role="status">
+                                <div class="card-body p-4">
+                                    <div id="processedDatasets" class="bg-light rounded p-3">
+                                        <div class="text-center py-4">
+                                            <div class="spinner-border text-success" role="status">
                                                 <span class="visually-hidden">Loading...</span>
                                             </div>
-                                            <p class="mt-2">Loading processed datasets...</p>
+                                            <p class="mt-3 text-muted">Loading processed datasets...</p>
                                         </div>
                                     </div>
                                 </div>
@@ -219,19 +312,46 @@
 
         <!-- View Galleries Section -->
         <section id="galleries" class="content-section">
-            <div class="card">
-                <div class="card-header bg-info text-white">
-                    <h4><i class="fas fa-images me-2"></i>View Galleries</h4>
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-info text-white p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon bg-white text-info rounded-circle p-3 me-3">
+                            <i class="fas fa-images fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">View Galleries</h4>
+                            <p class="mb-0 opacity-75"><i class="fas fa-info-circle me-1"></i> Browse and manage face recognition galleries</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div id="galleriesPlaceholder" class="text-center py-5">
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="bg-light p-4 rounded mb-4">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 class="mb-0"><i class="fas fa-database me-2 text-info"></i>Available Galleries</h5>
+                                    <button class="btn btn-outline-info btn-sm" id="refreshGalleriesBtn">
+                                        <i class="fas fa-sync-alt me-2"></i>Refresh List
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="galleriesPlaceholder" class="text-center py-5 bg-light rounded">
                         <div class="spinner-border text-info" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
-                        <p class="mt-2">Loading galleries...</p>
+                        <p class="mt-3 text-muted">Loading galleries...</p>
                     </div>
-                    <div id="galleriesList" class="list-group mt-3">
+                    
+                    <div id="galleriesList" class="list-group mt-3 shadow-sm">
                         <!-- Galleries will be loaded here dynamically -->
+                    </div>
+                    
+                    <div class="mt-4 bg-light p-4 rounded">
+                        <h6 class="mb-3"><i class="fas fa-lightbulb text-warning me-2"></i>Gallery Information</h6>
+                        <p class="text-muted mb-0">Galleries contain face embeddings used for recognition. Select a gallery to view details or delete it if no longer needed.</p>
                     </div>
                 </div>
             </div>
@@ -239,50 +359,84 @@
 
         <!-- Face Recognition Section -->
         <section id="recognition" class="content-section">
-            <div class="card">
-            <div class="card-header bg-danger text-white">
-            <h4><i class="fas fa-user-check me-2"></i>Face Recognition</h4>
-            </div>
-            <!-- <div class="preview-model">
-                
-            </div> -->
-            <div class="card-body">
-            <div class="row mb-4">
-            <div class="col-md-6">
-                <h5>Upload Image for Recognition</h5>
-                <div class="mb-3">
-                                <label for="recognitionImage" class="form-label">Select Image</label>
-                                <input class="form-control" type="file" id="recognitionImage" accept="image/*">
-                            </div>
-                            <div class="image-preview mb-3">
-                                <img id="imagePreview" src="/static/img/placeholder.png" class="img-fluid" alt="Preview">
-                            </div>
-                            
-                            <h5>
-                                Select Galleries 
-                                <button id="reloadGalleriesBtn" class="btn btn-sm btn-outline-danger float-end">
-                                    <i class="fas fa-sync-alt"></i> Reload
-                                </button>
-                            </h5>
-                            <div class="mb-3" id="galleryCheckboxes">
-                                <!-- Will be populated dynamically -->
-                                <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                    <span class="visually-hidden">Loading...</span>
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-danger text-white p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon bg-white text-danger rounded-circle p-3 me-3">
+                            <i class="fas fa-user-check fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">Face Recognition</h4>
+                            <p class="mb-0 opacity-75"><i class="fas fa-info-circle me-1"></i> Identify faces using trained galleries</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-header bg-light border-0 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-upload text-danger fa-lg me-2"></i>
+                                        <h5 class="mb-0">Upload Image for Recognition</h5>
+                                    </div>
                                 </div>
-                                Loading galleries...
+                                <div class="card-body p-4">
+                                    <div class="mb-4">
+                                        <label for="recognitionImage" class="form-label fw-bold"><i class="fas fa-file-image me-2"></i>Select Image</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text bg-light"><i class="fas fa-camera"></i></span>
+                                            <input class="form-control form-control-lg" type="file" id="recognitionImage" accept="image/*">
+                                        </div>
+                                    </div>
+                                    <div class="image-preview mb-4 border rounded shadow-sm">
+                                        <img id="imagePreview" src="/static/img/placeholder.png" class="img-fluid" alt="Preview">
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-center justify-content-between mb-3">
+                                        <h5 class="mb-0 fw-bold"><i class="fas fa-layer-group me-2 text-danger"></i>Select Galleries</h5>
+                                        <button id="reloadGalleriesBtn" class="btn btn-outline-danger">
+                                            <i class="fas fa-sync-alt me-2"></i>Reload Galleries
+                                        </button>
+                                    </div>
+                                    <div class="mb-4 bg-light p-3 rounded" id="galleryCheckboxes">
+                                        <!-- Will be populated dynamically -->
+                                        <div class="text-center py-3">
+                                            <div class="spinner-border text-danger" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <p class="mt-2 text-muted">Loading available galleries...</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-grid">
+                                        <button id="btnRecognize" class="btn btn-danger btn-lg" disabled>
+                                            <i class="fas fa-search me-2"></i>Recognize Faces
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-                            
-                            <button id="btnRecognize" class="btn btn-danger" disabled>
-                                <i class="fas fa-search me-2"></i>Recognize Faces
-                            </button>
                         </div>
                         <div class="col-md-6">
-                            <h5>Recognition Results</h5>
-                            <div class="result-container text-center p-3">
-                                <img id="resultImage" src="/static/img/placeholder.png" class="img-fluid" alt="Result">
-                            </div>
-                            <div id="recognitionResults" class="mt-3">
-                                <!-- Will show results after recognition -->
+                            <div class="card shadow-sm border-0 h-100">
+                                <div class="card-header bg-light border-0 py-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-id-card text-danger fa-lg me-2"></i>
+                                        <h5 class="mb-0">Recognition Results</h5>
+                                    </div>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div class="result-container text-center p-3 border rounded shadow-sm mb-4 bg-light">
+                                        <img id="resultImage" src="/static/img/placeholder.png" class="img-fluid" alt="Result">
+                                    </div>
+                                    <div id="recognitionResults" class="mt-4 p-3 rounded">
+                                        <!-- Will show results after recognition -->
+                                        <div class="text-center py-3 text-muted">
+                                            <i class="fas fa-info-circle fa-2x mb-2"></i>
+                                            <p>Recognition results will appear here</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -292,32 +446,59 @@
 
         <!-- Admin Section -->
         <section id="admin" class="content-section">
-            <div class="card">
-                <div class="card-header bg-dark text-white">
-                    <h4><i class="fas fa-cog me-2"></i>Administration</h4>
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-dark text-white p-4">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon bg-white text-dark rounded-circle p-3 me-3">
+                            <i class="fas fa-cog fa-lg"></i>
+                        </div>
+                        <div>
+                            <h4 class="mb-1">Administration</h4>
+                            <p class="mb-0 opacity-75"><i class="fas fa-info-circle me-1"></i> Manage system settings and tools</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-4">
                     <!-- Face Collection App Launcher -->
                     <div class="row mb-4">
                         <div class="col-12">
-                            <div class="card">
-                                <div class="card-header bg-info text-white">
-                                    <h5><i class="fas fa-video me-2"></i>Face Data Collection Application</h5>
+                            <div class="card shadow-sm border-0">
+                                <div class="card-header bg-info text-white p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-video fa-lg me-2"></i>
+                                        <h5 class="mb-0">Face Data Collection Application</h5>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <p class="mb-3">Launch the face data collection application for student biometric data collection.</p>
-                                    <div class="d-flex gap-3">
-                                        <button id="launchCollectionBtn" class="btn btn-info">
-                                            <i class="fas fa-external-link-alt me-2"></i>Launch Collection App
-                                        </button>
-                                        <button id="checkStatusBtn" class="btn btn-outline-secondary">
-                                            <i class="fas fa-sync me-2"></i>Check Status
-                                        </button>
-                                        <button id="stopCollectionBtn" class="btn btn-outline-danger">
-                                            <i class="fas fa-stop me-2"></i>Stop App
-                                        </button>
-                                        <div id="collectionAppStatus" class="align-self-center">
-                                            <span class="text-muted">Application Status: <span id="statusText">Not Running</span></span>
+                                <div class="card-body p-4">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-5">
+                                            <div class="bg-light p-4 rounded mb-3 mb-md-0">
+                                                <h6 class="border-bottom pb-2 mb-3"><i class="fas fa-info-circle text-info me-2"></i>About this Tool</h6>
+                                                <p class="text-muted mb-0">Launch the face data collection application for student biometric data collection. Monitor its status and stop when needed.</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="app-status-container mb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div id="collectionAppStatus" class="me-3">
+                                                        <span class="badge bg-light text-dark p-2 d-inline-flex align-items-center">
+                                                            <i class="fas fa-circle me-2 text-secondary" id="statusIndicator"></i>
+                                                            Status: <span id="statusText" class="ms-1">Not Running</span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex gap-3 flex-wrap">
+                                                <button id="launchCollectionBtn" class="btn btn-info btn-lg">
+                                                    <i class="fas fa-external-link-alt me-2"></i>Launch Collection App
+                                                </button>
+                                                <button id="checkStatusBtn" class="btn btn-outline-secondary btn-lg">
+                                                    <i class="fas fa-sync me-2"></i>Check Status
+                                                </button>
+                                                <button id="stopCollectionBtn" class="btn btn-outline-danger btn-lg">
+                                                    <i class="fas fa-stop me-2"></i>Stop App
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -328,25 +509,38 @@
                     <div class="row">
                         <!-- Batch Year Management -->
                         <div class="col-md-6">
-                            <div class="card mb-4">
-                                <div class="card-header bg-primary text-white">
-                                    <h5>Manage Batch Years</h5>
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-header bg-primary text-white p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-calendar-alt fa-lg me-2"></i>
+                                        <h5 class="mb-0">Manage Batch Years</h5>
+                                    </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-4">
                                     <form id="addBatchYearForm" class="mb-3">
+                                        <label class="form-label fw-bold">Add New Batch Year</label>
                                         <div class="input-group">
-                                            <input type="text" id="newBatchYear" class="form-control" placeholder="e.g., 1st, 2nd" required>
-                                            <button class="btn btn-primary" type="submit">Add</button>
+                                            <span class="input-group-text bg-light"><i class="fas fa-plus"></i></span>
+                                            <input type="text" id="newBatchYear" class="form-control form-control-lg" placeholder="e.g., 1st, 2nd" required>
+                                            <button class="btn btn-primary px-4" type="submit">Add</button>
                                         </div>
-                                        <small class="form-text text-muted">Add a new batch year (e.g., "1st", "2nd", etc.)</small>
+                                        <small class="form-text text-muted mt-2">Add a new batch year (e.g., "1st", "2nd", etc.)</small>
                                     </form>
-                                    <div class="mt-3">
-                                        <h6>Current Batch Years:</h6>
-                                        <ul id="batchYearsList" class="list-group">
+                                    <div class="mt-4">
+                                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                            <h6 class="fw-bold mb-0">
+                                                <i class="fas fa-list text-primary me-2"></i>Current Batch Years
+                                            </h6>
+                                            <span class="badge bg-primary rounded-pill" id="batchYearsCount">0</span>
+                                        </div>
+                                        <ul id="batchYearsList" class="list-group shadow-sm mt-3">
                                             <!-- Will be populated dynamically -->
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
-                                                Loading...
+                                            <li class="list-group-item batch-year d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-graduation-cap text-primary me-3"></i>
+                                                    <span class="fw-medium">Loading batch years...</span>
+                                                </div>
+                                                <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
                                             </li>
                                         </ul>
                                     </div>
@@ -356,25 +550,38 @@
                         
                         <!-- Department Management -->
                         <div class="col-md-6">
-                            <div class="card mb-4">
-                                <div class="card-header bg-success text-white">
-                                    <h5>Manage Departments</h5>
+                            <div class="card shadow-sm border-0 mb-4">
+                                <div class="card-header bg-success text-white p-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-building fa-lg me-2"></i>
+                                        <h5 class="mb-0">Manage Departments</h5>
+                                    </div>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-4">
                                     <form id="addDepartmentForm" class="mb-3">
+                                        <label class="form-label fw-bold">Add New Department</label>
                                         <div class="input-group">
-                                            <input type="text" id="newDepartment" class="form-control" placeholder="e.g., CS, IT" required>
-                                            <button class="btn btn-success" type="submit">Add</button>
+                                            <span class="input-group-text bg-light"><i class="fas fa-plus"></i></span>
+                                            <input type="text" id="newDepartment" class="form-control form-control-lg" placeholder="e.g., CS, IT" required>
+                                            <button class="btn btn-success px-4" type="submit">Add</button>
                                         </div>
-                                        <small class="form-text text-muted">Add a new department (e.g., "CS", "IT", etc.)</small>
+                                        <small class="form-text text-muted mt-2">Add a new department (e.g., "CS", "IT", etc.)</small>
                                     </form>
-                                    <div class="mt-3">
-                                        <h6>Current Departments:</h6>
-                                        <ul id="departmentsList" class="list-group">
+                                    <div class="mt-4">
+                                        <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
+                                            <h6 class="fw-bold mb-0">
+                                                <i class="fas fa-list text-success me-2"></i>Current Departments
+                                            </h6>
+                                            <span class="badge bg-success rounded-pill" id="departmentsCount">0</span>
+                                        </div>
+                                        <ul id="departmentsList" class="list-group shadow-sm mt-3">
                                             <!-- Will be populated dynamically -->
-                                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
-                                                Loading...
+                                            <li class="list-group-item department d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center">
+                                                    <i class="fas fa-university text-success me-3"></i>
+                                                    <span class="fw-medium">Loading departments...</span>
+                                                </div>
+                                                <div class="spinner-border spinner-border-sm text-success" role="status"></div>
                                             </li>
                                         </ul>
                                     </div>
