@@ -17,6 +17,7 @@ import queue
 from concurrent.futures import ThreadPoolExecutor
 import torch
 from ultralytics import YOLO
+from db_utils import get_batch_years_and_departments
 
 app = Flask(__name__, static_folder='static')
 CORS(app)
@@ -651,6 +652,11 @@ def reset_faces(session_id):
             "error": "Faces directory not found"
         }), 404
 
+@app.route('/api/batches', methods=['GET'])
+def get_batches():
+    """API endpoint to get batch years and departments for dropdowns"""
+    return jsonify(get_batch_years_and_departments())
+
 @app.route('/qr')
 def generate_qr():
     # Generate QR code for the HTTPS URL
@@ -675,4 +681,4 @@ def generate_qr():
     """
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='0.0.0.0', port=5002)

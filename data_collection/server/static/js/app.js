@@ -54,6 +54,39 @@ document.addEventListener('DOMContentLoaded', () => {
     elements.restart.addEventListener('click', handleRestart);
     elements.retry.addEventListener('click', handleRetry);  // Add this line
     
+
+    async function loadBatchYearsAndDepartments() {
+        try {
+            const response = await fetch('/api/batches');
+            const data = await response.json();
+
+            // Populate Batch Year
+            const batchYearSelect = document.getElementById('year');
+            if (batchYearSelect) {
+                batchYearSelect.innerHTML = '<option value="" selected disabled>Select Year</option>';
+                for (const year of data.years) {
+                    batchYearSelect.innerHTML += `<option value="${year}">${year}</option>`;
+                }
+            }
+
+            // Populate Department
+            const departmentSelect = document.getElementById('dept');
+            if (departmentSelect) {
+                departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
+                for (const dept of data.departments) {
+                    departmentSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading batch years and departments:', error);
+        }
+    }
+
+    // Call the function after DOM is loaded
+    loadBatchYearsAndDepartments();
+
+
+
     // Handle student form submission
     async function handleFormSubmit(event) {
         event.preventDefault();
