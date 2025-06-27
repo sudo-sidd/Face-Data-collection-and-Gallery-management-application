@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+import shutil
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
@@ -24,7 +25,9 @@ CORS(app)
 # Get the absolute path to the root project directory
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 DATA_DIR = os.path.join(PROJECT_ROOT, 'data', 'student_data')
+GALLERY_DIR = os.path.join(PROJECT_ROOT, 'gallery', 'data')
 os.makedirs(DATA_DIR, exist_ok=True)
+os.makedirs(GALLERY_DIR, exist_ok=True)
 
 # Add path to shared YOLO model
 YOLO_MODEL_PATH = os.path.join(PROJECT_ROOT, 'src', 'yolo', 'weights', 'yolo11n-face.pt')
@@ -247,6 +250,130 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
     
     return faces_saved
 
+def organize_processed_faces_to_gallery(student_data, processed_faces_dir):
+    """
+    Organize processed face images into the gallery structure based on student's dept and year.
+    
+    Args:
+        student_data (dict): Student information containing regNo, dept, year, name
+        processed_faces_dir (str): Path to the directory containing processed face images
+        
+    Returns:
+        str: Path to the organized gallery directory for this student
+    """
+    try:
+        # Extract student information
+        reg_no = student_data.get('regNo')
+        dept = student_data.get('dept', 'Unknown')
+        year = student_data.get('year', 'Unknown')
+        name = student_data.get('name', 'Unknown')
+        
+        if not reg_no:
+            print("Error: Registration number not found in student data")
+            return None
+            
+        # Create group directory name based on dept and year
+        group_name = f"{dept}_{year}"
+        group_dir = os.path.join(GALLERY_DIR, group_name)
+        
+        # Create group directory if it doesn't exist
+        os.makedirs(group_dir, exist_ok=True)
+        print(f"Ensured gallery group directory exists: {group_dir}")
+        
+        # Create student directory within the group (images go directly here)
+        student_gallery_dir = os.path.join(group_dir, reg_no)
+        os.makedirs(student_gallery_dir, exist_ok=True)
+        print(f"Created student gallery directory: {student_gallery_dir}")
+        
+        # Create or update student metadata file
+        metadata_file = os.path.join(student_gallery_dir, 'metadata.json')
+        metadata = {
+            'regNo': reg_no,
+            'name': name,
+            'dept': dept,
+            'year': year,
+            'group': group_name,
+            'lastUpdated': datetime.now().isoformat(),
+            'processedImagesPath': student_gallery_dir
+        }
+        
+        with open(metadata_file, 'w') as f:
+            json.dump(metadata, f, indent=2)
+        print(f"Created/updated metadata file: {metadata_file}")
+        
+        # Check if processed faces directory exists and has images
+        if not os.path.exists(processed_faces_dir):
+            print(f"Warning: Processed faces directory does not exist: {processed_faces_dir}")
+            return student_gallery_dir
+            
+        # Get list of processed face images
+        image_files = [f for f in os.listdir(processed_faces_dir) 
+                      if f.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp'))]
+        
+        if not image_files:
+            print(f"Warning: No image files found in {processed_faces_dir}")
+            return student_gallery_dir
+            
+        print(f"Found {len(image_files)} processed face images to organize")
+        
+        # Copy processed images to gallery structure (directly in student directory)
+        copied_count = 0
+        for image_file in image_files:
+            src_path = os.path.join(processed_faces_dir, image_file)
+            dst_path = os.path.join(student_gallery_dir, image_file)
+            
+            try:
+                shutil.copy2(src_path, dst_path)
+                copied_count += 1
+                print(f"Copied {image_file} to gallery")
+            except Exception as e:
+                print(f"Error copying {image_file}: {e}")
+                
+        print(f"Successfully organized {copied_count} face images into gallery structure")
+        print(f"Gallery location: {student_gallery_dir}")
+        
+        # Update group summary file
+        group_summary_file = os.path.join(group_dir, 'group_summary.json')
+        
+        # Load existing summary or create new one
+        if os.path.exists(group_summary_file):
+            with open(group_summary_file, 'r') as f:
+                group_summary = json.load(f)
+        else:
+            group_summary = {
+                'groupName': group_name,
+                'dept': dept,
+                'year': year,
+                'students': {},
+                'totalStudents': 0,
+                'lastUpdated': datetime.now().isoformat()
+            }
+        
+        # Update student entry in group summary
+        group_summary['students'][reg_no] = {
+            'name': name,
+            'regNo': reg_no,
+            'imageCount': copied_count,
+            'lastProcessed': datetime.now().isoformat(),
+            'galleryPath': student_gallery_dir
+        }
+        
+        group_summary['totalStudents'] = len(group_summary['students'])
+        group_summary['lastUpdated'] = datetime.now().isoformat()
+        
+        # Save updated group summary
+        with open(group_summary_file, 'w') as f:
+            json.dump(group_summary, f, indent=2)
+        
+        print(f"Updated group summary: {group_summary_file}")
+        print(f"Group '{group_name}' now has {group_summary['totalStudents']} students")
+        
+        return student_gallery_dir
+        
+    except Exception as e:
+        print(f"Error organizing processed faces to gallery: {e}")
+        return None
+
 # Routes
 @app.route('/')
 def index():
@@ -334,6 +461,8 @@ def upload_video(session_id):
     try:
         # Run FFmpeg to convert the file
         import subprocess
+        
+        # First try with libx264
         cmd = [
             'ffmpeg', 
             '-i', webm_path,  # Input file
@@ -351,11 +480,54 @@ def upload_video(session_id):
             text=True
         )
         
+        # If libx264 fails, try fallback encoders
         if process.returncode != 0:
-            print(f"Error converting video: {process.stderr}")
+            print(f"libx264 failed, trying fallback encoders...")
+            print(f"libx264 error: {process.stderr}")
+            
+            # Try fallback encoders
+            fallback_encoders = ['libopenh264', 'mpeg4', 'libvpx']
+            
+            for encoder in fallback_encoders:
+                print(f"Trying encoder: {encoder}")
+                
+                cmd_fallback = [
+                    'ffmpeg', 
+                    '-i', webm_path,
+                    '-c:v', encoder,
+                    '-y',
+                    mp4_path
+                ]
+                
+                if encoder == 'libvpx':
+                    # For libvpx, we need to specify some additional parameters
+                    cmd_fallback = [
+                        'ffmpeg', 
+                        '-i', webm_path,
+                        '-c:v', encoder,
+                        '-b:v', '1M',  # Set bitrate
+                        '-y',
+                        mp4_path
+                    ]
+                
+                process = subprocess.run(
+                    cmd_fallback,
+                    stdout=subprocess.PIPE, 
+                    stderr=subprocess.PIPE,
+                    text=True
+                )
+                
+                if process.returncode == 0:
+                    print(f"Successfully converted with {encoder}")
+                    break
+                else:
+                    print(f"Failed with {encoder}: {process.stderr}")
+        
+        if process.returncode != 0:
+            print(f"Error converting video with all encoders: {process.stderr}")
             return jsonify({
                 "success": False,
-                "message": "Failed to convert video format"
+                "message": "Failed to convert video format with available encoders"
             }), 500
             
         print(f"Converted video to MP4 format: {mp4_path}")
@@ -391,16 +563,41 @@ def upload_video(session_id):
         if dept:
             session_data["dept"] = dept
         
+        # Organize processed faces into gallery structure
+        if faces_count > 0:
+            print("Organizing processed faces into gallery structure...")
+            gallery_dir = organize_processed_faces_to_gallery(session_data, faces_dir)
+            
+            if gallery_dir:
+                session_data["galleryPath"] = gallery_dir
+                session_data["facesOrganized"] = True
+                print(f"Successfully organized faces into gallery: {gallery_dir}")
+            else:
+                session_data["facesOrganized"] = False
+                print("Warning: Failed to organize faces into gallery structure")
+        else:
+            session_data["facesOrganized"] = False
+            print("No faces extracted, skipping gallery organization")
+        
         # Save updated session data
         with open(session_file, 'w') as f:
             json.dump(session_data, f)
         
         # Keep the MP4 video file for reference
         print(f"Keeping MP4 video file for reference: {mp4_path}")
+        
+        # Prepare response message
+        if session_data.get("facesOrganized", False):
+            message = f"Video processed successfully. Extracted {faces_count} face images and organized them into gallery structure."
+        else:
+            message = f"Video processed successfully. Extracted {faces_count} face images. Note: Gallery organization may have failed."
             
         return jsonify({
             "success": True,
-            "message": f"Video processed successfully. Extracted {faces_count} face images."
+            "message": message,
+            "facesCount": faces_count,
+            "facesOrganized": session_data.get("facesOrganized", False),
+            "galleryPath": session_data.get("galleryPath")
         }), 200
     
     except Exception as e:
