@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Video Collection</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Added Header Component -->
+    <header class="header">
+        <div class="header-container">
+            <div class="nba">
+                <img src="/static/image.png"  class="nba-logo">
+            </div>
+            
+            <div class="college-info">
+                <h1>SRI SHAKTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY</h1>
+            </div>
+            
+        </div>
+    </header>
+    
+    <div class="container">
+        <div id="registration" class="section">
+            <h1>Student Biometric Data Collection</h1>
+            <form id="student-form">
+                <div class="form-group">
+                    <label for="studentId">Registration Number:</label>
+                    <input type="text" id="studentId" name="studentId" required>
+                </div>
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="year">Year:</label>
+                    <select id="year" name="year" required>
+                        <option value="">Select Year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="dept">Department:</label>
+                    <input type="text" id="dept" name="dept" required>
+                </div>
+                <button type="submit" class="btn primary">Start</button>
+            </form>
+        </div>
+        
+        <div id="camera-section" class="section hidden">
+            <div class="camera-container">
+                <video id="video" autoplay playsinline></video>
+            </div>
+            
+            <div class="controls">
+                <div id="progress-bar">
+                    <div id="progress"></div>
+                </div>
+                <div id="instruction">Follow the instructions below</div>
+            </div>
+        </div>
+        
+        <div id="completion" class="section hidden">
+            <h2>Recording Complete</h2>
+            <p>Your face video has been processed successfully.</p>
+            <p>Thank you for your participation!</p>
+            <div class="button-group">
+                <button id="retry" class="btn primary">Try Again</button>
+                <button id="restart" class="btn secondary">Add New Student</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/static/js/app.js"></script>
+</body>
+</html>

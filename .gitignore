@@ -1,0 +1,12 @@
+envs/face-rec/
+
+data/
+data_collection/reports
+gallery/
+
+src/checkpoints
+src/checkpoints/
+*.pth
+*.tar
+
+**/__pycache__/

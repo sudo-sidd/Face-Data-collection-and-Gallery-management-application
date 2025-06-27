@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Recognition Gallery Manager</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-user-circle me-2"></i>Face Recognition Gallery
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-section="home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="upload">Process Videos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="createGalleries">Create Galleries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="galleries">View Galleries</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="recognition">Face Recognition</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="admin">Admin</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-4">
+        <!-- Home Section -->
+        <section id="home" class="content-section active">
+            <div class="jumbotron p-4 bg-light rounded">
+                <h1 class="display-4">Face Recognition Gallery Manager</h1>
+                <p class="lead">Create and manage face recognition galleries for students by batch and department.</p>
+                <hr class="my-4">
+                <p>This application helps you process videos to create face galleries and perform face recognition.</p>
+                <div class="d-flex justify-content-center mt-4">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card text-center mb-4">
+                                <div class="card-body">
+                                    <i class="fas fa-video fa-3x mb-3 text-primary"></i>
+                                    <h5 class="card-title">Process Videos</h5>
+                                    <p class="card-text">Extract faces from videos and prepare for gallery creation.</p>
+                                    <button class="btn btn-primary" data-section="upload">Process Videos</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center mb-4">
+                                <div class="card-body">
+                                    <i class="fas fa-database fa-3x mb-3 text-success"></i>
+                                    <h5 class="card-title">Create Galleries</h5>
+                                    <p class="card-text">Build face recognition galleries from processed data.</p>
+                                    <button class="btn btn-success" data-section="createGalleries">Create Galleries</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center mb-4">
+                                <div class="card-body">
+                                    <i class="fas fa-images fa-3x mb-3 text-info"></i>
+                                    <h5 class="card-title">View Galleries</h5>
+                                    <p class="card-text">Browse and manage existing face recognition galleries.</p>
+                                    <button class="btn btn-info" data-section="galleries">View Galleries</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center mb-4">
+                                <div class="card-body">
+                                    <i class="fas fa-user-check fa-3x mb-3 text-danger"></i>
+                                    <h5 class="card-title">Face Recognition</h5>
+                                    <p class="card-text">Upload an image to identify faces using your galleries.</p>
+                                    <button class="btn btn-danger" data-section="recognition">Try Recognition</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Videos Section -->
+        <section id="upload" class="content-section">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="fas fa-video me-2"></i>Process Videos</h4>
+                    <small class="text-light">Step 1: Extract faces from videos</small>
+                </div>
+                <div class="card-body">
+                    <form id="processVideosForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="batchYear" class="form-label">Batch Year</label>
+                                <select id="batchYear" class="form-select" required>
+                                    <option value="" selected disabled>Select Batch Year</option>
+                                    <!-- Will be populated dynamically -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="department" class="form-label">Department</label>
+                                <select id="department" class="form-select" required>
+                                    <option value="" selected disabled>Select Department</option>
+                                    <!-- Will be populated dynamically -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="videosDir" class="form-label">Videos Directory Path</label>
+                            <input type="text" id="videosDir" class="form-control" placeholder="/path/to/videos" required>
+                            <small class="form-text text-muted">
+                                Extract frames and faces from videos. Each video filename should be the student's name. After processing, you'll need to create a gallery from the extracted data.
+                            </small>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" id="btnProcess" class="btn btn-primary">
+                                <i class="fas fa-cog me-2"></i>Process Video Frames
+                            </button>
+                        </div>
+                    </form>
+                    <div id="processingResult" class="mt-4"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create/Update Galleries Section -->
+        <section id="createGalleries" class="content-section">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h4><i class="fas fa-database me-2"></i>Create/Update Galleries</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-light">
+                                    <h5>Create/Update Gallery</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="createGalleryForm">
+                                        <div class="mb-3">
+                                            <label for="galleryYear" class="form-label">Batch Year</label>
+                                            <select id="galleryYear" class="form-select" required>
+                                                <option value="" selected disabled>Select Batch Year</option>
+                                                <!-- Will be populated dynamically -->
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="galleryDepartment" class="form-label">Department</label>
+                                            <select id="galleryDepartment" class="form-select" required>
+                                                <option value="" selected disabled>Select Department</option>
+                                                <!-- Will be populated dynamically -->
+                                            </select>
+                                        </div>
+                                        <!-- <div class="mt-2 d-grid">
+                                            <button type="button" id="debugDropdowns" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-bug me-2"></i>Debug Database & Dropdowns
+                                            </button>
+                                        </div> -->
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="updateExisting">
+                                            <label class="form-check-label" for="updateExisting">Update existing gallery (if available)</label>
+                                        </div>
+                                        <div class="d-grid">
+                                            <button type="submit" id="btnCreateGallery" class="btn btn-success">
+                                                <i class="fas fa-database me-2"></i>Create/Update Gallery
+                                            </button>
+                                        </div>
+                                    </form>
+                                    <div id="galleryCreationResult" class="mt-4"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h5>Processed Data Sets</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="processedDatasets">
+                                        <div class="text-center py-3">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <p class="mt-2">Loading processed datasets...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View Galleries Section -->
+        <section id="galleries" class="content-section">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h4><i class="fas fa-images me-2"></i>View Galleries</h4>
+                </div>
+                <div class="card-body">
+                    <div id="galleriesPlaceholder" class="text-center py-5">
+                        <div class="spinner-border text-info" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading galleries...</p>
+                    </div>
+                    <div id="galleriesList" class="list-group mt-3">
+                        <!-- Galleries will be loaded here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Face Recognition Section -->
+        <section id="recognition" class="content-section">
+            <div class="card">
+            <div class="card-header bg-danger text-white">
+            <h4><i class="fas fa-user-check me-2"></i>Face Recognition</h4>
+            </div>
+            <!-- <div class="preview-model">
+                
+            </div> -->
+            <div class="card-body">
+            <div class="row mb-4">
+            <div class="col-md-6">
+                <h5>Upload Image for Recognition</h5>
+                <div class="mb-3">
+                                <label for="recognitionImage" class="form-label">Select Image</label>
+                                <input class="form-control" type="file" id="recognitionImage" accept="image/*">
+                            </div>
+                            <div class="image-preview mb-3">
+                                <img id="imagePreview" src="/static/img/placeholder.png" class="img-fluid" alt="Preview">
+                            </div>
+                            
+                            <h5>
+                                Select Galleries 
+                                <button id="reloadGalleriesBtn" class="btn btn-sm btn-outline-danger float-end">
+                                    <i class="fas fa-sync-alt"></i> Reload
+                                </button>
+                            </h5>
+                            <div class="mb-3" id="galleryCheckboxes">
+                                <!-- Will be populated dynamically -->
+                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                Loading galleries...
+                            </div>
+                            
+                            <button id="btnRecognize" class="btn btn-danger" disabled>
+                                <i class="fas fa-search me-2"></i>Recognize Faces
+                            </button>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Recognition Results</h5>
+                            <div class="result-container text-center p-3">
+                                <img id="resultImage" src="/static/img/placeholder.png" class="img-fluid" alt="Result">
+                            </div>
+                            <div id="recognitionResults" class="mt-3">
+                                <!-- Will show results after recognition -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Section -->
+        <section id="admin" class="content-section">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h4><i class="fas fa-cog me-2"></i>Administration</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Face Collection App Launcher -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">
+                                    <h5><i class="fas fa-video me-2"></i>Face Data Collection Application</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p class="mb-3">Launch the face data collection application for student biometric data collection.</p>
+                                    <div class="d-flex gap-3">
+                                        <button class="btn btn-info" onclick="launchCollectionAppWithServer()">
+                                            <i class="fas fa-external-link-alt me-2"></i>Launch Collection App
+                                        </button>
+                                        <button class="btn btn-outline-secondary" onclick="checkCollectionAppStatus()">
+                                            <i class="fas fa-sync me-2"></i>Check Status
+                                        </button>
+                                        <button class="btn btn-outline-danger" onclick="stopCollectionAppServer()">
+                                            <i class="fas fa-stop me-2"></i>Stop App
+                                        </button>
+                                        <div id="collectionAppStatus" class="align-self-center">
+                                            <span class="text-muted">Application Status: <span id="statusText">Not Running</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Batch Year Management -->
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-primary text-white">
+                                    <h5>Manage Batch Years</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="addBatchYearForm" class="mb-3">
+                                        <div class="input-group">
+                                            <input type="text" id="newBatchYear" class="form-control" placeholder="e.g., 1st, 2nd" required>
+                                            <button class="btn btn-primary" type="submit">Add</button>
+                                        </div>
+                                        <small class="form-text text-muted">Add a new batch year (e.g., "1st", "2nd", etc.)</small>
+                                    </form>
+                                    <div class="mt-3">
+                                        <h6>Current Batch Years:</h6>
+                                        <ul id="batchYearsList" class="list-group">
+                                            <!-- Will be populated dynamically -->
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+                                                Loading...
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Department Management -->
+                        <div class="col-md-6">
+                            <div class="card mb-4">
+                                <div class="card-header bg-success text-white">
+                                    <h5>Manage Departments</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="addDepartmentForm" class="mb-3">
+                                        <div class="input-group">
+                                            <input type="text" id="newDepartment" class="form-control" placeholder="e.g., CS, IT" required>
+                                            <button class="btn btn-success" type="submit">Add</button>
+                                        </div>
+                                        <small class="form-text text-muted">Add a new department (e.g., "CS", "IT", etc.)</small>
+                                    </form>
+                                    <div class="mt-3">
+                                        <h6>Current Departments:</h6>
+                                        <ul id="departmentsList" class="list-group">
+                                            <!-- Will be populated dynamically -->
+                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+                                                Loading...
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer bg-light mt-5 py-3">
+        <div class="container text-center">
+            <span class="text-muted">Face Recognition Gallery Manager &copy; 2025</span>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="/static/js/app.js"></script>
+    <script src="/static/js/debug.js"></script>
+    <script src="/static/js/dropdown-debug.js"></script>
+</body>
+</html>
