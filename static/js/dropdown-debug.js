@@ -31,7 +31,7 @@ async function debugDropdowns() {
         console.error("Debug dropdown error:", error);
         
         // Use fallback values
-        const fallbackYears = ["1st", "2nd", "3rd", "4th"];
+        const fallbackYears = ["2029", "2028", "2027", "2026"];
         const fallbackDepartments = ["CS", "IT", "ECE", "EEE", "CIVIL"];
         
         showAlertMessage(`Error: ${error.message}. Using fallback values.`);

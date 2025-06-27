@@ -58,7 +58,7 @@ def init_db():
         # Insert default data if tables are empty
         cursor.execute("SELECT COUNT(*) FROM batch_years")
         if cursor.fetchone()[0] == 0:
-            default_years = ["1st", "2nd", "3rd", "4th"]
+            default_years = ["2029", "2028", "2027", "2026"]
             cursor.executemany("INSERT OR IGNORE INTO batch_years (year) VALUES (?)", 
                               [(year,) for year in default_years])
         
