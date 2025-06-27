@@ -228,7 +228,7 @@ async function loadBatchYearsAndDepartments() {
         if (galleryYearSelect) {
             galleryYearSelect.innerHTML = '<option value="" selected disabled>Select Batch Year</option>';
             for (const year of data.years) {
-                galleryYearSelect.innerHTML += `<option value="${year}">${year} Year</option>`;
+                galleryYearSelect.innerHTML += `<option value="${year}">${year} </option>`;
             }
             console.log(`Updated galleryYear with ${data.years.length} options`);
         } else {
@@ -252,7 +252,7 @@ async function loadBatchYearsAndDepartments() {
         if (batchYearSelect) {
             batchYearSelect.innerHTML = '<option value="" selected disabled>Select Batch Year</option>';
             for (const year of data.years) {
-                batchYearSelect.innerHTML += `<option value="${year}">${year} Year</option>`;
+                batchYearSelect.innerHTML += `<option value="${year}">${year} </option>`;
             }
             console.log(`Updated batchYear with ${data.years.length} options`);
         } else {
@@ -330,7 +330,7 @@ async function loadGalleries() {
             
             listItem.innerHTML = `
                 <div>
-                    <h5 class="mb-1">${department} - ${year} Year</h5>
+                    <h5 class="mb-1">${department} - ${year} </h5>
                     <small class="text-muted">Click to view details</small>
                 </div>
                 <div class="d-flex align-items-center">
@@ -437,7 +437,7 @@ async function loadGalleryCheckboxes() {
             div.innerHTML = `
                 <input class="form-check-input gallery-checkbox" type="checkbox" value="${gallery}" id="${checkboxId}">
                 <label class="form-check-label" for="${checkboxId}">
-                    ${department} - ${year} Year
+                    ${department} - ${year} 
                 </label>
             `;
             galleryCheckboxes.appendChild(div);
@@ -663,7 +663,7 @@ async function loadAdminData() {
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
                 li.innerHTML = `
-                    <span>${year} Year</span>
+                    <span>${year} </span>
                     <button class="btn btn-sm btn-danger delete-batch-year" data-year="${year}">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -1082,7 +1082,7 @@ async function loadProcessedDatasets() {
                         <a href="#" class="list-group-item list-group-item-action" 
                            onclick="selectDatasetForGallery('${year}', '${department}')">
                             <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">${department} - ${year} Year</h5>
+                                <h5 class="mb-1">${department} - ${year} </h5>
                             </div>
                             <small class="text-muted">Click to select for gallery creation</small>
                         </a>

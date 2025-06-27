@@ -2,6 +2,7 @@ import os
 import cv2
 import shutil
 import uuid
+import sqlite3
 import numpy as np
 from enum import Enum
 from typing import List, Optional, Dict, Tuple, Union, Any
@@ -81,6 +82,22 @@ def get_gallery_path(year: str, department: str) -> str:
 def get_data_path(year: str, department: str) -> str:
     """Generate a standardized data path for storing preprocessed faces"""
     return os.path.join(BASE_DATA_DIR, f"{department}_{year}")
+
+def get_batch_years_and_departments():
+    """Fetch batch years and departments from the main app.db"""
+    # Path to the main app.db
+    db_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'data', 'app.db')
+    conn = sqlite3.connect(db_path)
+    try:
+        cursor = conn.cursor()
+        cursor.execute('SELECT year FROM batch_years ORDER BY year')
+        years = [row[0] for row in cursor.fetchall()]
+        cursor.execute('SELECT name FROM departments ORDER BY name')
+        departments = [row[0] for row in cursor.fetchall()]
+        return {"years": years, "departments": departments}
+    finally:
+        conn.close()
+
 
 def extract_frames(video_path: str, output_dir: str, max_frames: int = 30, interval: int = 10) -> List[str]:
     """

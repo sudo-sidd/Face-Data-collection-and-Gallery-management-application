@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+import sqlite3
 import shutil
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -43,6 +44,9 @@ executor = ThreadPoolExecutor(max_workers=MAX_WORKERS)
 # Task queue to limit concurrent user processing
 task_queue = queue.Queue(maxsize=15)  # 5 users per thread × 3 threads
 processing_tasks = {}  # Track task status by session ID
+
+
+
 
 # Face processing functions
 def preprocess_face_for_lightcnn(face_img, target_size=(128, 128)):
@@ -681,4 +685,4 @@ def generate_qr():
     """
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5002)
+    app.run(host='0.0.0.0', port=5001)
