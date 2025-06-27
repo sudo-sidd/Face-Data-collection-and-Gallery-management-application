@@ -371,7 +371,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    studentId: state.studentId
+                    studentId: state.studentId,
+                    year: state.year,
+                    dept: state.dept
                 })
             });
             

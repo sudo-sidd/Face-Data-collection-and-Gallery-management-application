@@ -379,6 +379,97 @@ def organize_processed_faces_to_gallery(student_data, processed_faces_dir):
         print(f"Error organizing processed faces to gallery: {e}")
         return None
 
+# Helper function to find student directory (for migration compatibility)
+def find_student_directory(student_id, year=None, dept=None):
+    """Find student directory in new dept_year structure or old structure"""
+    # First try new structure if year and dept provided
+    if year and dept:
+        new_path = os.path.join(DATA_DIR, f"{dept}_{year}", student_id)
+        if os.path.exists(new_path):
+            return new_path
+    
+    # Try old structure (direct in DATA_DIR)
+    old_path = os.path.join(DATA_DIR, student_id)
+    if os.path.exists(old_path):
+        return old_path
+    
+    # Search through all dept_year directories
+    for item in os.listdir(DATA_DIR):
+        item_path = os.path.join(DATA_DIR, item)
+        if os.path.isdir(item_path):
+            student_path = os.path.join(item_path, student_id)
+            if os.path.exists(student_path):
+                return student_path
+    
+    return None
+
+# Migration function
+def migrate_student_data():
+    """Migrate existing student data from old structure to new dept_year structure"""
+    print("Checking for student data migration...")
+    
+    # Get batch years and departments from database
+    try:
+        data = get_batch_years_and_departments()
+        years = data.get('years', [])
+        departments = data.get('departments', [])
+    except Exception as e:
+        print(f"Error getting batch data for migration: {e}")
+        return
+    
+    # Look for directories in DATA_DIR that don't follow the new naming pattern
+    if not os.path.exists(DATA_DIR):
+        return
+        
+    migrated_count = 0
+    for item in os.listdir(DATA_DIR):
+        item_path = os.path.join(DATA_DIR, item)
+        
+        # Skip if it's not a directory
+        if not os.path.isdir(item_path):
+            continue
+            
+        # Skip if it already follows the new pattern (contains underscore and matches dept_year)
+        if '_' in item and any(item.endswith(f"_{year}") for year in years):
+            continue
+            
+        # This appears to be an old student directory
+        print(f"Found old student directory: {item}")
+        
+        # Try to find session files to get year and dept
+        session_files = [f for f in os.listdir(item_path) if f.endswith('.json')]
+        
+        if session_files:
+            session_file = os.path.join(item_path, session_files[0])
+            try:
+                with open(session_file, 'r') as f:
+                    session_data = json.load(f)
+                
+                student_year = session_data.get('year')
+                student_dept = session_data.get('dept')
+                
+                if student_year and student_dept:
+                    # Create new directory structure
+                    dept_year_dir = os.path.join(DATA_DIR, f"{student_dept}_{student_year}")
+                    os.makedirs(dept_year_dir, exist_ok=True)
+                    
+                    # Move student directory
+                    new_student_path = os.path.join(dept_year_dir, item)
+                    if not os.path.exists(new_student_path):
+                        shutil.move(item_path, new_student_path)
+                        print(f"Migrated {item} to {student_dept}_{student_year}/{item}")
+                        migrated_count += 1
+                    else:
+                        print(f"Warning: {new_student_path} already exists, skipping migration for {item}")
+                        
+            except Exception as e:
+                print(f"Error migrating {item}: {e}")
+    
+    if migrated_count > 0:
+        print(f"Successfully migrated {migrated_count} student directories")
+    else:
+        print("No student directories found that need migration")
+
 # Routes
 @app.route('/')
 def index():
@@ -387,6 +478,9 @@ def index():
 @app.route('/api/session/start', methods=['POST'])
 def start_session():
     data = request.json
+    if not data:
+        return jsonify({"error": "No data provided"}), 400
+        
     student_id = data.get('studentId')  # Registration Number
     name = data.get('name')
     year = data.get('year')
@@ -398,8 +492,12 @@ def start_session():
     # Create unique session ID
     session_id = str(uuid.uuid4())
     
-    # Create student directory
-    student_dir = os.path.join(DATA_DIR, student_id)
+    # Create department-year directory structure
+    dept_year_dir = os.path.join(DATA_DIR, f"{dept}_{year}")
+    os.makedirs(dept_year_dir, exist_ok=True)
+    
+    # Create student directory within department-year folder
+    student_dir = os.path.join(dept_year_dir, student_id)
     os.makedirs(student_dir, exist_ok=True)
     
     # Create faces directory named after registration number (instead of "faces")
@@ -437,8 +535,12 @@ def upload_video(session_id):
     if not student_id:
         return jsonify({"error": "Registration Number is required"}), 400
     
-    # Create student directory
-    student_dir = os.path.join(DATA_DIR, student_id)
+    # Create department-year directory structure
+    dept_year_dir = os.path.join(DATA_DIR, f"{dept}_{year}")
+    os.makedirs(dept_year_dir, exist_ok=True)
+    
+    # Create student directory within department-year folder
+    student_dir = os.path.join(dept_year_dir, student_id)
     os.makedirs(student_dir, exist_ok=True)
     
     # Create faces directory named after registration number
@@ -614,13 +716,22 @@ def upload_video(session_id):
 
 @app.route('/api/reset-faces/<session_id>', methods=['POST'])
 def reset_faces(session_id):
-    student_id = request.json.get('studentId')
+    data = request.json if request.json else {}
+    student_id = data.get('studentId')
+    year = data.get('year')
+    dept = data.get('dept')
+    
     if not student_id:
         return jsonify({"error": "Student ID is required"}), 400
+    if not year:
+        return jsonify({"error": "Year is required"}), 400
+    if not dept:
+        return jsonify({"error": "Department is required"}), 400
     
-    # Get path to faces directory using registration number as directory name
-    student_dir = os.path.join(DATA_DIR, student_id)
-    faces_dir = os.path.join(student_dir, student_id)  # Changed from 'faces' to student_id
+    # Get path to faces directory using new directory structure
+    dept_year_dir = os.path.join(DATA_DIR, f"{dept}_{year}")
+    student_dir = os.path.join(dept_year_dir, student_id)
+    faces_dir = os.path.join(student_dir, student_id)
     
     if os.path.exists(faces_dir):
         try:
@@ -685,4 +796,7 @@ def generate_qr():
     """
 
 if __name__ == '__main__':
+    # Run migration on startup to ensure data is in correct structure
+    migrate_student_data()
+    
     app.run(host='0.0.0.0', port=5001)
