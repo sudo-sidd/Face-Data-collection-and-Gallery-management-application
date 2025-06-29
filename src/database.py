@@ -31,10 +31,11 @@ def init_db():
         )
         ''')
         
-        # Create departments table
+        # Create departments table with custom department_id
         cursor.execute('''
         CREATE TABLE IF NOT EXISTS departments (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            department_id TEXT UNIQUE NOT NULL,
             name TEXT UNIQUE NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
@@ -64,9 +65,15 @@ def init_db():
         
         cursor.execute("SELECT COUNT(*) FROM departments")
         if cursor.fetchone()[0] == 0:
-            default_departments = ["CS", "IT", "ECE", "EEE", "CIVIL"]
-            cursor.executemany("INSERT OR IGNORE INTO departments (name) VALUES (?)", 
-                             [(dept,) for dept in default_departments])
+            default_departments = [
+                ("DPT001", "CS"),
+                ("DPT002", "IT"), 
+                ("DPT003", "ECE"),
+                ("DPT004", "EEE"),
+                ("DPT005", "CIVIL")
+            ]
+            cursor.executemany("INSERT OR IGNORE INTO departments (department_id, name) VALUES (?, ?)", 
+                             default_departments)
         
         conn.commit()
 
@@ -81,8 +88,35 @@ def get_departments():
     """Get all departments from the database."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
+        cursor.execute("SELECT department_id, name FROM departments ORDER BY name")
+        return [{"id": row['department_id'], "name": row['name']} for row in cursor.fetchall()]
+
+def get_department_names():
+    """Get just the department names (for backward compatibility)."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
         cursor.execute("SELECT name FROM departments ORDER BY name")
         return [row['name'] for row in cursor.fetchall()]
+
+def get_department_by_id(department_id: str) -> Optional[Dict[str, str]]:
+    """Get department by its custom ID."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT department_id, name FROM departments WHERE department_id = ?", (department_id,))
+        row = cursor.fetchone()
+        if row:
+            return {"id": row['department_id'], "name": row['name']}
+        return None
+
+def get_department_by_name(name: str) -> Optional[Dict[str, str]]:
+    """Get department by its name."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT department_id, name FROM departments WHERE name = ?", (name,))
+        row = cursor.fetchone()
+        if row:
+            return {"id": row['department_id'], "name": row['name']}
+        return None
 
 def add_batch_year(year):
     """Add a new batch year to the database."""
@@ -104,23 +138,23 @@ def delete_batch_year(year):
         conn.commit()
         return cursor.rowcount > 0
 
-def add_department(department):
-    """Add a new department to the database."""
+def add_department(department_id: str, name: str):
+    """Add a new department to the database with custom ID."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
         try:
-            cursor.execute("INSERT INTO departments (name) VALUES (?)", (department,))
+            cursor.execute("INSERT INTO departments (department_id, name) VALUES (?, ?)", (department_id, name))
             conn.commit()
             return True
         except sqlite3.IntegrityError:
-            # Department already exists
+            # Department ID or name already exists
             return False
 
-def delete_department(department):
-    """Delete a department from the database."""
+def delete_department(department_id: str):
+    """Delete a department from the database by its custom ID."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("DELETE FROM departments WHERE name = ?", (department,))
+        cursor.execute("DELETE FROM departments WHERE department_id = ?", (department_id,))
         conn.commit()
         return cursor.rowcount > 0
 
@@ -129,7 +163,7 @@ def get_gallery_info(year: str, department: str) -> Optional[Dict[str, Any]]:
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute('''
-        SELECT g.*, by.year, d.name as department_name 
+        SELECT g.*, by.year, d.name as department_name, d.department_id
         FROM galleries g
         JOIN batch_years by ON g.year_id = by.id
         JOIN departments d ON g.department_id = d.id
@@ -187,7 +221,7 @@ def list_all_galleries() -> List[Dict[str, Any]]:
     with get_db_connection() as conn:
         cursor = conn.cursor()
         cursor.execute('''
-        SELECT g.*, by.year, d.name as department_name 
+        SELECT g.*, by.year, d.name as department_name, d.department_id
         FROM galleries g
         JOIN batch_years by ON g.year_id = by.id
         JOIN departments d ON g.department_id = d.id

@@ -10,8 +10,8 @@ def get_batch_years_and_departments():
         cursor = conn.cursor()
         cursor.execute('SELECT year FROM batch_years ORDER BY year')
         years = [row[0] for row in cursor.fetchall()]
-        cursor.execute('SELECT name FROM departments ORDER BY name')
-        departments = [row[0] for row in cursor.fetchall()]
+        cursor.execute('SELECT department_id, name FROM departments ORDER BY name')
+        departments = [{"id": row[0], "name": row[1]} for row in cursor.fetchall()]
         return {"years": years, "departments": departments}
     finally:
         conn.close()

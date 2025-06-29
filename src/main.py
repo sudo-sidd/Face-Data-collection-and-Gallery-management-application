@@ -6,7 +6,7 @@ import sqlite3
 import numpy as np
 from enum import Enum
 from typing import List, Optional, Dict, Tuple, Union, Any
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, BackgroundTasks, Query
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query
 from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel
 import base64
@@ -92,8 +92,8 @@ def get_batch_years_and_departments():
         cursor = conn.cursor()
         cursor.execute('SELECT year FROM batch_years ORDER BY year')
         years = [row[0] for row in cursor.fetchall()]
-        cursor.execute('SELECT name FROM departments ORDER BY name')
-        departments = [row[0] for row in cursor.fetchall()]
+        cursor.execute('SELECT department_id, name FROM departments ORDER BY name')
+        departments = [{"id": row[0], "name": row[1]} for row in cursor.fetchall()]
         return {"years": years, "departments": departments}
     finally:
         conn.close()
@@ -357,7 +357,8 @@ def process_videos_directory(videos_dir: str, year: str, department: str) -> Pro
             
             # Generate embeddings for the student's faces
             if student_faces:
-                embeddings = [extract_embedding(face_path, model) for face_path in student_faces]
+                model, device = load_model(DEFAULT_MODEL_PATH)  # Load model and device
+                embeddings = [extract_embedding(face_path, model, device) for face_path in student_faces]
                 # Average the embeddings to get a representative embedding for the student
                 student_embeddings[student_name] = np.mean(embeddings, axis=0)
             
@@ -627,9 +628,13 @@ async def about():
 @app.get("/batches", summary="Get available batch years and departments")
 async def get_batches():
     """Get available batch years and departments."""
+    years = database.get_batch_years()
+    departments = database.get_departments()
+    print(f"DEBUG: Years: {years}")
+    print(f"DEBUG: Departments: {departments}")
     return {
-        "years": database.get_batch_years(),
-        "departments": database.get_departments()
+        "years": years,
+        "departments": departments
     }
 
 @app.get("/galleries", summary="Get all available galleries")
@@ -664,8 +669,7 @@ async def get_gallery(year: str, department: str):
 async def process_videos(
     year: str = Form(...),
     department: str = Form(...),
-    videos_dir: str = Form(...),
-    background_tasks: BackgroundTasks = None
+    videos_dir: str = Form(...)
 ):
     """
     Process videos to extract faces and store them in the dataset
@@ -678,7 +682,7 @@ async def process_videos(
     # Validation code remains the same
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_departments():
+    if department not in database.get_department_names():
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     if not os.path.exists(videos_dir):
@@ -772,7 +776,7 @@ async def create_gallery_endpoint(
     # Validate batch year and department
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_departments():
+    if department not in database.get_department_names():
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     # Get paths
@@ -854,36 +858,45 @@ async def delete_batch_year(year: str):
 
 @app.post("/batches/department", status_code=201, summary="Add a new department")
 async def add_department(dept_data: dict):
-    department = dept_data.get("department")
-    if not department:
-        raise HTTPException(status_code=400, detail="Department is required")
+    print(f"DEBUG: Received department data: {dept_data}")
+    department_id = dept_data.get("department_id")
+    department_name = dept_data.get("department")
     
-    success = database.add_department(department)
+    print(f"DEBUG: Extracted department_id: {department_id}")
+    print(f"DEBUG: Extracted department_name: {department_name}")
+    
+    if not department_id or not department_name:
+        print(f"DEBUG: Validation failed - department_id: {department_id}, department_name: {department_name}")
+        raise HTTPException(status_code=400, detail="Both department_id and department name are required")
+    
+    success = database.add_department(department_id, department_name)
     if not success:
-        raise HTTPException(status_code=400, detail=f"Department '{department}' already exists")
+        raise HTTPException(status_code=400, detail=f"Department ID '{department_id}' or name '{department_name}' already exists")
     
-    return {"message": f"Added department: {department}", "success": True}
+    return {"message": f"Added department: {department_name} (ID: {department_id})", "success": True}
 
-@app.delete("/batches/department/{department}", status_code=200, summary="Delete a department")
-async def delete_department(department: str):
+@app.delete("/batches/department/{department_id}", status_code=200, summary="Delete a department")
+async def delete_department(department_id: str):
     # Check if any galleries are using this department in the database
     galleries = database.list_all_galleries()
-    dept_galleries = [g for g in galleries if g['department_name'] == department]
+    dept_galleries = [g for g in galleries if g['department_id'] == department_id]
     
     if dept_galleries:
         raise HTTPException(
             status_code=400,
-            detail=f"Cannot delete department '{department}' as it is used by {len(dept_galleries)} galleries"
+            detail=f"Cannot delete department '{department_id}' as it is used by {len(dept_galleries)} galleries"
         )
     
-    if department not in database.get_departments():
-        raise HTTPException(status_code=404, detail=f"Department '{department}' not found")
+    # Check if department exists
+    dept_info = database.get_department_by_id(department_id)
+    if not dept_info:
+        raise HTTPException(status_code=404, detail=f"Department with ID '{department_id}' not found")
     
-    success = database.delete_department(department)
+    success = database.delete_department(department_id)
     if not success:
-        raise HTTPException(status_code=404, detail=f"Department '{department}' not found")
+        raise HTTPException(status_code=404, detail=f"Department with ID '{department_id}' not found")
     
-    return {"message": f"Deleted department: {department}", "success": True}
+    return {"message": f"Deleted department: {dept_info['name']} (ID: {department_id})", "success": True}
 
 @app.get("/check-directories", summary="Check if directories exist and are accessible")
 async def check_directories():
@@ -935,7 +948,7 @@ async def delete_gallery(year: str, department: str):
     # Validate batch year and department
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_departments():
+    if department not in database.get_department_names():
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     # Get gallery path
@@ -965,7 +978,7 @@ async def sync_gallery_with_database(year: str, department: str):
     # Validate batch year and department
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_departments():
+    if department not in database.get_department_names():
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     # Get gallery path

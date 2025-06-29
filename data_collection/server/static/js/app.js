@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (departmentSelect) {
                 departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
                 for (const dept of data.departments) {
-                    departmentSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
+                    departmentSelect.innerHTML += `<option value="${dept.id}">${dept.name} (${dept.id})</option>`;
                 }
             }
         } catch (error) {

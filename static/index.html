@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css?v=1.1">
     
     <!-- Toast Notifications CSS -->
-    <link rel="stylesheet" href="/static/css/toast.css">
+    <link rel="stylesheet" href="/static/css/toast.css?v=1.1">
 </head>
 <body>
     <!-- Enhanced Header Component -->
@@ -563,13 +563,23 @@
                                 <div class="card-body p-4">
                                     <form id="addDepartmentForm" class="mb-3">
                                         <label class="form-label fw-bold">Add New Department</label>
-                                        <div class="input-group">
-                                            <span class="input-group-text bg-light"><i class="fas fa-plus"></i></span>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text bg-light"><i class="fas fa-university"></i></span>
                                             <input type="text" id="newDepartment" class="form-control form-control-lg" placeholder="e.g., CS, IT" required>
-                                            <button class="btn btn-success px-4" type="submit">Add</button>
                                         </div>
-                                        <small class="form-text text-muted mt-2">Add a new department (e.g., "CS", "IT", etc.)</small>
+
+                                        <label class="form-label fw-bold">Add New Department ID</label>
+                                        <div class="input-group mb-3">
+                                            <span class="input-group-text bg-light"><i class="fas fa-id-badge"></i></span>
+                                            <input type="text" id="newDepartmentId" class="form-control form-control-lg" placeholder="e.g., DPT001, DPT002" required>
+                                        </div>
+
+                                        <button class="btn btn-success px-4" type="submit">Add</button>
+                                        <small class="form-text text-muted mt-2 d-block">
+                                            Fill in both fields to add a new department.
+                                        </small>
                                     </form>
+
                                     <div class="mt-4">
                                         <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
                                             <h6 class="fw-bold mb-0">
@@ -591,6 +601,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -626,8 +637,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- Custom JavaScript -->
-    <script src="/static/js/app.js"></script>
-    <script src="/static/js/debug.js"></script>
-    <script src="/static/js/dropdown-debug.js"></script>
+    <script src="/static/js/app.js?v=1.1"></script>
 </body>
 </html>

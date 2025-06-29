@@ -275,83 +275,56 @@ async function init() {
     updateRecognizeButtonState();
 }
 
-// Replace the loadBatchYearsAndDepartments function with this version
+// Load batch years and departments for dropdowns
 async function loadBatchYearsAndDepartments() {
-    console.log("Loading batch years and departments...");
     try {
         const response = await fetch(`${API_BASE_URL}/batches`);
-        
-        if (!response.ok) {
-            console.error(`API request failed: ${response.status} ${response.statusText}`);
-            const text = await response.text();
-            console.error("Response text:", text);
-            throw new Error(`API request failed: ${response.status}`);
-        }
-        
         const data = await response.json();
-        console.log("Batch years and departments data:", data);
-        
-        // Special handling for malformed data
-        if (!data.years || !data.departments) {
-            console.error("API response missing years or departments:", data);
-            throw new Error("API response missing years or departments");
-        }
-        
-        // Simple direct approach - update each dropdown manually
-        
-        // Gallery year select
-        const galleryYearSelect = document.getElementById('galleryYear');
-        if (galleryYearSelect) {
-            galleryYearSelect.innerHTML = '<option value="" selected disabled>Select Batch Year</option>';
-            for (const year of data.years) {
-                galleryYearSelect.innerHTML += `<option value="${year}">${year} </option>`;
+
+        // Populate Batch Year dropdowns
+        const batchYearSelects = ['batchYear', 'galleryYear'];
+        batchYearSelects.forEach(selectId => {
+            const select = document.getElementById(selectId);
+            if (select) {
+                select.innerHTML = '<option value="" selected disabled>Select Batch Year</option>';
+                data.years.forEach(year => {
+                    select.innerHTML += `<option value="${year}">${year}</option>`;
+                });
             }
-            console.log(`Updated galleryYear with ${data.years.length} options`);
-        } else {
-            console.warn("galleryYear select not found in DOM");
-        }
-        
-        // Gallery department select
-        const galleryDeptSelect = document.getElementById('galleryDepartment');
-        if (galleryDeptSelect) {
-            galleryDeptSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
-            for (const dept of data.departments) {
-                galleryDeptSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
+        });
+
+        // Populate Department dropdowns
+        const departmentSelects = ['department', 'galleryDepartment'];
+        departmentSelects.forEach(selectId => {
+            const select = document.getElementById(selectId);
+            if (select) {
+                select.innerHTML = '<option value="" selected disabled>Select Department</option>';
+                data.departments.forEach(dept => {
+                    select.innerHTML += `<option value="${dept.id}">${dept.name} (${dept.id})</option>`;
+                });
             }
-            console.log(`Updated galleryDepartment with ${data.departments.length} options`);
-        } else {
-            console.warn("galleryDepartment select not found in DOM");
+        });
+
+        // Populate gallery checkboxes for recognition
+        const galleryCheckboxes = document.getElementById('galleryCheckboxes');
+        if (galleryCheckboxes) {
+            galleryCheckboxes.innerHTML = '';
+            data.departments.forEach(dept => {
+                const div = document.createElement('div');
+                div.className = 'form-check mb-2';
+                div.innerHTML = `
+                    <input class="form-check-input" type="checkbox" value="gallery_${dept.name}_*.pth" id="gallery_${dept.id}">
+                    <label class="form-check-label" for="gallery_${dept.id}">
+                        ${dept.name} (${dept.id})
+                    </label>
+                `;
+                galleryCheckboxes.appendChild(div);
+            });
         }
-        
-        // Process videos year select
-        const batchYearSelect = document.getElementById('batchYear');
-        if (batchYearSelect) {
-            batchYearSelect.innerHTML = '<option value="" selected disabled>Select Batch Year</option>';
-            for (const year of data.years) {
-                batchYearSelect.innerHTML += `<option value="${year}">${year} </option>`;
-            }
-            console.log(`Updated batchYear with ${data.years.length} options`);
-        } else {
-            console.warn("batchYear select not found in DOM");
-        }
-        
-        // Process videos department select
-        const departmentSelect = document.getElementById('department');
-        if (departmentSelect) {
-            departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
-            for (const dept of data.departments) {
-                departmentSelect.innerHTML += `<option value="${dept}">${dept}</option>`;
-            }
-            console.log(`Updated department with ${data.departments.length} options`);
-        } else {
-            console.warn("department select not found in DOM");
-        }
-        
-        return true;
+
     } catch (error) {
         console.error('Error loading batch years and departments:', error);
-        showAlert('error', `Failed to load batch years and departments: ${error.message}`);
-        return false;
+        showAlert('error', 'Failed to load batch years and departments');
     }
 }
 
@@ -727,19 +700,30 @@ function activateSection(sectionId) {
 // Load admin data
 async function loadAdminData() {
     try {
-        const response = await fetch(`${API_BASE_URL}/batches`);
+        const response = await fetch(`${API_BASE_URL}/database/stats`);
         const data = await response.json();
-        
-        // Populate batch years list
+
+        // Update batch years count and list
+        const batchYearsCount = document.getElementById('batchYearsCount');
+        if (batchYearsCount) {
+            batchYearsCount.textContent = data.batch_years_count;
+        }
+
         const batchYearsList = document.getElementById('batchYearsList');
         if (batchYearsList) {
             batchYearsList.innerHTML = '';
             
-            data.years.forEach(year => {
+            const yearsResponse = await fetch(`${API_BASE_URL}/batches`);
+            const yearsData = await yearsResponse.json();
+            
+            yearsData.years.forEach(year => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
                 li.innerHTML = `
-                    <span>${year} </span>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-graduation-cap text-primary me-3"></i>
+                        <span class="fw-medium">${year}</span>
+                    </div>
                     <button class="btn btn-sm btn-danger delete-batch-year" data-year="${year}">
                         <i class="fas fa-trash"></i>
                     </button>
@@ -754,18 +738,33 @@ async function loadAdminData() {
                 });
             });
         }
-        
-        // Populate departments list
+
+        // Update departments count and list
+        const departmentsCount = document.getElementById('departmentsCount');
+        if (departmentsCount) {
+            departmentsCount.textContent = data.departments_count;
+        }
+
         const departmentsList = document.getElementById('departmentsList');
         if (departmentsList) {
             departmentsList.innerHTML = '';
             
-            data.departments.forEach(dept => {
+            const deptResponse = await fetch(`${API_BASE_URL}/batches`);
+            const deptData = await deptResponse.json();
+            
+            deptData.departments.forEach(dept => {
                 const li = document.createElement('li');
                 li.className = 'list-group-item d-flex justify-content-between align-items-center';
                 li.innerHTML = `
-                    <span>${dept}</span>
-                    <button class="btn btn-sm btn-danger delete-department" data-dept="${dept}">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-university text-success me-3"></i>
+                        <div>
+                            <span class="fw-medium">${dept.name}</span>
+                            <br>
+                            <small class="text-muted">ID: ${dept.id}</small>
+                        </div>
+                    </div>
+                    <button class="btn btn-sm btn-danger delete-department" data-dept-id="${dept.id}">
                         <i class="fas fa-trash"></i>
                     </button>
                 `;
@@ -775,7 +774,7 @@ async function loadAdminData() {
             // Add event listeners to delete buttons
             document.querySelectorAll('.delete-department').forEach(button => {
                 button.addEventListener('click', function() {
-                    deleteDepartment(this.getAttribute('data-dept'));
+                    deleteDepartment(this.getAttribute('data-dept-id'));
                 });
             });
         }
@@ -850,28 +849,35 @@ async function handleAddDepartment(event) {
     event.preventDefault();
     console.log("Department form submitted");
     
-    const newDepartment = document.getElementById('newDepartment').value.trim();
-    console.log("New department value:", newDepartment);
+    const newDepartmentId = document.getElementById('newDepartmentId').value.trim();
+    const newDepartmentName = document.getElementById('newDepartment').value.trim();
     
-    if (!newDepartment) {
-        showAlert('error', 'Department cannot be empty');
+    console.log("New department ID:", newDepartmentId);
+    console.log("New department name:", newDepartmentName);
+    
+    if (!newDepartmentId || !newDepartmentName) {
+        showAlert('error', 'Both Department ID and Department Name are required');
         return;
     }
     
     try {
-        console.log("Sending request to add department:", newDepartment);
+        console.log("Sending request to add department:", { department_id: newDepartmentId, department: newDepartmentName });
         const response = await fetch(`${API_BASE_URL}/batches/department`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ department: newDepartment })
+            body: JSON.stringify({ 
+                department_id: newDepartmentId, 
+                department: newDepartmentName 
+            })
         });
         
         console.log("Response status:", response.status);
         
         if (response.ok) {
-            showAlert('success', `Added department: ${newDepartment}`);
+            showAlert('success', `Added department: ${newDepartmentName} (ID: ${newDepartmentId})`);
+            document.getElementById('newDepartmentId').value = '';
             document.getElementById('newDepartment').value = '';
             await loadAdminData();
             await loadBatchYearsAndDepartments();
@@ -887,15 +893,15 @@ async function handleAddDepartment(event) {
 }
 
 // Delete department
-async function deleteDepartment(department) {
-    if (!confirm(`Are you sure you want to delete the department "${department}"?`)) {
+async function deleteDepartment(departmentId) {
+    if (!confirm(`Are you sure you want to delete this department?`)) {
         return;
     }
     
-    console.log("Deleting department:", department);
+    console.log("Deleting department with ID:", departmentId);
     
     try {
-        const response = await fetch(`${API_BASE_URL}/batches/department/${department}`, {
+        const response = await fetch(`${API_BASE_URL}/batches/department/${departmentId}`, {
             method: 'DELETE'
         });
         
@@ -905,12 +911,14 @@ async function deleteDepartment(department) {
             // Remove immediately from UI
             const items = document.querySelectorAll(`#departmentsList li`);
             for (const item of items) {
-                if (item.querySelector('span').textContent.trim() === department) {
+                const deleteBtn = item.querySelector('.delete-department');
+                if (deleteBtn && deleteBtn.getAttribute('data-dept-id') === departmentId) {
                     item.remove();
+                    break;
                 }
             }
             
-            showAlert('success', `Deleted department: ${department}`);
+            showAlert('success', `Department deleted successfully`);
             
             // Reload all data
             await loadAdminData();
