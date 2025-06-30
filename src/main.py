@@ -647,7 +647,7 @@ async def list_galleries():
     # Find all gallery files
     galleries = []
     for file in os.listdir(BASE_GALLERY_DIR):
-        if file.endswith(".pth") and file.startswith("gallery_"):
+        if file.endswith(".pth") :
             galleries.append(file)
     
     return {"galleries": galleries}
