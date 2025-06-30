@@ -363,7 +363,7 @@ def organize_processed_faces_to_gallery(student_data, processed_faces_dir):
             dst_path = os.path.join(student_gallery_dir, image_file)
             
             try:
-                shutil.copy2(src_path, dst_path)
+                shutil.move(src_path, dst_path)
                 copied_count += 1
                 print(f"Copied {image_file} to gallery")
             except Exception as e:
