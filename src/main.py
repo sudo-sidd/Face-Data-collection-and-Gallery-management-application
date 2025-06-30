@@ -767,8 +767,8 @@ async def create_gallery_endpoint(
     Create or update a gallery from preprocessed face data
     
     Parameters:
-    - year: Batch year (e.g., "1st", "2nd")
-    - department: Department name (e.g., "CS", "IT")
+    - year: Batch year (e.g., '2026', "2027") pass out years
+    - department: Department ID 
     - update_existing: Whether to update an existing gallery or create a new one
     - augment_ratio: Ratio of images to augment (0.0 to 1.0)
     - augs_per_image: Number of augmentations per selected image

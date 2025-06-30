@@ -24,19 +24,6 @@ pip3 install flask flask-cors opencv-python ultralytics pillow qrcode[pil] torch
 # Create student data directory if it doesn't exist
 mkdir -p "../data/student_data"
 
-# Create department-year directories for the new batch structure
-mkdir -p "../data/student_data/AIML_2029"
-mkdir -p "../data/student_data/AIML_2028"
-mkdir -p "../data/student_data/AIML_2027"
-mkdir -p "../data/student_data/AIML_2026"
-mkdir -p "../data/student_data/CS_2029"
-mkdir -p "../data/student_data/CS_2028"
-mkdir -p "../data/student_data/CS_2027"
-mkdir -p "../data/student_data/CS_2026"
-mkdir -p "../data/student_data/IT_2029"
-mkdir -p "../data/student_data/IT_2028"
-mkdir -p "../data/student_data/IT_2027"
-mkdir -p "../data/student_data/IT_2026"
 
 # Start the data collection application
 echo "Launching Student Data Collection App on http://localhost:5001"
