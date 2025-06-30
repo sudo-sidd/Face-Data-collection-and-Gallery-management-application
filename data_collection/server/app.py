@@ -152,6 +152,9 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
                     if hasattr(results[0], 'boxes') and len(results[0].boxes) > 0:
                         print(f"  Found {len(results[0].boxes)} boxes")
                         
+                        # Collect all valid faces with their areas
+                        valid_faces = []
+                        
                         for j, box in enumerate(results[0].boxes):
                             # Get bounding box coordinates
                             x1, y1, x2, y2 = map(int, box.xyxy[0])
@@ -163,6 +166,29 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
                             if conf < face_confidence:
                                 print(f"  Skipping box {j} - confidence too low")
                                 continue
+                            
+                            # Calculate face area
+                            face_width = x2 - x1
+                            face_height = y2 - y1
+                            face_area = face_width * face_height
+                            
+                            # Store face info for comparison
+                            valid_faces.append({
+                                'index': j,
+                                'area': face_area,
+                                'coords': (x1, y1, x2, y2),
+                                'conf': conf
+                            })
+                        
+                        # Only process the biggest face if any valid faces found
+                        if valid_faces:
+                            # Sort by area (biggest first)
+                            valid_faces.sort(key=lambda x: x['area'], reverse=True)
+                            biggest_face = valid_faces[0]
+                            
+                            print(f"  Processing biggest face (index {biggest_face['index']}) with area {biggest_face['area']}")
+                            
+                            x1, y1, x2, y2 = biggest_face['coords']
                             
                             # Add padding around face
                             face_width = x2 - x1
@@ -180,28 +206,26 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
                             face = frame[y1:y2, x1:x2]
                             
                             # Skip if face crop is empty
-                            if face.size == 0 or face.shape[0] == 0 or face.shape[1] == 0:
-                                print(f"  Skipping box {j} - empty crop")
-                                continue
-                            
-                            # Preprocess face
-                            processed_face = preprocess_face_for_lightcnn(face)
-                            
-                            # Create unique filename
-                            timestamp = int(time.time() * 1000)
-                            filename = f"frame{current_frame+i}_face{j}_{timestamp}.jpg"
-                            filepath = os.path.join(output_dir, filename)
-                            
-                            if processed_face is not None:
-                                # Ensure single channel (grayscale)
-                                if len(processed_face.shape) > 2:
-                                    processed_face = cv2.cvtColor(processed_face, cv2.COLOR_BGR2GRAY)
-                                # Double-check the size
-                                if processed_face.shape != (128, 128):
-                                    processed_face = cv2.resize(processed_face, (128, 128), interpolation=cv2.INTER_LANCZOS4)
-                                # Save the image
-                                cv2.imwrite(filepath, processed_face)
-                                faces_saved += 1
+                            if face.size > 0 and face.shape[0] > 0 and face.shape[1] > 0:
+                                # Preprocess face
+                                processed_face = preprocess_face_for_lightcnn(face)
+                                
+                                # Create unique filename
+                                timestamp = int(time.time() * 1000)
+                                filename = f"frame{current_frame+i}_biggest_face_{timestamp}.jpg"
+                                filepath = os.path.join(output_dir, filename)
+                                
+                                if processed_face is not None:
+                                    # Ensure single channel (grayscale)
+                                    if len(processed_face.shape) > 2:
+                                        processed_face = cv2.cvtColor(processed_face, cv2.COLOR_BGR2GRAY)
+                                    # Double-check the size
+                                    if processed_face.shape != (128, 128):
+                                        processed_face = cv2.resize(processed_face, (128, 128), interpolation=cv2.INTER_LANCZOS4)
+                                    # Save the image
+                                    cv2.imwrite(filepath, processed_face)
+                                    faces_saved += 1
+                                    print(f"  Saved biggest face from frame {current_frame+i}")
             else:
                 # Fallback to Haar cascade detection
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -212,8 +236,20 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
                     minSize=(30, 30)
                 )
                 
-                # Process each detected face
-                for j, (x, y, w, h) in enumerate(faces):
+                # Only process the biggest face if multiple faces detected
+                if len(faces) > 0:
+                    # Calculate areas and find biggest face
+                    face_areas = []
+                    for j, (x, y, w, h) in enumerate(faces):
+                        area = w * h
+                        face_areas.append((area, j, x, y, w, h))
+                    
+                    # Sort by area (biggest first) and take the first one
+                    face_areas.sort(reverse=True)
+                    biggest_area, biggest_idx, x, y, w, h = face_areas[0]
+                    
+                    print(f"Frame {current_frame+i}: Processing biggest face (area={biggest_area}) out of {len(faces)} detected")
+                    
                     # Add padding around face
                     pad_x = int(w * face_padding)
                     pad_y = int(h * face_padding)
@@ -228,27 +264,26 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
                     face = frame[y1:y2, x1:x2]
                     
                     # Skip if face crop is empty
-                    if face.size == 0 or face.shape[0] == 0 or face.shape[1] == 0:
-                        continue
-                    
-                    # Preprocess face
-                    processed_face = preprocess_face_for_lightcnn(face)
-                    
-                    # Create unique filename
-                    timestamp = int(time.time() * 1000)
-                    filename = f"frame{current_frame+i}_face{j}_{timestamp}.jpg"
-                    filepath = os.path.join(output_dir, filename)
-                    
-                    if processed_face is not None:
-                        # Ensure single channel (grayscale)
-                        if len(processed_face.shape) > 2:
-                            processed_face = cv2.cvtColor(processed_face, cv2.COLOR_BGR2GRAY)
-                        # Double-check the size
-                        if processed_face.shape != (128, 128):
-                            processed_face = cv2.resize(processed_face, (128, 128), interpolation=cv2.INTER_LANCZOS4)
-                        # Save the image
-                        cv2.imwrite(filepath, processed_face)
-                        faces_saved += 1
+                    if face.size > 0 and face.shape[0] > 0 and face.shape[1] > 0:
+                        # Preprocess face
+                        processed_face = preprocess_face_for_lightcnn(face)
+                        
+                        # Create unique filename
+                        timestamp = int(time.time() * 1000)
+                        filename = f"frame{current_frame+i}_biggest_face_{timestamp}.jpg"
+                        filepath = os.path.join(output_dir, filename)
+                        
+                        if processed_face is not None:
+                            # Ensure single channel (grayscale)
+                            if len(processed_face.shape) > 2:
+                                processed_face = cv2.cvtColor(processed_face, cv2.COLOR_BGR2GRAY)
+                            # Double-check the size
+                            if processed_face.shape != (128, 128):
+                                processed_face = cv2.resize(processed_face, (128, 128), interpolation=cv2.INTER_LANCZOS4)
+                            # Save the image
+                            cv2.imwrite(filepath, processed_face)
+                            faces_saved += 1
+                            print(f"  Saved biggest face from frame {current_frame+i}")
     
     # Close resources
     cap.release()
