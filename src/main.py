@@ -76,7 +76,7 @@ class ProcessingResult(BaseModel):
 
 def get_gallery_path(year: str, department: str) -> str:
     """Generate a standardized gallery path based on batch year and department"""
-    filename = f"gallery_{department}_{year}.pth"
+    filename = f"{department}_{year}.pth"
     return os.path.join(BASE_GALLERY_DIR, filename)
 
 def get_data_path(year: str, department: str) -> str:
@@ -428,7 +428,7 @@ def recognize_faces(
     gallery_paths: Union[str, List[str]], 
     model_path: str = DEFAULT_MODEL_PATH,
     yolo_path: str = DEFAULT_YOLO_PATH,
-    threshold: float = 0.50,
+    threshold: float = 0.45,
     model=None,
     device=None,
     yolo_model=None
