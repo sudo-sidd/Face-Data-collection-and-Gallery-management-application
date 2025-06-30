@@ -88,7 +88,7 @@ def get_departments():
     """Get all departments from the database."""
     with get_db_connection() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT department_id, name FROM departments ORDER BY name, department_id")
+        cursor.execute("SELECT department_id, name FROM departments ORDER BY name, department_id,")
         return [{"id": row['department_id'], "name": row['name']} for row in cursor.fetchall()]
 
 def get_department_names():
