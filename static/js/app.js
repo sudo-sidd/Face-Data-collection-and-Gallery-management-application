@@ -149,7 +149,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Add reload button to recognition section
-    const galleryCheckboxesHeader = document.querySelector('#recognition h5:contains("Select Galleries")');
+    const galleryCheckboxesHeaders = document.querySelectorAll('#recognition h5');
+    let galleryCheckboxesHeader = null;
+    for (const header of galleryCheckboxesHeaders) {
+        if (header.textContent.includes('Select Galleries')) {
+            galleryCheckboxesHeader = header;
+            break;
+        }
+    }
+    
     if (galleryCheckboxesHeader) {
         const reloadBtn = document.createElement('button');
         reloadBtn.className = 'btn btn-sm btn-outline-danger ms-2';
@@ -251,35 +259,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize the application - update to include new gallery form selects
 async function init() {
-    await loadBatchYearsAndDepartments();
-    await loadGalleries();
-    await loadGalleryCheckboxes();
-    await loadAdminData();
-    
-    // Add image preview listener
-    const recognitionImage = document.getElementById('recognitionImage');
-    if (recognitionImage) {
-        console.log("Adding recognition image change listener");
-        recognitionImage.addEventListener('change', previewImage);
+    try {
+        console.log("Initializing application...");
+        
+        // Load data in sequence with proper error handling
+        console.log("Starting loadBatchYearsAndDepartments...");
+        await loadBatchYearsAndDepartments();
+        console.log("Completed loadBatchYearsAndDepartments");
+        
+        console.log("Starting loadGalleries...");
+        await loadGalleries();
+        console.log("Completed loadGalleries");
+        
+        console.log("Starting loadGalleryCheckboxes...");
+        await loadGalleryCheckboxes();
+        console.log("Completed loadGalleryCheckboxes");
+        
+        console.log("Starting loadAdminData...");
+        await loadAdminData();
+        console.log("Completed loadAdminData");
+        
+        // Add image preview listener
+        const recognitionImage = document.getElementById('recognitionImage');
+        if (recognitionImage) {
+            console.log("Adding recognition image change listener");
+            recognitionImage.addEventListener('change', previewImage);
+        }
+        
+        // Add recognize button listener
+        const btnRecognize = document.getElementById('btnRecognize');
+        if (btnRecognize) {
+            console.log("Adding recognize button click listener");
+            btnRecognize.removeEventListener('click', performRecognition);
+            btnRecognize.addEventListener('click', performRecognition);
+        }
+        
+        // Update recognize button state initially
+        updateRecognizeButtonState();
+        
+        console.log("Application initialization complete");
+        
+    } catch (error) {
+        console.error("Error during application initialization:", error);
+        showAlert('error', 'Failed to initialize application properly: ' + error.message);
     }
-    
-    // Add recognize button listener
-    const btnRecognize = document.getElementById('btnRecognize');
-    if (btnRecognize) {
-        console.log("Adding recognize button click listener");
-        btnRecognize.removeEventListener('click', performRecognition); // Remove any existing
-        btnRecognize.addEventListener('click', performRecognition);
-    }
-    
-    // Update recognize button state initially
-    updateRecognizeButtonState();
 }
+
 
 // Load batch years and departments for dropdowns
 async function loadBatchYearsAndDepartments() {
     try {
+        console.log("Loading batch years and departments...");
         const response = await fetch(`${API_BASE_URL}/batches`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
         const data = await response.json();
+        console.log("Received data:", data);
 
         // Populate Batch Year dropdowns
         const batchYearSelects = ['batchYear', 'galleryYear'];
@@ -287,9 +325,16 @@ async function loadBatchYearsAndDepartments() {
             const select = document.getElementById(selectId);
             if (select) {
                 select.innerHTML = '<option value="" selected disabled>Select Batch Year</option>';
-                data.years.forEach(year => {
-                    select.innerHTML += `<option value="${year}">${year}</option>`;
-                });
+                if (data.years && data.years.length > 0) {
+                    data.years.forEach(year => {
+                        select.innerHTML += `<option value="${year}">${year}</option>`;
+                    });
+                    console.log(`Populated ${selectId} with ${data.years.length} years`);
+                } else {
+                    console.warn(`No years data found for ${selectId}`);
+                }
+            } else {
+                console.warn(`Element with ID ${selectId} not found`);
             }
         });
 
@@ -299,32 +344,36 @@ async function loadBatchYearsAndDepartments() {
             const select = document.getElementById(selectId);
             if (select) {
                 select.innerHTML = '<option value="" selected disabled>Select Department</option>';
-                data.departments.forEach(dept => {
-                    select.innerHTML += `<option value="${dept.id}">${dept.name} (${dept.id})</option>`;
-                });
+                if (data.departments && data.departments.length > 0) {
+                    data.departments.forEach(dept => {
+                        select.innerHTML += `<option value="${dept.id}">${dept.name} (${dept.id})</option>`;
+                    });
+                    console.log(`Populated ${selectId} with ${data.departments.length} departments`);
+                } else {
+                    console.warn(`No departments data found for ${selectId}`);
+                }
+            } else {
+                console.warn(`Element with ID ${selectId} not found`);
             }
         });
 
-        // Populate gallery checkboxes for recognition
-        const galleryCheckboxes = document.getElementById('galleryCheckboxes');
-        if (galleryCheckboxes) {
-            galleryCheckboxes.innerHTML = '';
-            data.departments.forEach(dept => {
-                const div = document.createElement('div');
-                div.className = 'form-check mb-2';
-                div.innerHTML = `
-                    <input class="form-check-input" type="checkbox" value="gallery_${dept.name}_*.pth" id="gallery_${dept.id}">
-                    <label class="form-check-label" for="gallery_${dept.id}">
-                        ${dept.name} (${dept.id})
-                    </label>
-                `;
-                galleryCheckboxes.appendChild(div);
-            });
+        // Show success message only on initial load
+        if (data.years && data.years.length > 0 && data.departments && data.departments.length > 0) {
+            console.log("Successfully loaded batch years and departments");
         }
 
     } catch (error) {
         console.error('Error loading batch years and departments:', error);
-        showAlert('error', 'Failed to load batch years and departments');
+        showAlert('error', `Failed to load batch years and departments: ${error.message}`);
+        
+        // Set placeholder text for failed loads
+        const allSelects = ['batchYear', 'galleryYear', 'department', 'galleryDepartment'];
+        allSelects.forEach(selectId => {
+            const select = document.getElementById(selectId);
+            if (select) {
+                select.innerHTML = '<option value="" disabled>Failed to load data</option>';
+            }
+        });
     }
 }
 
