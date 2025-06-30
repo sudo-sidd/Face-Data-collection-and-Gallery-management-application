@@ -138,15 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Add reload button to galleries section
-    const galleriesCardHeader = document.querySelector('#galleries .card-header');
-    if (galleriesCardHeader) {
-        const reloadBtn = document.createElement('button');
-        reloadBtn.className = 'btn btn-sm btn-light float-end';
-        reloadBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Reload';
-        reloadBtn.addEventListener('click', manuallyReloadGalleries);
-        galleriesCardHeader.appendChild(reloadBtn);
-    }
     
     // Add reload button to recognition section
     const galleryCheckboxesHeaders = document.querySelectorAll('#recognition h5');
