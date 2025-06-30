@@ -776,7 +776,7 @@ async def create_gallery_endpoint(
     # Validate batch year and department
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_department_names():
+    if department not in database.get_department_ids():
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     # Get paths

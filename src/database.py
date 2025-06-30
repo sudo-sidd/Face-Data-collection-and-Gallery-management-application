@@ -98,6 +98,13 @@ def get_department_names():
         cursor.execute("SELECT name FROM departments ORDER BY name")
         return [row['name'] for row in cursor.fetchall()]
 
+def get_department_ids():
+    """Get just the department IDs (for backward compatibility)."""
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT department_id FROM departments ORDER BY name")
+        return [row['department_id'] for row in cursor.fetchall()]
+
 def get_department_by_id(department_id: str) -> Optional[Dict[str, str]]:
     """Get department by its custom ID."""
     with get_db_connection() as conn:
