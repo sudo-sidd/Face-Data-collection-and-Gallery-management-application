@@ -1,6 +1,9 @@
 envs/face-rec/
 
 data/student_data
+venv/
+.fuse_hidden0000003400000022
+data/
 data_collection/reports
 gallery/
 
@@ -10,3 +13,4 @@ src/checkpoints/
 *.tar
 
 **/__pycache__/
+.env

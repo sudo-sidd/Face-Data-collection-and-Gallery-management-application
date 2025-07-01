@@ -11,6 +11,10 @@ import qrcode
 from io import BytesIO
 import base64
 from db_utils import get_batch_years_and_departments
+from dotenv import load_dotenv
+
+# Load environment variables at module level
+load_dotenv()
 
 app = Flask(__name__, static_folder='static')
 
@@ -577,45 +581,16 @@ def generate_qr():
     """
 
 if __name__ == '__main__':
+    import sys
+    from gunicorn.app.wsgiapp import run
+
     # Run migration on startup to ensure data is in correct structure
     migrate_student_data()
-    import os
-    import socket
-    
-    def find_available_port(start_port=5001, max_attempts=10):
-        """Find an available port starting from start_port"""
-        for port in range(start_port, start_port + max_attempts):
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                try:
-                    s.bind(('0.0.0.0', port))
-                    return port
-                except OSError:
-                    continue
-        return None
-    
-    # Find available port
-    port = find_available_port(5001)
-    if port is None:
-        print("ERROR: No available ports found in range 5001-5010")
-        exit(1)
-    
-    # Start server with fallback options
-    print(f"🚀 Starting Face Collection App on port {port}...")
-    
-    # Force HTTP mode for better browser compatibility (no SSL warnings)
-    print("📡 Running in HTTP mode (recommended for development)")
-    print(f"🌐 Server will be available at: http://localhost:{port}")
-    print(f"📱 For mobile access: http://YOUR_IP_ADDRESS:{port}")
-    print("")
-    print("💡 Benefits of HTTP mode:")
-    print("   ✓ No SSL certificate warnings")
-    print("   ✓ Works on all browsers without issues")
-    print("   ✓ No 'connection reset' errors")
-    print("   ✓ Better compatibility with mobile devices")
-    print("")
-    
-    try:
-        app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
-    except Exception as e:
-        print(f"❌ Failed to start HTTP server: {e}")
-        exit(1)
+
+    # Get host, port, and workers from environment variables or use defaults
+    host = os.environ.get("DATA_COLLECTION_HOST", "0.0.0.0")
+    port = int(os.environ.get("DATA_COLLECTION_PORT", 8000))
+    workers = int(os.environ.get("DATA_COLLECTION_WORKERS", 1))
+
+    sys.argv = ["gunicorn", "app:app", f"--bind={host}:{port}", f"--workers={workers}"]
+    run()
