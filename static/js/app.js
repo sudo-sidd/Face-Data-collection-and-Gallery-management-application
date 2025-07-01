@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadProcessedDatasets();
             }
             
+            // Load student data folders when upload section is activated
+            if (section === 'upload') {
+                loadStudentDataFolders();
+            }
+            
             // Reload data when entering specific sections
             if (section === 'recognition') {
                 console.log("Recognition section activated, reloading gallery checkboxes");
@@ -979,8 +984,8 @@ async function deleteDepartment(departmentId) {
     }
 }
 
-// Handle process videos form submission
-async function handleProcessVideos(event) {
+// Handle process videos form submission (OLD - deprecated in favor of new workflow)
+/* async function handleProcessVideos(event) {
     event.preventDefault();
     console.log("Process videos form submitted");
     
@@ -1085,6 +1090,7 @@ async function handleProcessVideos(event) {
         }
     }
 }
+*/
 
 // Function to handle gallery creation/update
 async function handleCreateGallery(event) {
@@ -1708,5 +1714,280 @@ function showGalleryDetailsModal(department, year, galleryInfo) {
                    `Sample identities: ${identitiesList}${moreText}`;
     
     alert(message);
+}
+
+// Add event listener for new student data form
+const selectStudentDataForm = document.getElementById('selectStudentDataForm');
+if (selectStudentDataForm) {
+    console.log("Student data form found");
+    selectStudentDataForm.addEventListener('submit', handleLoadStudentData);
+} else {
+    console.log("Student data form not found");
+}
+
+// Add event listener for process student videos button
+const btnProcessStudentVideos = document.getElementById('btnProcessStudentVideos');
+if (btnProcessStudentVideos) {
+    btnProcessStudentVideos.addEventListener('click', handleProcessStudentVideos);
+}
+
+// Add event listener for view pending students button
+const btnViewPendingStudents = document.getElementById('btnViewPendingStudents');
+if (btnViewPendingStudents) {
+    btnViewPendingStudents.addEventListener('click', handleViewPendingStudents);
+}
+
+// Load available student data folders for the new workflow
+async function loadStudentDataFolders() {
+    try {
+        console.log("Loading student data folders...");
+        const response = await fetch(`${API_BASE_URL}/student-data/folders`);
+        
+        if (!response.ok) {
+            console.error("Failed to load student data folders");
+            return;
+        }
+        
+        const data = await response.json();
+        console.log("Student data folders:", data.folders);
+        
+        // Extract unique years and departments
+        const years = [...new Set(data.folders.map(f => f.year))].sort();
+        const depts = [...new Set(data.folders.map(f => f.dept))].sort();
+        
+        // Populate year dropdown
+        const yearSelect = document.getElementById('studentBatchYear');
+        if (yearSelect) {
+            yearSelect.innerHTML = '<option value="" selected disabled>Select Batch Year</option>';
+            years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+            });
+        }
+        
+        // Populate department dropdown
+        const deptSelect = document.getElementById('studentDepartment');
+        if (deptSelect) {
+            deptSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
+            depts.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept;
+                option.textContent = dept;
+                deptSelect.appendChild(option);
+            });
+        }
+        
+    } catch (error) {
+        console.error("Error loading student data folders:", error);
+    }
+}
+
+// Handle load student data form submission
+async function handleLoadStudentData(event) {
+    event.preventDefault();
+    console.log("Load student data form submitted");
+    
+    const year = document.getElementById('studentBatchYear').value;
+    const department = document.getElementById('studentDepartment').value;
+    
+    if (!year || !department) {
+        showAlert('error', 'Please select both batch year and department');
+        return;
+    }
+    
+    // Show loading indicator
+    const btnLoad = document.getElementById('btnLoadStudentData');
+    if (btnLoad) {
+        btnLoad.disabled = true;
+        btnLoad.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Loading...';
+    }
+    
+    try {
+        // Load student data summary
+        const response = await fetch(`${API_BASE_URL}/student-data/${department}/${year}/summary`);
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to load student data');
+        }
+        
+        const summary = await response.json();
+        console.log("Student data summary:", summary);
+        
+        // Update statistics display
+        document.getElementById('totalStudents').textContent = summary.total_students;
+        document.getElementById('studentsWithVideo').textContent = summary.students_with_video;
+        document.getElementById('studentsPending').textContent = summary.students_pending;
+        document.getElementById('studentsProcessed').textContent = summary.students_processed;
+        
+        // Show statistics section
+        document.getElementById('studentDataStats').style.display = 'block';
+        
+        // Enable/disable process button based on pending count
+        const btnProcess = document.getElementById('btnProcessStudentVideos');
+        if (btnProcess) {
+            btnProcess.disabled = summary.students_pending === 0;
+            if (summary.students_pending > 0) {
+                btnProcess.innerHTML = `<i class="fas fa-cog me-2"></i>Process ${summary.students_pending} Pending Videos`;
+            } else {
+                btnProcess.innerHTML = '<i class="fas fa-cog me-2"></i>No Videos to Process';
+            }
+        }
+        
+        // Store current selection for processing
+        window.currentStudentData = { dept: department, year: year };
+        
+    } catch (error) {
+        console.error("Error loading student data:", error);
+        showAlert('error', error.message);
+    } finally {
+        if (btnLoad) {
+            btnLoad.disabled = false;
+            btnLoad.innerHTML = '<i class="fas fa-search me-2"></i>Load Student Data';
+        }
+    }
+}
+
+// Handle process student videos
+async function handleProcessStudentVideos() {
+    if (!window.currentStudentData) {
+        showAlert('error', 'Please load student data first');
+        return;
+    }
+    
+    const { dept, year } = window.currentStudentData;
+    
+    // Show confirmation
+    if (!confirm(`Are you sure you want to process all pending videos for ${dept} ${year}? This may take several minutes.`)) {
+        return;
+    }
+    
+    const btnProcess = document.getElementById('btnProcessStudentVideos');
+    if (btnProcess) {
+        btnProcess.disabled = true;
+        btnProcess.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Processing...';
+    }
+    
+    // Show processing indicator
+    const processingResult = document.getElementById('processingResult');
+    processingResult.innerHTML = `
+        <div class="alert alert-info">
+            <div class="spinner-border spinner-border-sm me-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            Processing student videos... This may take several minutes.
+        </div>
+    `;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/student-data/${dept}/${year}/process`, {
+            method: 'POST'
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to process videos');
+        }
+        
+        const result = await response.json();
+        console.log("Processing result:", result);
+        
+        // Display results
+        let resultHTML = '<div class="alert alert-success">';
+        resultHTML += '<h5 class="mb-3">Processing Completed</h5>';
+        resultHTML += `<p>${result.message}</p>`;
+        resultHTML += `<ul class="list-unstyled">
+            <li><strong>Processed:</strong> ${result.processed_count}</li>
+            <li><strong>Total Pending:</strong> ${result.total_pending}</li>
+        </ul>`;
+        resultHTML += '</div>';
+        
+        processingResult.innerHTML = resultHTML;
+        
+        // Refresh the student data display
+        setTimeout(() => {
+            handleLoadStudentData(new Event('submit'));
+        }, 1000);
+        
+    } catch (error) {
+        console.error("Error processing videos:", error);
+        processingResult.innerHTML = `
+            <div class="alert alert-danger">
+                <h5 class="mb-3">Processing Failed</h5>
+                <p>${error.message}</p>
+            </div>
+        `;
+    } finally {
+        if (btnProcess) {
+            btnProcess.disabled = false;
+            btnProcess.innerHTML = '<i class="fas fa-cog me-2"></i>Process Pending Videos';
+        }
+    }
+}
+
+// Handle view pending students
+async function handleViewPendingStudents() {
+    if (!window.currentStudentData) {
+        showAlert('error', 'Please load student data first');
+        return;
+    }
+    
+    const { dept, year } = window.currentStudentData;
+    
+    try {
+        const response = await fetch(`${API_BASE_URL}/student-data/${dept}/${year}/pending`);
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.detail || 'Failed to load pending students');
+        }
+        
+        const data = await response.json();
+        console.log("Pending students:", data.pending_students);
+        
+        const pendingList = document.getElementById('pendingStudentsList');
+        const tableContainer = document.getElementById('pendingStudentsTable');
+        
+        if (data.pending_students.length === 0) {
+            tableContainer.innerHTML = '<p class="text-muted">No pending students found.</p>';
+        } else {
+            let tableHTML = `
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Reg No</th>
+                                <th>Name</th>
+                                <th>Video Uploaded</th>
+                                <th>Upload Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            data.pending_students.forEach(student => {
+                const uploadTime = student.uploadTime ? new Date(student.uploadTime).toLocaleString() : 'N/A';
+                tableHTML += `
+                    <tr>
+                        <td>${student.regNo}</td>
+                        <td>${student.name}</td>
+                        <td><span class="badge bg-success">Yes</span></td>
+                        <td>${uploadTime}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table></div>';
+            tableContainer.innerHTML = tableHTML;
+        }
+        
+        pendingList.style.display = 'block';
+        
+    } catch (error) {
+        console.error("Error loading pending students:", error);
+        showAlert('error', error.message);
+    }
 }
 

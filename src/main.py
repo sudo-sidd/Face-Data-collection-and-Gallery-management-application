@@ -4,6 +4,7 @@ import shutil
 import uuid
 import sqlite3
 import numpy as np
+import json
 from enum import Enum
 from typing import List, Optional, Dict, Tuple, Union, Any
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query, Request
@@ -26,8 +27,8 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 GALLERY_DIR = os.path.join(BASE_DIR, 'gallery')
 
-# Add gallery directory to system path
-sys.path.append(GALLERY_DIR)
+# Add src directory to system path for imports
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from gallery_manager import create_gallery, update_gallery, load_model, extract_embedding, create_gallery_from_embeddings, update_gallery_from_embeddings
 import database
 
@@ -36,10 +37,12 @@ DEFAULT_MODEL_PATH = os.path.join(BASE_DIR, "src", "checkpoints", "LightCNN_29La
 DEFAULT_YOLO_PATH = os.path.join(BASE_DIR, "src", "yolo", "weights", "yolo11n-face.pt")
 BASE_DATA_DIR = os.path.join(BASE_DIR, "gallery", "data")
 BASE_GALLERY_DIR = os.path.join(BASE_DIR, "gallery", "galleries")
+STUDENT_DATA_DIR = os.path.join(BASE_DIR, "data", "student_data")
 
 # Create necessary directories if they don't exist
 os.makedirs(BASE_DATA_DIR, exist_ok=True)
 os.makedirs(BASE_GALLERY_DIR, exist_ok=True)
+os.makedirs(STUDENT_DATA_DIR, exist_ok=True)
 
 app = FastAPI(title="Face Recognition Gallery Manager", 
               description="API for managing face recognition galleries for students by batch and department")
@@ -73,6 +76,29 @@ class ProcessingResult(BaseModel):
     failed_videos: List[str]
     gallery_updated: bool
     gallery_path: str
+
+class StudentInfo(BaseModel):
+    sessionId: str
+    regNo: str
+    name: str
+    year: str
+    dept: str
+    batch: str
+    startTime: str
+    videoUploaded: bool
+    facesExtracted: bool
+    facesOrganized: bool
+    videoPath: str
+    facesCount: int
+
+class StudentDataSummary(BaseModel):
+    total_students: int
+    students_with_video: int
+    students_without_video: int
+    students_processed: int
+    students_pending: int
+    department: str
+    year: str
 
 def get_gallery_path(year: str, department: str) -> str:
     """Generate a standardized gallery path based on batch year and department"""
@@ -1163,6 +1189,58 @@ async def recognize_image(
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
+def get_student_data_folders():
+    """Get all department-year folders from student data directory"""
+    folders = []
+    if os.path.exists(STUDENT_DATA_DIR):
+        for folder in os.listdir(STUDENT_DATA_DIR):
+            folder_path = os.path.join(STUDENT_DATA_DIR, folder)
+            if os.path.isdir(folder_path) and "_" in folder:
+                dept, year = folder.split("_", 1)
+                folders.append({"folder": folder, "dept": dept, "year": year})
+    return folders
+
+def get_students_in_folder(dept: str, year: str) -> List[StudentInfo]:
+    """Get all students in a specific department-year folder"""
+    students = []
+    folder_path = os.path.join(STUDENT_DATA_DIR, f"{dept}_{year}")
+    
+    if os.path.exists(folder_path):
+        for student_folder in os.listdir(folder_path):
+            student_path = os.path.join(folder_path, student_folder)
+            if os.path.isdir(student_path):
+                # Look for student JSON file
+                json_file = os.path.join(student_path, f"{student_folder}.json")
+                if os.path.exists(json_file):
+                    try:
+                        with open(json_file, 'r') as f:
+                            data = json.load(f)
+                            students.append(StudentInfo(**data))
+                    except Exception as e:
+                        print(f"Error reading student data {json_file}: {e}")
+    
+    return students
+
+def get_student_data_summary(dept: str, year: str) -> StudentDataSummary:
+    """Get summary statistics for students in a department-year"""
+    students = get_students_in_folder(dept, year)
+    
+    total = len(students)
+    with_video = sum(1 for s in students if s.videoUploaded)
+    without_video = total - with_video
+    processed = sum(1 for s in students if s.facesExtracted)
+    pending = with_video - processed
+    
+    return StudentDataSummary(
+        total_students=total,
+        students_with_video=with_video,
+        students_without_video=without_video,
+        students_processed=processed,
+        students_pending=pending,
+        department=dept,
+        year=year
+    )
+
 import subprocess
 import threading
 import time
@@ -1466,8 +1544,119 @@ async def get_collection_app_status():
                 "error": str(e)
             }
 
-# Check processing status endpoint could be added here if needed
+@app.get("/student-data/folders", 
+         summary="Get available student data folders (dept_year)")
+async def get_available_folders():
+    """Get all available department-year folders from student data"""
+    folders = get_student_data_folders()
+    return {"folders": folders}
+
+@app.get("/student-data/{dept}/{year}/summary", 
+         response_model=StudentDataSummary,
+         summary="Get summary of students in a department-year")
+async def get_student_summary(dept: str, year: str):
+    """Get summary statistics for students in a specific department and year"""
+    return get_student_data_summary(dept, year)
+
+@app.get("/student-data/{dept}/{year}/students", 
+         summary="Get list of students in a department-year")
+async def get_students_list(dept: str, year: str):
+    """Get detailed list of all students in a specific department and year"""
+    students = get_students_in_folder(dept, year)
+    return {"students": [student.dict() for student in students]}
+
+@app.get("/student-data/{dept}/{year}/pending", 
+         summary="Get students pending processing")
+async def get_pending_students(dept: str, year: str):
+    """Get list of students who have uploaded videos but haven't been processed yet"""
+    students = get_students_in_folder(dept, year)
+    pending = [s for s in students if s.videoUploaded and not s.facesExtracted]
+    return {"pending_students": [student.dict() for student in pending]}
+
+def process_student_video(student: StudentInfo) -> Dict[str, Any]:
+    """Process a single student's video to extract faces and create embeddings"""
+    try:
+        student_folder = os.path.join(STUDENT_DATA_DIR, f"{student.dept}_{student.year}", student.regNo)
+        video_path = os.path.join(student_folder, f"{student.regNo}.mp4")
+        
+        if not os.path.exists(video_path):
+            return {"success": False, "error": f"Video file not found: {video_path}"}
+        
+        # Create faces directory
+        faces_dir = os.path.join(student_folder, "faces")
+        frames_dir = os.path.join(student_folder, "frames")
+        os.makedirs(faces_dir, exist_ok=True)
+        os.makedirs(frames_dir, exist_ok=True)
+        
+        # Extract frames from video
+        frame_paths = extract_frames(video_path, frames_dir, max_frames=30, interval=10)
+        
+        # Process each frame to extract faces
+        all_face_paths = []
+        for frame_path in frame_paths:
+            face_paths = detect_and_crop_faces(frame_path, faces_dir)
+            all_face_paths.extend(face_paths)
+        
+        # Update student JSON file
+        json_file = os.path.join(student_folder, f"{student.regNo}.json")
+        student_data = student.dict()
+        student_data["facesExtracted"] = True
+        student_data["facesCount"] = len(all_face_paths)
+        
+        with open(json_file, 'w') as f:
+            json.dump(student_data, f, indent=2)
+        
+        return {
+            "success": True, 
+            "faces_extracted": len(all_face_paths),
+            "frames_processed": len(frame_paths)
+        }
+        
+    except Exception as e:
+        return {"success": False, "error": str(e)}
+
+@app.post("/student-data/{dept}/{year}/process", 
+          summary="Process students' videos to extract faces")
+async def process_students_videos(dept: str, year: str):
+    """Process all pending students' videos in a department-year to extract faces"""
+    try:
+        # Get pending students
+        students = get_students_in_folder(dept, year)
+        pending_students = [s for s in students if s.videoUploaded and not s.facesExtracted]
+        
+        if not pending_students:
+            return {
+                "success": True,
+                "message": "No pending students to process",
+                "processed_count": 0
+            }
+        
+        # Process each student
+        results = []
+        processed_count = 0
+        
+        for student in pending_students:
+            result = process_student_video(student)
+            results.append({
+                "student": student.regNo,
+                "name": student.name,
+                "result": result
+            })
+            
+            if result["success"]:
+                processed_count += 1
+        
+        return {
+            "success": True,
+            "message": f"Processed {processed_count} out of {len(pending_students)} students",
+            "processed_count": processed_count,
+            "total_pending": len(pending_students),
+            "details": results
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error processing students: {str(e)}")
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=5564 , workers = 2 )
+    uvicorn.run(app, host="0.0.0.0", port=5564 )

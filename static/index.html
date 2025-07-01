@@ -157,7 +157,7 @@
             </div>
         </section>
 
-        <!-- Upload Videos Section -->
+        <!-- Process Videos Section (New Workflow) -->
         <section id="upload" class="content-section">
             <div class="card shadow-sm border-0">
                 <div class="card-header bg-primary text-white p-4">
@@ -166,45 +166,34 @@
                             <i class="fas fa-video fa-lg"></i>
                         </div>
                         <div>
-                            <h4 class="mb-1">Process Videos</h4>
-                            <p class="mb-0 opacity-75"><i class="fas fa-info-circle me-1"></i> Step 1: Extract faces from videos</p>
+                            <h4 class="mb-1">Process Student Videos</h4>
+                            <p class="mb-0 opacity-75"><i class="fas fa-info-circle me-1"></i> Extract faces from recorded student videos</p>
                         </div>
                     </div>
                 </div>
                 <div class="card-body p-4">
                     <div class="row mb-4">
                         <div class="col-md-7">
-                            <form id="processVideosForm">
+                            <form id="selectStudentDataForm">
                                 <div class="row mb-4">
                                     <div class="col-md-6">
-                                        <label for="batchYear" class="form-label fw-bold"><i class="fas fa-calendar-alt me-2"></i>Batch Year</label>
-                                        <select id="batchYear" class="form-select form-control-lg" required>
+                                        <label for="studentBatchYear" class="form-label fw-bold"><i class="fas fa-calendar-alt me-2"></i>Batch Year</label>
+                                        <select id="studentBatchYear" class="form-select form-control-lg" required>
                                             <option value="" selected disabled>Select Batch Year</option>
                                             <!-- Will be populated dynamically -->
                                         </select>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="department" class="form-label fw-bold"><i class="fas fa-building me-2"></i>Department</label>
-                                        <select id="department" class="form-select form-control-lg" required>
+                                        <label for="studentDepartment" class="form-label fw-bold"><i class="fas fa-building me-2"></i>Department</label>
+                                        <select id="studentDepartment" class="form-select form-control-lg" required>
                                             <option value="" selected disabled>Select Department</option>
                                             <!-- Will be populated dynamically -->
                                         </select>
                                     </div>
                                 </div>
-                                <div class="mb-4">
-                                    <label for="videosDir" class="form-label fw-bold"><i class="fas fa-folder-open me-2"></i>Videos Directory Path</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text bg-light"><i class="fas fa-folder"></i></span>
-                                        <input type="text" id="videosDir" class="form-control form-control-lg" placeholder="/path/to/videos" required>
-                                    </div>
-                                    <div class="form-text text-muted mt-2 bg-light p-3 rounded">
-                                        <i class="fas fa-info-circle me-2 text-primary"></i>
-                                        Extract frames and faces from videos. Each video filename should be the student's name. After processing, you'll need to create a gallery from the extracted data.
-                                    </div>
-                                </div>
                                 <div class="d-grid gap-2">
-                                    <button type="submit" id="btnProcess" class="btn btn-primary btn-lg">
-                                        <i class="fas fa-cog me-2"></i>Process Video Frames
+                                    <button type="submit" id="btnLoadStudentData" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-search me-2"></i>Load Student Data
                                     </button>
                                 </div>
                             </form>
@@ -213,11 +202,67 @@
                             <div class="bg-light h-100 p-4 rounded">
                                 <h5 class="border-bottom pb-2"><i class="fas fa-lightbulb text-warning me-2"></i>How It Works</h5>
                                 <ol class="mt-3">
-                                    <li class="mb-2">Select the <strong>batch year</strong> and <strong>department</strong> for the students</li>
-                                    <li class="mb-2">Provide the directory path where your student videos are stored</li>
-                                    <li class="mb-2">Click "Process Video Frames" to extract faces</li>
-                                    <li>Once complete, proceed to "Create Galleries" to build a face recognition gallery</li>
+                                    <li class="mb-2">Select the <strong>batch year</strong> and <strong>department</strong></li>
+                                    <li class="mb-2">View student statistics and pending videos</li>
+                                    <li class="mb-2">Process videos to extract faces</li>
+                                    <li>Create galleries from processed data</li>
                                 </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Student Data Statistics -->
+                    <div id="studentDataStats" class="mt-4" style="display: none;">
+                        <div class="card border-0 bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-chart-bar me-2"></i>Student Data Statistics</h5>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="text-center p-3">
+                                            <div class="h2 mb-0 text-primary" id="totalStudents">0</div>
+                                            <div class="text-muted">Total Students</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-center p-3">
+                                            <div class="h2 mb-0 text-success" id="studentsWithVideo">0</div>
+                                            <div class="text-muted">With Video</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-center p-3">
+                                            <div class="h2 mb-0 text-warning" id="studentsPending">0</div>
+                                            <div class="text-muted">Pending Processing</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="text-center p-3">
+                                            <div class="h2 mb-0 text-info" id="studentsProcessed">0</div>
+                                            <div class="text-muted">Processed</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-4">
+                                    <button id="btnProcessStudentVideos" class="btn btn-success btn-lg me-3" disabled>
+                                        <i class="fas fa-cog me-2"></i>Process Pending Videos
+                                    </button>
+                                    <button id="btnViewPendingStudents" class="btn btn-outline-primary">
+                                        <i class="fas fa-list me-2"></i>View Pending Students
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Pending Students List -->
+                    <div id="pendingStudentsList" class="mt-4" style="display: none;">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-users me-2"></i>Students Pending Processing</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="pendingStudentsTable"></div>
                             </div>
                         </div>
                     </div>

@@ -546,13 +546,22 @@ def start_session():
         "name": name,
         "year": year,
         "dept": dept,
+        "batch": f"Batch{year}",  # Create batch from year
         "startTime": datetime.now().isoformat(),
         "videoUploaded": False,
-        "facesExtracted": False
+        "facesExtracted": False,
+        "facesOrganized": False,
+        "videoPath": "",
+        "facesCount": 0
     }
     
+    # Save session data with both session ID and student ID filenames
     with open(os.path.join(student_dir, f"{session_id}.json"), 'w') as f:
-        json.dump(session_data, f)
+        json.dump(session_data, f, indent=2)
+    
+    # Also save with student ID as filename for easy access
+    with open(os.path.join(student_dir, f"{student_id}.json"), 'w') as f:
+        json.dump(session_data, f, indent=2)
     
     return jsonify({"sessionId": session_id, "studentId": student_id}), 200
 
@@ -591,13 +600,13 @@ def upload_video(session_id):
         session_data = json.load(f)
     
     # Save the original WebM video (temporary)
-    webm_filename = f"{student_id}_{session_id}.webm"
+    webm_filename = f"{student_id}.webm"
     webm_path = os.path.join(student_dir, webm_filename)
     file.save(webm_path)
     print(f"Saved WebM video to {webm_path}")
     
     # Convert WebM to MP4 using FFmpeg
-    mp4_filename = f"{student_id}_{session_id}.mp4"
+    mp4_filename = f"{student_id}.mp4"
     mp4_path = os.path.join(student_dir, mp4_filename)
     
     try:
@@ -681,20 +690,12 @@ def upload_video(session_id):
         except Exception as e:
             print(f"Warning: Could not delete WebM file: {e}")
         
-        # Extract faces from the MP4 video
-        faces_count = extract_faces_from_video(
-            mp4_path, 
-            faces_dir,
-            face_confidence=0.3,
-            face_padding=0.2
-        )
-        print(f"Extracted {faces_count} faces from {mp4_path}")
-        
-        # Update session data
+        # Update session data - only mark video as uploaded, no face extraction
         session_data["videoUploaded"] = True
         session_data["uploadTime"] = datetime.now().isoformat()
-        session_data["facesExtracted"] = True
-        session_data["facesCount"] = faces_count
+        session_data["facesExtracted"] = False  # Will be set to True when processed in gallery manager
+        session_data["facesOrganized"] = False  # Will be set to True when organized in gallery manager
+        session_data["facesCount"] = 0  # Will be updated during processing
         session_data["videoPath"] = mp4_path  # Store video path for reference
         
         # Update additional fields if provided in form data
@@ -705,41 +706,24 @@ def upload_video(session_id):
         if dept:
             session_data["dept"] = dept
         
-        # Organize processed faces into gallery structure
-        if faces_count > 0:
-            print("Organizing processed faces into gallery structure...")
-            gallery_dir = organize_processed_faces_to_gallery(session_data, faces_dir)
-            
-            if gallery_dir:
-                session_data["galleryPath"] = gallery_dir
-                session_data["facesOrganized"] = True
-                print(f"Successfully organized faces into gallery: {gallery_dir}")
-            else:
-                session_data["facesOrganized"] = False
-                print("Warning: Failed to organize faces into gallery structure")
-        else:
-            session_data["facesOrganized"] = False
-            print("No faces extracted, skipping gallery organization")
+        # Save updated session data with student reg number as filename
+        student_json_file = os.path.join(student_dir, f"{student_id}.json")
+        with open(student_json_file, 'w') as f:
+            json.dump(session_data, f, indent=2)
         
-        # Save updated session data
+        # Also update the original session file
         with open(session_file, 'w') as f:
-            json.dump(session_data, f)
+            json.dump(session_data, f, indent=2)
         
         # Keep the MP4 video file for reference
         print(f"Keeping MP4 video file for reference: {mp4_path}")
         
-        # Prepare response message
-        if session_data.get("facesOrganized", False):
-            message = f"Video processed successfully. Extracted {faces_count} face images and organized them into gallery structure."
-        else:
-            message = f"Video processed successfully. Extracted {faces_count} face images. Note: Gallery organization may have failed."
-            
         return jsonify({
             "success": True,
-            "message": message,
-            "facesCount": faces_count,
-            "facesOrganized": session_data.get("facesOrganized", False),
-            "galleryPath": session_data.get("galleryPath")
+            "message": "Video uploaded and converted successfully. Ready for processing in gallery manager.",
+            "facesCount": 0,  # No faces extracted yet
+            "facesOrganized": False,
+            "videoPath": mp4_path
         }), 200
     
     except Exception as e:
