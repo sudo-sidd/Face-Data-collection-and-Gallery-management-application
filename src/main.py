@@ -127,7 +127,7 @@ def get_batch_years_and_departments():
         conn.close()
 
 
-def extract_frames(video_path: str, output_dir: str, max_frames: int = 200, interval: int = 3) -> List[str]:
+def extract_frames(video_path: str, output_dir: str, max_frames: int = 1000, interval: int = 1) -> List[str]:
     """
     Extract frames from a video at specified intervals
     
@@ -268,16 +268,6 @@ def detect_and_crop_faces(image_path: str, output_dir: str, yolo_path: str = DEF
 def create_face_augmentations():
     """Create a set of specific augmentations for face images"""
     augmentations = [
-        # Downscaling and Upscaling
-        A.Compose([
-            A.Resize(height=32, width=32),  # Downscale to low resolution
-            A.Resize(height=128, width=128)  # Upscale back to original size
-        ]),
-        A.Compose([
-            A.Resize(height=24, width=24),  # Downscale to low resolution
-            A.Resize(height=128, width=128)  # Upscale back to original size
-        ]),
-        
         # Brightness and Contrast Adjustment
         A.RandomBrightnessContrast(p=1.0, brightness_limit=(-0.2, 0.2), contrast_limit=(-0.2, 0.2)),
         
@@ -298,13 +288,17 @@ def create_face_augmentations():
     ]
     return augmentations
 
-def augment_face_image(image, num_augmentations=2):
+def augment_face_image(image, num_augmentations=3):
     """
     Generate augmented versions of a face image in-memory
     
+    This function applies a specific augmentation strategy:
+    1. Always applies both downscale-upscale augmentations (32x32 and 24x24)
+    2. Applies one additional random augmentation from the remaining list
+    
     Args:
         image: Original face image (numpy array)
-        num_augmentations: Number of augmented versions to generate
+        num_augmentations: Number of augmented versions to generate (default 3)
     
     Returns:
         List of augmented images (numpy arrays)
@@ -312,9 +306,33 @@ def augment_face_image(image, num_augmentations=2):
     augmentations_list = create_face_augmentations()
     augmented_images = []
     
-    for i in range(num_augmentations):
-        # Select random augmentation
-        selected_aug = random.choice(augmentations_list)
+    # Define the two specific downscale-upscale augmentations that should always be applied
+    mandatory_augmentations = [
+        # 32x32 downscale-upscale (index 0)
+        A.Compose([
+            A.Resize(height=32, width=32),
+            A.Resize(height=128, width=128)
+        ]),
+        # 24x24 downscale-upscale (index 1)
+        A.Compose([
+            A.Resize(height=24, width=24),
+            A.Resize(height=128, width=128)
+        ])
+    ]
+    
+    # Apply the two mandatory downscale-upscale augmentations
+    for aug in mandatory_augmentations:
+        augmented = aug(image=image)
+        augmented_images.append(augmented['image'])
+    
+    # Apply additional random augmentations from the remaining list
+    # Exclude the first two augmentations (the downscale-upscale ones)
+    remaining_augmentations = augmentations_list[2:]  # Skip the first two
+    
+    additional_augs_needed = max(0, num_augmentations - 2)  # We already applied 2
+    for i in range(additional_augs_needed):
+        # Select random augmentation from remaining list
+        selected_aug = random.choice(remaining_augmentations)
         
         # Apply augmentation
         if isinstance(selected_aug, A.Compose):
@@ -1509,7 +1527,7 @@ def process_student_video(student: StudentInfo) -> Dict[str, Any]:
         os.makedirs(temp_frames_dir, exist_ok=True)
         
         # Extract frames from video
-        frame_paths = extract_frames(video_path, temp_frames_dir, max_frames=30, interval=10)
+        frame_paths = extract_frames(video_path, temp_frames_dir)
         
         # Process each frame to extract faces and save them in gallery structure
         all_face_paths = []

@@ -53,13 +53,17 @@ def create_face_augmentations():
     ]
     return augmentations
 
-def augment_face_image(image, num_augmentations=2):
+def augment_face_image(image, num_augmentations=3):
     """
     Generate augmented versions of a face image in-memory
     
+    This function applies a specific augmentation strategy:
+    1. Always applies both downscale-upscale augmentations (32x32 and 24x24)
+    2. Applies one additional random augmentation from the remaining list
+    
     Args:
         image: Original face image (numpy array)
-        num_augmentations: Number of augmented versions to generate
+        num_augmentations: Number of augmented versions to generate (default 3)
     
     Returns:
         List of augmented images (numpy arrays)
@@ -67,9 +71,33 @@ def augment_face_image(image, num_augmentations=2):
     augmentations_list = create_face_augmentations()
     augmented_images = []
     
-    for i in range(num_augmentations):
-        # Select random augmentation
-        selected_aug = random.choice(augmentations_list)
+    # Define the two specific downscale-upscale augmentations that should always be applied
+    mandatory_augmentations = [
+        # 32x32 downscale-upscale (index 0)
+        A.Compose([
+            A.Resize(height=32, width=32),
+            A.Resize(height=128, width=128)
+        ]),
+        # 24x24 downscale-upscale (index 1)
+        A.Compose([
+            A.Resize(height=24, width=24),
+            A.Resize(height=128, width=128)
+        ])
+    ]
+    
+    # Apply the two mandatory downscale-upscale augmentations
+    for aug in mandatory_augmentations:
+        augmented = aug(image=image)
+        augmented_images.append(augmented['image'])
+    
+    # Apply additional random augmentations from the remaining list
+    # Exclude the first two augmentations (the downscale-upscale ones)
+    remaining_augmentations = augmentations_list[2:]  # Skip the first two
+    
+    additional_augs_needed = max(0, num_augmentations - 2)  # We already applied 2
+    for i in range(additional_augs_needed):
+        # Select random augmentation from remaining list
+        selected_aug = random.choice(remaining_augmentations)
         
         # Apply augmentation
         if isinstance(selected_aug, A.Compose):
@@ -136,7 +164,7 @@ def extract_embedding(model, img_path, device):
         print(f"Error processing {img_path}: {e}")
         return None
 
-def create_gallery(model_path, data_dir, output_path, augment_ratio=0.0, augs_per_image=2):
+def create_gallery(model_path, data_dir, output_path, augment_ratio=0.0, augs_per_image=3):
     """Create a face recognition gallery from preprocessed face images"""
     # Load model
     model, device = load_model(model_path)
@@ -206,7 +234,7 @@ def create_gallery(model_path, data_dir, output_path, augment_ratio=0.0, augs_pe
     print(f"Gallery saved to {output_path}")
     return gallery
 
-def update_gallery(model_path, gallery_path, new_data_dir, output_path=None, augment_ratio=0.0, augs_per_image=2):
+def update_gallery(model_path, gallery_path, new_data_dir, output_path=None, augment_ratio=0.0, augs_per_image=3):
     """Update an existing gallery with new identities"""
     if output_path is None:
         output_path = gallery_path
