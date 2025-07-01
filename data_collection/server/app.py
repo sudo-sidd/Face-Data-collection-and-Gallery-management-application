@@ -13,7 +13,40 @@ import base64
 from db_utils import get_batch_years_and_departments
 
 app = Flask(__name__, static_folder='static')
-CORS(app)
+
+# Configure CORS for HTTP compatibility
+CORS(app, resources={
+    r"/*": {
+        "origins": "*",
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "X-Requested-With"],
+        "supports_credentials": False  # Set to False for HTTP
+    }
+})
+
+# Add security headers for better browser compatibility
+@app.after_request
+def after_request(response):
+    # Allow all origins for development (HTTP mode)
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,X-Requested-With')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    
+    # Basic security headers (suitable for HTTP)
+    response.headers.add('X-Content-Type-Options', 'nosniff')
+    response.headers.add('X-Frame-Options', 'SAMEORIGIN')
+    
+    return response
+
+# Handle preflight requests
+@app.before_request
+def handle_preflight():
+    if request.method == "OPTIONS":
+        response = jsonify({})
+        response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization,X-Requested-With")
+        response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
+        return response
 
 # Configuration
 # Get the absolute path to the root project directory
@@ -469,8 +502,13 @@ def get_batches():
 
 @app.route('/qr')
 def generate_qr():
-    # Generate QR code for the HTTPS URL
-    url = f"https://{request.host}"
+    # Generate QR code - use HTTP for better compatibility
+    # Check if we're running HTTPS or HTTP
+    if request.is_secure:
+        url = f"https://{request.host}"
+    else:
+        url = f"http://{request.host}"
+    
     img = qrcode.make(url)
     
     # Convert to base64 for display
@@ -478,7 +516,7 @@ def generate_qr():
     img.save(buffered)
     img_str = base64.b64encode(buffered.getvalue()).decode()
     
-    # Return simple HTML with QR code
+    # Return simple HTML with QR code and both HTTP/HTTPS options
     return f"""
     <html>
         <head><title>Scan to connect</title></head>
@@ -486,6 +524,7 @@ def generate_qr():
             <h1>Scan this QR code with your phone</h1>
             <img src="data:image/png;base64,{img_str}">
             <p>Or visit: <a href="{url}">{url}</a></p>
+            <p><small>If HTTPS doesn't work, try: <a href="http://{request.host.split(':')[0]}:5001">http://{request.host.split(':')[0]}:5001</a></small></p>
         </body>
     </html>
     """
@@ -494,9 +533,42 @@ if __name__ == '__main__':
     # Run migration on startup to ensure data is in correct structure
     migrate_student_data()
     import os
-    cert_file = os.path.join(os.path.dirname(__file__), 'cert.pem')
-    key_file = os.path.join(os.path.dirname(__file__), 'key.pem')
+    import socket
     
-    if os.path.exists(cert_file) and os.path.exists(key_file):
-        print("SSL certificates found. Starting HTTPS server...")
-        app.run(host='0.0.0.0', port=5001, ssl_context=(cert_file, key_file))
+    def find_available_port(start_port=5001, max_attempts=10):
+        """Find an available port starting from start_port"""
+        for port in range(start_port, start_port + max_attempts):
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                try:
+                    s.bind(('0.0.0.0', port))
+                    return port
+                except OSError:
+                    continue
+        return None
+    
+    # Find available port
+    port = find_available_port(5001)
+    if port is None:
+        print("ERROR: No available ports found in range 5001-5010")
+        exit(1)
+    
+    # Start server with fallback options
+    print(f"🚀 Starting Face Collection App on port {port}...")
+    
+    # Force HTTP mode for better browser compatibility (no SSL warnings)
+    print("📡 Running in HTTP mode (recommended for development)")
+    print(f"🌐 Server will be available at: http://localhost:{port}")
+    print(f"📱 For mobile access: http://YOUR_IP_ADDRESS:{port}")
+    print("")
+    print("💡 Benefits of HTTP mode:")
+    print("   ✓ No SSL certificate warnings")
+    print("   ✓ Works on all browsers without issues")
+    print("   ✓ No 'connection reset' errors")
+    print("   ✓ Better compatibility with mobile devices")
+    print("")
+    
+    try:
+        app.run(host='0.0.0.0', port=port, debug=False, threaded=True)
+    except Exception as e:
+        print(f"❌ Failed to start HTTP server: {e}")
+        exit(1)

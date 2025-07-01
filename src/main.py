@@ -1488,42 +1488,67 @@ async def get_pending_students(dept: str, year: str):
     return {"pending_students": [student.dict() for student in pending]}
 
 def process_student_video(student: StudentInfo) -> Dict[str, Any]:
-    """Process a single student's video to extract faces and create embeddings"""
+    """Process a single student's video to extract faces and organize them in gallery structure"""
     try:
-        student_folder = os.path.join(STUDENT_DATA_DIR, f"{student.dept}_{student.year}", student.regNo)
-        video_path = os.path.join(student_folder, f"{student.regNo}.mp4")
+        # Source paths (where video is stored)
+        student_source_folder = os.path.join(STUDENT_DATA_DIR, f"{student.dept}_{student.year}", student.regNo)
+        video_path = os.path.join(student_source_folder, f"{student.regNo}.mp4")
         
         if not os.path.exists(video_path):
             return {"success": False, "error": f"Video file not found: {video_path}"}
         
-        # Create faces directory
-        faces_dir = os.path.join(student_folder, "faces")
-        frames_dir = os.path.join(student_folder, "frames")
-        os.makedirs(faces_dir, exist_ok=True)
-        os.makedirs(frames_dir, exist_ok=True)
+        # Destination paths (gallery data structure)
+        gallery_data_dir = os.path.join(BASE_DATA_DIR, f"{student.dept}_{student.year}")
+        student_gallery_folder = os.path.join(gallery_data_dir, student.regNo)
+        
+        # Create gallery data directory structure
+        os.makedirs(student_gallery_folder, exist_ok=True)
+        
+        # Create temporary frames directory for processing
+        temp_frames_dir = os.path.join(student_source_folder, "temp_frames")
+        os.makedirs(temp_frames_dir, exist_ok=True)
         
         # Extract frames from video
-        frame_paths = extract_frames(video_path, frames_dir, max_frames=30, interval=10)
+        frame_paths = extract_frames(video_path, temp_frames_dir, max_frames=30, interval=10)
         
-        # Process each frame to extract faces
+        # Process each frame to extract faces and save them in gallery structure
         all_face_paths = []
         for frame_path in frame_paths:
-            face_paths = detect_and_crop_faces(frame_path, faces_dir)
+            face_paths = detect_and_crop_faces(frame_path, student_gallery_folder)
             all_face_paths.extend(face_paths)
         
-        # Update student JSON file
-        json_file = os.path.join(student_folder, f"{student.regNo}.json")
-        student_data = student.dict()
+        # Clean up temporary frames directory
+        try:
+            for frame_path in frame_paths:
+                if os.path.exists(frame_path):
+                    os.remove(frame_path)
+            if os.path.exists(temp_frames_dir):
+                os.rmdir(temp_frames_dir)
+        except Exception as e:
+            print(f"Warning: Could not clean up temporary frames: {e}")
+        
+        # Update student JSON file (only one JSON file per student)
+        json_file = os.path.join(student_source_folder, f"{student.regNo}.json")
+        if os.path.exists(json_file):
+            with open(json_file, 'r') as f:
+                student_data = json.load(f)
+        else:
+            student_data = student.dict()
+        
+        # Update processing status
         student_data["facesExtracted"] = True
+        student_data["facesOrganized"] = True
         student_data["facesCount"] = len(all_face_paths)
         
+        # Save updated JSON file
         with open(json_file, 'w') as f:
             json.dump(student_data, f, indent=2)
         
         return {
             "success": True, 
             "faces_extracted": len(all_face_paths),
-            "frames_processed": len(frame_paths)
+            "frames_processed": len(frame_paths),
+            "gallery_path": student_gallery_folder
         }
         
     except Exception as e:
@@ -1573,4 +1598,4 @@ async def process_students_videos(dept: str, year: str):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5564 )
+    uvicorn.run("main:app", host="0.0.0.0", port=5564 , reload = True )
