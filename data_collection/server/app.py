@@ -384,13 +384,6 @@ def upload_video(session_id):
             
         print(f"MP4 file created successfully: {mp4_path} ({mp4_size} bytes)")
         
-        # Delete the WebM file now that conversion is complete
-        try:
-            os.remove(webm_path)
-            print(f"Deleted temporary WebM file: {webm_path}")
-        except Exception as e:
-            print(f"Warning: Could not delete WebM file: {e}")
-        
         # Update session data - only mark video as uploaded, no face extraction
         session_data["videoUploaded"] = True
         session_data["uploadTime"] = datetime.now().isoformat()
@@ -412,6 +405,28 @@ def upload_video(session_id):
         with open(student_json_file, 'w') as f:
             json.dump(session_data, f, indent=2)
         
+        # Verify the JSON file was written correctly
+        try:
+            with open(student_json_file, 'r') as f:
+                verification_data = json.load(f)
+                if not verification_data.get("videoUploaded"):
+                    raise ValueError("JSON verification failed - videoUploaded not set")
+            print(f"Successfully updated and verified session data: {student_json_file}")
+        except Exception as e:
+            print(f"Error verifying JSON file: {e}")
+            return jsonify({
+                "success": False,
+                "message": f"Failed to save session data: {str(e)}"
+            }), 500
+        
+        # Only delete the WebM file AFTER all operations are successful
+        try:
+            os.remove(webm_path)
+            print(f"Deleted temporary WebM file: {webm_path}")
+        except Exception as e:
+            print(f"Warning: Could not delete WebM file: {e}")
+            # This is non-critical, so we don't fail the entire upload
+        
         # Keep the MP4 video file for reference
         print(f"Keeping MP4 video file for reference: {mp4_path}")
         
@@ -423,11 +438,43 @@ def upload_video(session_id):
             "videoPath": mp4_path
         }), 200
     
-    except Exception as e:
-        print(f"Error processing video: {e}")
+    except subprocess.TimeoutExpired:
+        print(f"FFmpeg conversion timed out after 2 minutes")
         return jsonify({
             "success": False,
-            "message": f"Error processing video: {str(e)}"
+            "message": "Video conversion timed out. The video file might be too large or corrupted."
+        }), 500
+    except FileNotFoundError:
+        print(f"FFmpeg not found in system PATH")
+        return jsonify({
+            "success": False,
+            "message": "FFmpeg is not installed or not found in system PATH."
+        }), 500
+    except PermissionError as e:
+        print(f"Permission error during video processing: {e}")
+        return jsonify({
+            "success": False,
+            "message": f"Permission error: Unable to write video files. Check directory permissions."
+        }), 500
+    except OSError as e:
+        print(f"OS error during video processing: {e}")
+        return jsonify({
+            "success": False,
+            "message": f"System error during video processing: {str(e)}"
+        }), 500
+    except json.JSONDecodeError as e:
+        print(f"JSON error when updating session data: {e}")
+        return jsonify({
+            "success": False,
+            "message": f"Error updating session data: Invalid JSON format."
+        }), 500
+    except Exception as e:
+        print(f"Unexpected error processing video: {e}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({
+            "success": False,
+            "message": f"Unexpected error processing video: {str(e)}"
         }), 500
 
 @app.route('/api/reset-faces/<session_id>', methods=['POST'])
