@@ -5,6 +5,8 @@ import uuid
 import sqlite3
 import numpy as np
 import json
+import time
+from datetime import datetime
 from enum import Enum
 from typing import List, Optional, Dict, Tuple, Union, Any
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query, Request
@@ -1486,7 +1488,7 @@ async def get_pending_students(dept: str, year: str):
     return {"pending_students": [student.dict() for student in pending]}
 
 def process_student_video(student: StudentInfo) -> Dict[str, Any]:
-    """Process a single student's video to extract faces and save directly to gallery structure"""
+    """Process a single student's video to extract faces and create embeddings"""
     try:
         student_folder = os.path.join(STUDENT_DATA_DIR, f"{student.dept}_{student.year}", student.regNo)
         video_path = os.path.join(student_folder, f"{student.regNo}.mp4")
@@ -1494,69 +1496,36 @@ def process_student_video(student: StudentInfo) -> Dict[str, Any]:
         if not os.path.exists(video_path):
             return {"success": False, "error": f"Video file not found: {video_path}"}
         
-        # Create gallery directory structure directly
-        gallery_dept_year_dir = os.path.join(BASE_DATA_DIR, f"{student.dept}_{student.year}")
-        gallery_student_dir = os.path.join(gallery_dept_year_dir, student.regNo)
-        os.makedirs(gallery_student_dir, exist_ok=True)
+        # Create faces directory
+        faces_dir = os.path.join(student_folder, "faces")
+        frames_dir = os.path.join(student_folder, "frames")
+        os.makedirs(faces_dir, exist_ok=True)
+        os.makedirs(frames_dir, exist_ok=True)
         
-        # Create temporary frames directory for processing
-        temp_frames_dir = os.path.join(student_folder, "temp_frames")
-        os.makedirs(temp_frames_dir, exist_ok=True)
+        # Extract frames from video
+        frame_paths = extract_frames(video_path, frames_dir, max_frames=30, interval=10)
         
-        try:
-            # Extract frames from video
-            frame_paths = extract_frames(video_path, temp_frames_dir, max_frames=30, interval=10)
-            
-            # Process each frame to extract faces and save directly to gallery
-            all_face_paths = []
-            for frame_path in frame_paths:
-                face_paths = detect_and_crop_faces(frame_path, gallery_student_dir)
-                all_face_paths.extend(face_paths)
-            
-            # Clean up temporary frames directory
-            shutil.rmtree(temp_frames_dir, ignore_errors=True)
-            
-            # Create student metadata in gallery
-            metadata_file = os.path.join(gallery_student_dir, 'metadata.json')
-            metadata = {
-                'regNo': student.regNo,
-                'name': student.name,
-                'dept': student.dept,
-                'year': student.year,
-                'group': f"{student.dept}_{student.year}",
-                'lastUpdated': datetime.now().isoformat(),
-                'processedImagesPath': gallery_student_dir,
-                'totalFaces': len(all_face_paths)
-            }
-            
-            with open(metadata_file, 'w') as f:
-                json.dump(metadata, f, indent=2)
-            
-            # Update student JSON file in data collection
-            json_file = os.path.join(student_folder, f"{student.regNo}.json")
-            student_data = student.dict()
-            student_data["facesExtracted"] = True
-            student_data["facesOrganized"] = True
-            student_data["facesCount"] = len(all_face_paths)
-            student_data["galleryPath"] = gallery_student_dir
-            student_data["processedTime"] = datetime.now().isoformat()
-            
-            with open(json_file, 'w') as f:
-                json.dump(student_data, f, indent=2)
-            
-            return {
-                "success": True, 
-                "faces_extracted": len(all_face_paths),
-                "frames_processed": len(frame_paths),
-                "gallery_path": gallery_student_dir
-            }
-            
-        except Exception as e:
-            # Clean up temp directory in case of error
-            if os.path.exists(temp_frames_dir):
-                shutil.rmtree(temp_frames_dir, ignore_errors=True)
-            raise e
-            
+        # Process each frame to extract faces
+        all_face_paths = []
+        for frame_path in frame_paths:
+            face_paths = detect_and_crop_faces(frame_path, faces_dir)
+            all_face_paths.extend(face_paths)
+        
+        # Update student JSON file
+        json_file = os.path.join(student_folder, f"{student.regNo}.json")
+        student_data = student.dict()
+        student_data["facesExtracted"] = True
+        student_data["facesCount"] = len(all_face_paths)
+        
+        with open(json_file, 'w') as f:
+            json.dump(student_data, f, indent=2)
+        
+        return {
+            "success": True, 
+            "faces_extracted": len(all_face_paths),
+            "frames_processed": len(frame_paths)
+        }
+        
     except Exception as e:
         return {"success": False, "error": str(e)}
 
