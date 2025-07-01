@@ -1,78 +1,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face Video Collection</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Face Video Collection</title>
+  <link rel="stylesheet" href="/static/css/style.css"/>
+  <style>
+
+  </style>
 </head>
 <body>
-    <!-- Added Header Component -->
-    <header class="header">
-        <div class="header-container">
-            <div class="nba">
-                <img src="/static/image.png"  class="nba-logo">
-            </div>
-            
-            <div class="college-info">
-                <h1>SRI SHAKTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY</h1>
-            </div>
-            
-        </div>
-    </header>
-    
-    <div class="container">
-        <div id="registration" class="section">
-            <h1>Student Biometric Data Collection</h1>
-            <form id="student-form">
-                <div class="form-group">
-                    <label for="studentId">Registration Number:</label>
-                    <input type="text" id="studentId" name="studentId" required>
-                </div>
-                <div class="form-group">
-                    <label for="name">Full Name:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="year">Year:</label>
-                    <select id="year" name="year" required>
-                        <option value="">Select Year</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="dept">Department:</label>
-                    <select id="dept" name="dept" required>
-                        <option value="">Select Department</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn primary">Start</button>
-            </form>
-        </div>
-        
-        <div id="camera-section" class="section hidden">
-            <div class="camera-container">
-                <video id="video" autoplay playsinline></video>
-            </div>
-            
-            <div class="controls">
-                <div id="progress-bar">
-                    <div id="progress"></div>
-                </div>
-                <div id="instruction">Follow the instructions below</div>
-            </div>
-        </div>
-        
-        <div id="completion" class="section hidden">
-            <h2>Recording Complete</h2>
-            <p>Your face video has been processed successfully.</p>
-            <p>Thank you for your participation!</p>
-            <div class="button-group">
-                <button id="retry" class="btn primary">Try Again</button>
-                <button id="restart" class="btn secondary">Add New Student</button>
-            </div>
-        </div>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <div class="nba">
+        <img src="/static/image.png" class="nba-logo" />
+      </div>
+      <div class="college-info">
+        <h1>SRI SHAKTHI INSTITUTE OF ENGINEERING AND TECHNOLOGY</h1>
+      </div>
     </div>
-    
-    <script src="/static/js/app.js"></script>
+  </header>
+
+  <!-- Main Form -->
+  <div class="container">
+    <div id="registration" class="section">
+      <h1>Student Biometric Data Collection</h1>
+      <form id="student-form">
+        <div class="form-group">
+          <label for="studentId">Registration Number:</label>
+          <input type="text" id="studentId" name="studentId" required />
+        </div>
+        <div class="form-group">
+          <label for="name">Full Name:</label>
+          <input type="text" id="name" name="name" required />
+        </div>
+        <div class="form-group">
+          <label for="year">Year:</label>
+          <select id="year" name="year" required>
+            <option value="">Select Year</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="dept">Department:</label>
+          <select id="dept" name="dept" required>
+            <option value="">Select Department</option>
+          </select>
+        </div>
+        <button type="submit" class="btn primary">Start</button>
+      </form>
+    </div>
+
+    <!-- Camera Section -->
+    <div id="camera-section" class="section hidden">
+      <div class="camera-container">
+        <video id="video" autoplay playsinline></video>
+      </div>
+      <div class="controls">
+        <div id="progress-bar"><div id="progress"></div></div>
+        <div id="instruction">Follow the instructions below</div>
+      </div>
+    </div>
+
+    <!-- Completion -->
+    <div id="completion" class="section hidden">
+      <h2>Recording Complete</h2>
+      <p>Your face video has been processed successfully.</p>
+      <p>Thank you for your participation!</p>
+      <div class="button-group">
+        <button id="retry" class="btn primary">Try Again</button>
+        <button id="restart" class="btn secondary">Add New Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 1: Instructions -->
+  <div id="modal1" class="modal">
+    <div class="modal-content">
+      <h2>📋 Recording Instructions</h2>
+      <p><strong>Position:</strong> Hold phone at arm's length from your face</p>
+      <p><strong>Lighting:</strong> Choose a well-lit area with light on your face</p>
+      <p><strong>Framing:</strong> Ensure only your face is visible and avoid reflections</p>
+      <p><strong>Follow this 8-second sequence:</strong></p>
+      <ol>
+        <li>📷 Look directly at the camera (1 sec)</li>
+        <li>➡️ Look slightly right (2 sec)</li>
+        <li>⬅️ Look slightly left (2 sec)</li>
+        <li>⬇️ Look slightly down (2 sec)</li>
+        <li>📷 Look straight again (1 sec)</li>
+      </ol>
+<button id="startRecording" class="btn primary">Next →</button>
+    </div>
+  </div>
+
+
+  
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+        document.getElementById('student-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('modal1').style.display = 'block';
+    });
+
+    document.getElementById('startRecording').addEventListener('click', function () {
+      document.getElementById('modal1').style.display = 'none';
+      document.getElementById('registration').classList.add('hidden');
+      document.getElementById('camera-section').classList.remove('hidden');
+
+      if (typeof startCamera === 'function') startCamera();
+      if (typeof startRecording === 'function') startRecording();
+    });
+
+    // Optional: close modal on outside click
+    window.addEventListener('click', function(event) {
+      const modal = document.getElementById('modal1');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+
+  <script src="/static/js/app.js"></script>
 </body>
 </html>
