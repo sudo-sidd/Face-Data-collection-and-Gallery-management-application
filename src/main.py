@@ -6,7 +6,7 @@ import sqlite3
 import numpy as np
 from enum import Enum
 from typing import List, Optional, Dict, Tuple, Union, Any
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query, Request
 from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel
 import base64
@@ -642,14 +642,20 @@ async def list_galleries():
     """List all available face recognition galleries"""
     
     if not os.path.exists(BASE_GALLERY_DIR):
+        print(f"DEBUG: Gallery directory does not exist: {BASE_GALLERY_DIR}")
         return {"galleries": []}
     
     # Find all gallery files
     galleries = []
-    for file in os.listdir(BASE_GALLERY_DIR):
-        if file.endswith(".pth") :
-            galleries.append(file)
+    all_files = os.listdir(BASE_GALLERY_DIR)
+    print(f"DEBUG: All files in {BASE_GALLERY_DIR}: {all_files}")
     
+    for file in all_files:
+        if file.endswith(".pth"):
+            galleries.append(file)
+            print(f"DEBUG: Found gallery file: {file}")
+    
+    print(f"DEBUG: Returning galleries: {galleries}")
     return {"galleries": galleries}
 
 @app.get("/galleries/{year}/{department}", response_model=Optional[GalleryInfo], 
@@ -1018,7 +1024,7 @@ async def recognize_image(
     """
     Recognize faces in an uploaded image using selected galleries
     
-    Parameters:ize
+    Parameters:
     - image: Image file to analyze
     - galleries: List of gallery filenames
     - threshold: Similarity threshold (0-1)
@@ -1027,54 +1033,135 @@ async def recognize_image(
     - Base64 encoded image with annotations
     - List of recognized faces
     """
-    # Read the image
-    contents = await image.read()
-    nparr = np.frombuffer(contents, np.uint8)
-    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    
-    if img is None:
-        raise HTTPException(status_code=400, detail="Invalid image file")
-    
-    # Process galleries
-    gallery_paths = []
-    for gallery_name in galleries:
-        if gallery_name.startswith('gallery_') and gallery_name.endswith('.pth'):
-            gallery_path = os.path.join(BASE_GALLERY_DIR, gallery_name)
-            if os.path.exists(gallery_path):
-                gallery_paths.append(gallery_path)
-    
-    if not gallery_paths:
-        raise HTTPException(status_code=400, detail="No valid galleries found")
-    
-    # Perform recognition
-    result_img, faces = recognize_faces(
-        img, 
-        gallery_paths=gallery_paths,
-        model_path=DEFAULT_MODEL_PATH,
-        yolo_path=DEFAULT_YOLO_PATH,
-        threshold=threshold
-    )
-    
-    # Convert result image to base64
-    _, buffer = cv2.imencode('.jpg', result_img)
-    img_base64 = base64.b64encode(buffer).decode('utf-8')
-    
-    # Make sure all numpy values are converted to standard Python types
-    serializable_faces = []
-    for face in faces:
-        serializable_face = {
-            "identity": face["identity"],
-            "similarity": float(face["similarity"]),  # Convert numpy.float32 to Python float
-            "bounding_box": [int(x) for x in face["bounding_box"]]  # Convert numpy values to Python ints
+    try:
+        print(f"DEBUG: Starting recognition process")
+        print(f"DEBUG: Received image: {image.filename}")
+        print(f"DEBUG: Received galleries: {galleries}")
+        print(f"DEBUG: Received threshold: {threshold}")
+        
+        # Read the image
+        contents = await image.read()
+        nparr = np.frombuffer(contents, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        
+        if img is None:
+            raise HTTPException(status_code=400, detail="Invalid image file")
+        
+        print(f"DEBUG: Image loaded successfully, shape: {img.shape}")
+        
+        # Debug: Print gallery directory info
+        print(f"DEBUG: Gallery directory: {BASE_GALLERY_DIR}")
+        print(f"DEBUG: Gallery directory exists: {os.path.exists(BASE_GALLERY_DIR)}")
+        
+        # List all files in gallery directory for debugging
+        if os.path.exists(BASE_GALLERY_DIR):
+            all_gallery_files = os.listdir(BASE_GALLERY_DIR)
+            print(f"DEBUG: All files in gallery directory: {all_gallery_files}")
+        else:
+            print(f"DEBUG: Gallery directory does not exist: {BASE_GALLERY_DIR}")
+            raise HTTPException(status_code=500, detail=f"Gallery directory does not exist: {BASE_GALLERY_DIR}")
+        
+        # Process galleries - Fixed logic to handle actual gallery files
+        gallery_paths = []
+        for gallery_name in galleries:
+            print(f"DEBUG: Processing gallery name: '{gallery_name}'")
+            
+            # Clean the gallery name
+            clean_name = gallery_name.strip()
+            
+            # Try multiple naming patterns
+            possible_paths = [
+                os.path.join(BASE_GALLERY_DIR, clean_name),  # Direct name as received from frontend
+                os.path.join(BASE_GALLERY_DIR, f"{clean_name}.pth") if not clean_name.endswith('.pth') else os.path.join(BASE_GALLERY_DIR, clean_name),  # Add .pth if missing
+                os.path.join(BASE_GALLERY_DIR, f"gallery_{clean_name}"),  # With gallery_ prefix
+            ]
+            
+            # Remove duplicates while preserving order
+            seen = set()
+            unique_paths = []
+            for path in possible_paths:
+                if path not in seen:
+                    seen.add(path)
+                    unique_paths.append(path)
+            
+            # Find the first existing file
+            found_path = None
+            for path in unique_paths:
+                print(f"DEBUG: Checking path: {path}")
+                if os.path.exists(path):
+                    found_path = path
+                    print(f"DEBUG: Found gallery at: {path}")
+                    break
+            
+            if found_path:
+                gallery_paths.append(found_path)
+                print(f"DEBUG: Successfully added gallery path: {found_path}")
+            else:
+                print(f"DEBUG: Gallery '{gallery_name}' not found. Tried paths:")
+                for path in unique_paths:
+                    print(f"  - {path} (exists: {os.path.exists(path)})")
+        
+        print(f"DEBUG: Final gallery_paths list: {gallery_paths}")
+        
+        if not gallery_paths:
+            # Provide detailed error information
+            available_galleries = []
+            if os.path.exists(BASE_GALLERY_DIR):
+                available_galleries = [f for f in os.listdir(BASE_GALLERY_DIR) if f.endswith('.pth')]
+            
+            error_detail = {
+                "error": "No valid galleries found",
+                "requested_galleries": galleries,
+                "available_galleries": available_galleries,
+                "gallery_directory": BASE_GALLERY_DIR
+            }
+            print(f"DEBUG: Error details: {error_detail}")
+            raise HTTPException(status_code=400, detail=f"No valid galleries found. Requested: {galleries}, Available: {available_galleries}")
+        
+        print(f"DEBUG: Starting face recognition with {len(gallery_paths)} galleries")
+        
+        # Perform recognition
+        result_img, faces = recognize_faces(
+            img, 
+            gallery_paths=gallery_paths,
+            model_path=DEFAULT_MODEL_PATH,
+            yolo_path=DEFAULT_YOLO_PATH,
+            threshold=threshold
+        )
+        
+        print(f"DEBUG: Recognition completed, found {len(faces)} faces")
+        
+        # Convert result image to base64
+        _, buffer = cv2.imencode('.jpg', result_img)
+        img_base64 = base64.b64encode(buffer).decode('utf-8')
+        
+        # Make sure all numpy values are converted to standard Python types
+        serializable_faces = []
+        for face in faces:
+            serializable_face = {
+                "identity": face["identity"],
+                "similarity": float(face["similarity"]),  # Convert numpy.float32 to Python float
+                "bounding_box": [int(x) for x in face["bounding_box"]]  # Convert numpy values to Python ints
+            }
+            serializable_faces.append(serializable_face)
+        
+        print(f"DEBUG: Returning results with {len(serializable_faces)} faces")
+        
+        # Return results
+        return {
+            "image": img_base64,
+            "faces": serializable_faces,
+            "count": len(serializable_faces)
         }
-        serializable_faces.append(serializable_face)
-    
-    # Return results
-    return {
-        "image": img_base64,
-        "faces": serializable_faces,
-        "count": len(serializable_faces)
-    }
+        
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
+    except Exception as e:
+        print(f"DEBUG: Unexpected error in recognize_image: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"Internal server error: {str(e)}")
 
 import subprocess
 import threading
@@ -1383,4 +1470,4 @@ async def get_collection_app_status():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=5564)
+    uvicorn.run("main:app", host="0.0.0.0", port=5564 , workers = 2 )
