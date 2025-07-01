@@ -1191,7 +1191,8 @@ async function loadProcessedDatasets() {
             html += '<div class="list-group">';
             
             // Filter only directories (batch_dept structure)
-            const datasets = data.data_dir_files.filter(file => !file.includes('.'));
+            let datasets = data.data_dir_files.filter(file => !file.includes('.'));
+            datasets = datasets.sort((a, b) => a.localeCompare(b));
             
             if (datasets.length === 0) {
                 html = '<div class="alert alert-info">No processed datasets found. Process videos first.</div>';
