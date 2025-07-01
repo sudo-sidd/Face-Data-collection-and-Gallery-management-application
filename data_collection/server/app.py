@@ -19,6 +19,10 @@ from concurrent.futures import ThreadPoolExecutor
 import torch
 from ultralytics import YOLO
 from db_utils import get_batch_years_and_departments
+from dotenv import load_dotenv
+
+# Load environment variables at module level
+load_dotenv()
 
 app = Flask(__name__, static_folder='static')
 CORS(app)
@@ -831,7 +835,16 @@ def generate_qr():
     """
 
 if __name__ == '__main__':
+    import sys
+    from gunicorn.app.wsgiapp import run
+
     # Run migration on startup to ensure data is in correct structure
     migrate_student_data()
-    
-    app.run(host='0.0.0.0', port=5001)
+
+    # Get host, port, and workers from environment variables or use defaults
+    host = os.environ.get("DATA_COLLECTION_HOST", "0.0.0.0")
+    port = int(os.environ.get("DATA_COLLECTION_PORT", 8000))
+    workers = int(os.environ.get("DATA_COLLECTION_WORKERS", 1))
+
+    sys.argv = ["gunicorn", "app:app", f"--bind={host}:{port}", f"--workers={workers}"]
+    run()
