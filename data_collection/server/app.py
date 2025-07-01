@@ -3,6 +3,7 @@ import json
 import uuid
 import sqlite3
 import shutil
+import subprocess
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from datetime import datetime
@@ -93,10 +94,20 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
         print(f"Error loading YOLO model: {e}")
         print("Falling back to OpenCV Haar cascade")
         # Fallback to Haar cascade if YOLO model fails to load
-        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
         use_yolo = False
+        # Initialize Haar cascade for fallback
+        try:
+            import cv2.data
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+        except:
+            # Fallback path
+            face_cascade = cv2.CascadeClassifier('/usr/share/opencv4/haarcascades/haarcascade_frontalface_default.xml')
+            if face_cascade.empty():
+                print("Warning: Could not load Haar cascade, face detection may fail")
+                face_cascade = None
     else:
         use_yolo = True
+        face_cascade = None
     
     # Open video
     cap = cv2.VideoCapture(video_path)
@@ -228,62 +239,65 @@ def extract_faces_from_video(video_path, output_dir, face_confidence=0.3, face_p
                                     print(f"  Saved biggest face from frame {current_frame+i}")
             else:
                 # Fallback to Haar cascade detection
-                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-                faces = face_cascade.detectMultiScale(
-                    gray, 
-                    scaleFactor=1.1, 
-                    minNeighbors=5, 
-                    minSize=(30, 30)
-                )
-                
-                # Only process the biggest face if multiple faces detected
-                if len(faces) > 0:
-                    # Calculate areas and find biggest face
-                    face_areas = []
-                    for j, (x, y, w, h) in enumerate(faces):
-                        area = w * h
-                        face_areas.append((area, j, x, y, w, h))
+                if face_cascade is not None:
+                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    faces = face_cascade.detectMultiScale(
+                        gray, 
+                        scaleFactor=1.1, 
+                        minNeighbors=5, 
+                        minSize=(30, 30)
+                    )
                     
-                    # Sort by area (biggest first) and take the first one
-                    face_areas.sort(reverse=True)
-                    biggest_area, biggest_idx, x, y, w, h = face_areas[0]
-                    
-                    print(f"Frame {current_frame+i}: Processing biggest face (area={biggest_area}) out of {len(faces)} detected")
-                    
-                    # Add padding around face
-                    pad_x = int(w * face_padding)
-                    pad_y = int(h * face_padding)
-                    
-                    # Ensure coordinates are within frame boundaries
-                    x1 = max(0, x - pad_x)
-                    y1 = max(0, y - pad_y)
-                    x2 = min(frame.shape[1], x + w + pad_x)
-                    y2 = min(frame.shape[0], y + h + pad_y)
-                    
-                    # Crop face
-                    face = frame[y1:y2, x1:x2]
-                    
-                    # Skip if face crop is empty
-                    if face.size > 0 and face.shape[0] > 0 and face.shape[1] > 0:
-                        # Preprocess face
-                        processed_face = preprocess_face_for_lightcnn(face)
+                    # Only process the biggest face if multiple faces detected
+                    if len(faces) > 0:
+                        # Calculate areas and find biggest face
+                        face_areas = []
+                        for j, (x, y, w, h) in enumerate(faces):
+                            area = w * h
+                            face_areas.append((area, j, x, y, w, h))
                         
-                        # Create unique filename
-                        timestamp = int(time.time() * 1000)
-                        filename = f"frame{current_frame+i}_biggest_face_{timestamp}.jpg"
-                        filepath = os.path.join(output_dir, filename)
+                        # Sort by area (biggest first) and take the first one
+                        face_areas.sort(reverse=True)
+                        biggest_area, biggest_idx, x, y, w, h = face_areas[0]
                         
-                        if processed_face is not None:
-                            # Ensure single channel (grayscale)
-                            if len(processed_face.shape) > 2:
-                                processed_face = cv2.cvtColor(processed_face, cv2.COLOR_BGR2GRAY)
-                            # Double-check the size
-                            if processed_face.shape != (128, 128):
-                                processed_face = cv2.resize(processed_face, (128, 128), interpolation=cv2.INTER_LANCZOS4)
-                            # Save the image
-                            cv2.imwrite(filepath, processed_face)
-                            faces_saved += 1
-                            print(f"  Saved biggest face from frame {current_frame+i}")
+                        print(f"Frame {current_frame+i}: Processing biggest face (area={biggest_area}) out of {len(faces)} detected")
+                        
+                        # Add padding around face
+                        pad_x = int(w * face_padding)
+                        pad_y = int(h * face_padding)
+                        
+                        # Ensure coordinates are within frame boundaries
+                        x1 = max(0, x - pad_x)
+                        y1 = max(0, y - pad_y)
+                        x2 = min(frame.shape[1], x + w + pad_x)
+                        y2 = min(frame.shape[0], y + h + pad_y)
+                        
+                        # Crop face
+                        face = frame[y1:y2, x1:x2]
+                        
+                        # Skip if face crop is empty
+                        if face.size > 0 and face.shape[0] > 0 and face.shape[1] > 0:
+                            # Preprocess face
+                            processed_face = preprocess_face_for_lightcnn(face)
+                            
+                            # Create unique filename
+                            timestamp = int(time.time() * 1000)
+                            filename = f"frame{current_frame+i}_biggest_face_{timestamp}.jpg"
+                            filepath = os.path.join(output_dir, filename)
+                            
+                            if processed_face is not None:
+                                # Ensure single channel (grayscale)
+                                if len(processed_face.shape) > 2:
+                                    processed_face = cv2.cvtColor(processed_face, cv2.COLOR_BGR2GRAY)
+                                # Double-check the size
+                                if processed_face.shape != (128, 128):
+                                    processed_face = cv2.resize(processed_face, (128, 128), interpolation=cv2.INTER_LANCZOS4)
+                                # Save the image
+                                cv2.imwrite(filepath, processed_face)
+                                faces_saved += 1
+                                print(f"  Saved biggest face from frame {current_frame+i}")
+                else:
+                    print(f"Warning: No face detection available for frame {current_frame+i}")
     
     # Close resources
     cap.release()
@@ -508,7 +522,8 @@ def migrate_student_data():
 # Routes
 @app.route('/')
 def index():
-    return send_from_directory(app.static_folder, 'index.html')
+    static_folder = app.static_folder or 'static'
+    return send_from_directory(static_folder, 'index.html')
 
 @app.route('/api/session/start', methods=['POST'])
 def start_session():
@@ -535,10 +550,6 @@ def start_session():
     student_dir = os.path.join(dept_year_dir, student_id)
     os.makedirs(student_dir, exist_ok=True)
     
-    # Create faces directory named after registration number (instead of "faces")
-    faces_dir = os.path.join(student_dir, student_id)
-    os.makedirs(faces_dir, exist_ok=True)
-    
     # Create session info
     session_data = {
         "sessionId": session_id,
@@ -555,11 +566,7 @@ def start_session():
         "facesCount": 0
     }
     
-    # Save session data with both session ID and student ID filenames
-    with open(os.path.join(student_dir, f"{session_id}.json"), 'w') as f:
-        json.dump(session_data, f, indent=2)
-    
-    # Also save with student ID as filename for easy access
+    # Save session data with student ID as filename only
     with open(os.path.join(student_dir, f"{student_id}.json"), 'w') as f:
         json.dump(session_data, f, indent=2)
     
@@ -587,12 +594,8 @@ def upload_video(session_id):
     student_dir = os.path.join(dept_year_dir, student_id)
     os.makedirs(student_dir, exist_ok=True)
     
-    # Create faces directory named after registration number
-    faces_dir = os.path.join(student_dir, student_id)
-    os.makedirs(faces_dir, exist_ok=True)
-    
-    # Get existing session data
-    session_file = os.path.join(student_dir, f"{session_id}.json")
+    # Get existing session data using student ID filename only
+    session_file = os.path.join(student_dir, f"{student_id}.json")
     if not os.path.exists(session_file):
         return jsonify({"error": "Invalid session"}), 404
     
@@ -603,85 +606,155 @@ def upload_video(session_id):
     webm_filename = f"{student_id}.webm"
     webm_path = os.path.join(student_dir, webm_filename)
     file.save(webm_path)
-    print(f"Saved WebM video to {webm_path}")
+    
+    # Verify the WebM file was saved successfully
+    if not os.path.exists(webm_path):
+        return jsonify({
+            "success": False,
+            "message": "Failed to save WebM video file"
+        }), 500
+    
+    webm_size = os.path.getsize(webm_path)
+    print(f"Saved WebM video to {webm_path} ({webm_size} bytes)")
+    
+    if webm_size == 0:
+        return jsonify({
+            "success": False,
+            "message": "WebM video file is empty"
+        }), 500
     
     # Convert WebM to MP4 using FFmpeg
     mp4_filename = f"{student_id}.mp4"
     mp4_path = os.path.join(student_dir, mp4_filename)
     
     try:
-        # Run FFmpeg to convert the file
+        # Check if FFmpeg is available
         import subprocess
         
-        # First try with libx264
-        cmd = [
-            'ffmpeg', 
-            '-i', webm_path,  # Input file
-            '-c:v', 'libx264',  # Video codec
-            '-preset', 'fast',  # Encoding speed/compression trade-off
-            '-crf', '23',       # Quality
-            '-y',               # Overwrite output without asking
-            mp4_path            # Output file
-        ]
+        try:
+            ffmpeg_check = subprocess.run(['ffmpeg', '-version'], 
+                         stdout=subprocess.PIPE, 
+                         stderr=subprocess.PIPE, 
+                         text=True,
+                         check=True)
+            print(f"FFmpeg is available. Version info: {ffmpeg_check.stdout.split('version')[1].split('Copyright')[0].strip() if 'version' in ffmpeg_check.stdout else 'Unknown'}")
+        except (subprocess.CalledProcessError, FileNotFoundError) as e:
+            print(f"FFmpeg check failed: {e}")
+            return jsonify({
+                "success": False,
+                "message": f"FFmpeg is not installed or not available in PATH. Error: {str(e)}"
+            }), 500
         
-        process = subprocess.run(
-            cmd, 
-            stdout=subprocess.PIPE, 
-            stderr=subprocess.PIPE,
-            text=True
-        )
+        # Run FFmpeg to convert the file with encoders available on this system
         
-        # If libx264 fails, try fallback encoders
-        if process.returncode != 0:
-            print(f"libx264 failed, trying fallback encoders...")
-            print(f"libx264 error: {process.stderr}")
-            
-            # Try fallback encoders
-            fallback_encoders = ['libopenh264', 'mpeg4', 'libvpx']
-            
-            for encoder in fallback_encoders:
-                print(f"Trying encoder: {encoder}")
+        # List of video encoders to try (in order of preference)
+        # Based on available encoders from FFmpeg installation
+        video_encoders = ['mpeg4', 'libopenh264', 'libvpx', 'libvpx_vp8', 'libvpx_vp9', 'mjpeg']
+        audio_encoders = ['mp3', 'libmp3lame', 'pcm_s16le', 'aac']
+        
+        conversion_successful = False
+        
+        # Try each video encoder until one works
+        for video_codec in video_encoders:
+            if conversion_successful:
+                break
                 
-                cmd_fallback = [
+            print(f"Trying video codec: {video_codec}")
+            
+            # Try with audio first
+            for audio_codec in audio_encoders:
+                cmd = [
+                    'ffmpeg', 
+                    '-i', webm_path,  # Input file
+                    '-c:v', video_codec,  # Video codec
+                    '-c:a', audio_codec,  # Audio codec
+                    '-movflags', '+faststart',  # Optimize for web streaming
+                    '-y',               # Overwrite output without asking
+                    mp4_path            # Output file
+                ]
+                
+                print(f"Running FFmpeg command: {' '.join(cmd)}")
+                
+                process = subprocess.run(
+                    cmd, 
+                    stdout=subprocess.PIPE, 
+                    stderr=subprocess.PIPE,
+                    text=True,
+                    timeout=120  # 2 minute timeout
+                )
+                
+                print(f"FFmpeg process completed with return code: {process.returncode}")
+                if process.stdout:
+                    print(f"FFmpeg stdout: {process.stdout}")
+                if process.stderr:
+                    print(f"FFmpeg stderr: {process.stderr}")
+                
+                if process.returncode == 0:
+                    print(f"Video conversion successful with {video_codec}/{audio_codec}")
+                    conversion_successful = True
+                    break
+                else:
+                    print(f"Failed with {video_codec}/{audio_codec}: {process.stderr}")
+            
+            # If audio codecs failed, try without audio
+            if not conversion_successful:
+                print(f"Trying {video_codec} without audio...")
+                cmd_no_audio = [
                     'ffmpeg', 
                     '-i', webm_path,
-                    '-c:v', encoder,
+                    '-c:v', video_codec,
+                    '-an',  # No audio
                     '-y',
                     mp4_path
                 ]
                 
-                if encoder == 'libvpx':
-                    # For libvpx, we need to specify some additional parameters
-                    cmd_fallback = [
-                        'ffmpeg', 
-                        '-i', webm_path,
-                        '-c:v', encoder,
-                        '-b:v', '1M',  # Set bitrate
-                        '-y',
-                        mp4_path
-                    ]
+                print(f"Running FFmpeg command: {' '.join(cmd_no_audio)}")
                 
                 process = subprocess.run(
-                    cmd_fallback,
+                    cmd_no_audio,
                     stdout=subprocess.PIPE, 
                     stderr=subprocess.PIPE,
-                    text=True
+                    text=True,
+                    timeout=120
                 )
                 
+                print(f"FFmpeg process completed with return code: {process.returncode}")
+                if process.stdout:
+                    print(f"FFmpeg stdout: {process.stdout}")
+                if process.stderr:
+                    print(f"FFmpeg stderr: {process.stderr}")
+                
                 if process.returncode == 0:
-                    print(f"Successfully converted with {encoder}")
+                    print(f"Video conversion successful with {video_codec} (no audio)")
+                    conversion_successful = True
                     break
                 else:
-                    print(f"Failed with {encoder}: {process.stderr}")
+                    print(f"Failed with {video_codec} (no audio): {process.stderr}")
         
-        if process.returncode != 0:
-            print(f"Error converting video with all encoders: {process.stderr}")
+        if not conversion_successful:
+            print("All FFmpeg conversion attempts failed")
             return jsonify({
                 "success": False,
-                "message": "Failed to convert video format with available encoders"
+                "message": f"Failed to convert video. Tried multiple codecs but none worked. Last error: {process.stderr}"
             }), 500
             
         print(f"Converted video to MP4 format: {mp4_path}")
+        
+        # Verify the MP4 file was created and has content
+        if not os.path.exists(mp4_path):
+            return jsonify({
+                "success": False,
+                "message": "MP4 file was not created successfully"
+            }), 500
+            
+        mp4_size = os.path.getsize(mp4_path)
+        if mp4_size == 0:
+            return jsonify({
+                "success": False,
+                "message": "MP4 file is empty"
+            }), 500
+            
+        print(f"MP4 file created successfully: {mp4_path} ({mp4_size} bytes)")
         
         # Delete the WebM file now that conversion is complete
         try:
@@ -706,13 +779,9 @@ def upload_video(session_id):
         if dept:
             session_data["dept"] = dept
         
-        # Save updated session data with student reg number as filename
+        # Save updated session data with student reg number as filename only
         student_json_file = os.path.join(student_dir, f"{student_id}.json")
         with open(student_json_file, 'w') as f:
-            json.dump(session_data, f, indent=2)
-        
-        # Also update the original session file
-        with open(session_file, 'w') as f:
             json.dump(session_data, f, indent=2)
         
         # Keep the MP4 video file for reference
@@ -747,43 +816,55 @@ def reset_faces(session_id):
     if not dept:
         return jsonify({"error": "Department is required"}), 400
     
-    # Get path to faces directory using new directory structure
+    # Get path to gallery directory using dept_year structure instead of faces directory
     dept_year_dir = os.path.join(DATA_DIR, f"{dept}_{year}")
     student_dir = os.path.join(dept_year_dir, student_id)
-    faces_dir = os.path.join(student_dir, student_id)
     
-    if os.path.exists(faces_dir):
+    # Also check gallery directory for cleanup
+    gallery_dept_year_dir = os.path.join(GALLERY_DIR, f"{dept}_{year}")
+    gallery_student_dir = os.path.join(gallery_dept_year_dir, student_id)
+    
+    # Reset both data collection faces and gallery faces if they exist
+    reset_success = False
+    
+    if os.path.exists(gallery_student_dir):
         try:
-            # Delete all files in faces directory
-            for file in os.listdir(faces_dir):
-                file_path = os.path.join(faces_dir, file)
-                if os.path.isfile(file_path):
+            # Delete all image files in gallery directory
+            for file in os.listdir(gallery_student_dir):
+                file_path = os.path.join(gallery_student_dir, file)
+                if os.path.isfile(file_path) and file.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp')):
                     os.unlink(file_path)
-            
-            # Reset session data
-            session_file = os.path.join(student_dir, f"{session_id}.json")
-            if os.path.exists(session_file):
-                with open(session_file, 'r') as f:
-                    session_data = json.load(f)
-                
-                session_data["facesExtracted"] = False
-                session_data["facesCount"] = 0
-                session_data["resetTime"] = datetime.now().isoformat()
-                
-                with open(session_file, 'w') as f:
-                    json.dump(session_data, f)
-            
-            return jsonify({
-                "success": True, 
-                "message": "Face data reset successfully"
-            }), 200
+            reset_success = True
+            print(f"Cleared gallery faces from: {gallery_student_dir}")
         except Exception as e:
-            return jsonify({
-                "error": str(e)
-            }), 500
+            print(f"Error clearing gallery faces: {e}")
+    
+    # Reset session data using student ID filename
+    session_file = os.path.join(student_dir, f"{student_id}.json")
+    if os.path.exists(session_file):
+        try:
+            with open(session_file, 'r') as f:
+                session_data = json.load(f)
+            
+            session_data["facesExtracted"] = False
+            session_data["facesOrganized"] = False
+            session_data["facesCount"] = 0
+            session_data["resetTime"] = datetime.now().isoformat()
+            
+            with open(session_file, 'w') as f:
+                json.dump(session_data, f, indent=2)
+            reset_success = True
+        except Exception as e:
+            print(f"Error updating session data: {e}")
+    
+    if reset_success:
+        return jsonify({
+            "success": True, 
+            "message": "Face data reset successfully"
+        }), 200
     else:
         return jsonify({
-            "error": "Faces directory not found"
+            "error": "No face data found to reset"
         }), 404
 
 @app.route('/api/batches', methods=['GET'])
@@ -818,4 +899,23 @@ if __name__ == '__main__':
     # Run migration on startup to ensure data is in correct structure
     migrate_student_data()
     
-    app.run(host='0.0.0.0', port=5001)
+    # For development, you can generate a self-signed certificate:
+    # openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+    # Then uncomment the ssl_context line below
+    
+    # Check if SSL certificates exist
+    import os
+    cert_file = os.path.join(os.path.dirname(__file__), 'cert.pem')
+    key_file = os.path.join(os.path.dirname(__file__), 'key.pem')
+    
+    if os.path.exists(cert_file) and os.path.exists(key_file):
+        print("SSL certificates found. Starting HTTPS server...")
+        app.run(host='0.0.0.0', port=5001, ssl_context=(cert_file, key_file))
+    else:
+        print("No SSL certificates found. Starting HTTP server...")
+        print("For camera access, either:")
+        print("1. Access via https://localhost:5001 (if using SSH tunnel)")
+        print("2. Generate SSL certificates with:")
+        print("   openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365")
+        print("3. Or use Chrome with --unsafely-treat-insecure-origin-as-secure flag")
+        app.run(host='0.0.0.0', port=5001)

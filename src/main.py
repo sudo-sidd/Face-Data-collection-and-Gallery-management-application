@@ -125,7 +125,7 @@ def get_batch_years_and_departments():
         conn.close()
 
 
-def extract_frames(video_path: str, output_dir: str, max_frames: int = 30, interval: int = 10) -> List[str]:
+def extract_frames(video_path: str, output_dir: str, max_frames: int = 200, interval: int = 3) -> List[str]:
     """
     Extract frames from a video at specified intervals
     
@@ -325,94 +325,6 @@ def augment_face_image(image, num_augmentations=2):
     
     return augmented_images
 
-def process_videos_directory(videos_dir: str, year: str, department: str) -> ProcessingResult:
-    """
-    Process all videos in a directory, extract frames, detect faces,
-    and update or create a gallery file
-    
-    Args:
-        videos_dir: Path to directory containing videos
-        year: Batch year
-        department: Department name
-    
-    Returns:
-        ProcessingResult containing statistics about the processing
-    """
-    # Setup paths
-    data_path = get_data_path(year, department)
-    gallery_path = get_gallery_path(year, department)
-    os.makedirs(data_path, exist_ok=True)
-    
-    # Track statistics
-    processed_videos = 0
-    processed_frames = 0
-    extracted_faces = 0
-    failed_videos = []
-    
-    # Process videos
-    model = load_model(DEFAULT_MODEL_PATH)  # Load face recognition model
-    student_embeddings = {}
-    
-    # Check each file in the directory
-    for filename in os.listdir(videos_dir):
-        if not filename.lower().endswith(('.mp4', '.avi', '.mov')):
-            continue
-            
-        # Get student name from filename (without extension)
-        student_name = os.path.splitext(filename)[0]
-        video_path = os.path.join(videos_dir, filename)
-        
-        # Create output directories
-        frames_dir = os.path.join(data_path, student_name, "frames")
-        faces_dir = os.path.join(data_path, student_name, "faces")
-        os.makedirs(frames_dir, exist_ok=True)
-        os.makedirs(faces_dir, exist_ok=True)
-        
-        try:
-            # Extract frames from video
-            frame_paths = extract_frames(video_path, frames_dir)
-            processed_frames += len(frame_paths)
-            
-            # Process each frame
-            student_faces = []
-            for frame_path in frame_paths:
-                # Detect and crop faces
-                face_paths = detect_and_crop_faces(frame_path, faces_dir)
-                extracted_faces += len(face_paths)
-                student_faces.extend(face_paths)
-            
-            # Generate embeddings for the student's faces
-            if student_faces:
-                model, device = load_model(DEFAULT_MODEL_PATH)  # Load model and device
-                embeddings = [extract_embedding(face_path, model, device) for face_path in student_faces]
-                # Average the embeddings to get a representative embedding for the student
-                student_embeddings[student_name] = np.mean(embeddings, axis=0)
-            
-            processed_videos += 1
-            
-        except Exception as e:
-            print(f"Error processing video {filename}: {e}")
-            failed_videos.append(filename)
-    
-    # Update or create gallery
-    gallery_updated = False
-    if student_embeddings:
-        if os.path.exists(gallery_path):
-            # Update existing gallery
-            update_gallery_from_embeddings(gallery_path, student_embeddings)
-        else:
-            # Create new gallery
-            create_gallery_from_embeddings(gallery_path, student_embeddings)
-        gallery_updated = True
-    
-    return ProcessingResult(
-        processed_videos=processed_videos,
-        processed_frames=processed_frames,
-        extracted_faces=extracted_faces,
-        failed_videos=failed_videos,
-        gallery_updated=gallery_updated,
-        gallery_path=gallery_path
-    )
 
 def get_gallery_info(gallery_path: str) -> Optional[GalleryInfo]:
     """
@@ -508,7 +420,7 @@ def recognize_faces(
     
     # Step 1: Detect faces using YOLO
     face_detections = []
-    results = yolo_model(frame,conf=0.7)
+    results = yolo_model(frame,conf=0.65)
     
     for result in results:
         for box in result.boxes:
@@ -1574,7 +1486,7 @@ async def get_pending_students(dept: str, year: str):
     return {"pending_students": [student.dict() for student in pending]}
 
 def process_student_video(student: StudentInfo) -> Dict[str, Any]:
-    """Process a single student's video to extract faces and create embeddings"""
+    """Process a single student's video to extract faces and save directly to gallery structure"""
     try:
         student_folder = os.path.join(STUDENT_DATA_DIR, f"{student.dept}_{student.year}", student.regNo)
         video_path = os.path.join(student_folder, f"{student.regNo}.mp4")
@@ -1582,36 +1494,69 @@ def process_student_video(student: StudentInfo) -> Dict[str, Any]:
         if not os.path.exists(video_path):
             return {"success": False, "error": f"Video file not found: {video_path}"}
         
-        # Create faces directory
-        faces_dir = os.path.join(student_folder, "faces")
-        frames_dir = os.path.join(student_folder, "frames")
-        os.makedirs(faces_dir, exist_ok=True)
-        os.makedirs(frames_dir, exist_ok=True)
+        # Create gallery directory structure directly
+        gallery_dept_year_dir = os.path.join(BASE_DATA_DIR, f"{student.dept}_{student.year}")
+        gallery_student_dir = os.path.join(gallery_dept_year_dir, student.regNo)
+        os.makedirs(gallery_student_dir, exist_ok=True)
         
-        # Extract frames from video
-        frame_paths = extract_frames(video_path, frames_dir, max_frames=30, interval=10)
+        # Create temporary frames directory for processing
+        temp_frames_dir = os.path.join(student_folder, "temp_frames")
+        os.makedirs(temp_frames_dir, exist_ok=True)
         
-        # Process each frame to extract faces
-        all_face_paths = []
-        for frame_path in frame_paths:
-            face_paths = detect_and_crop_faces(frame_path, faces_dir)
-            all_face_paths.extend(face_paths)
-        
-        # Update student JSON file
-        json_file = os.path.join(student_folder, f"{student.regNo}.json")
-        student_data = student.dict()
-        student_data["facesExtracted"] = True
-        student_data["facesCount"] = len(all_face_paths)
-        
-        with open(json_file, 'w') as f:
-            json.dump(student_data, f, indent=2)
-        
-        return {
-            "success": True, 
-            "faces_extracted": len(all_face_paths),
-            "frames_processed": len(frame_paths)
-        }
-        
+        try:
+            # Extract frames from video
+            frame_paths = extract_frames(video_path, temp_frames_dir, max_frames=30, interval=10)
+            
+            # Process each frame to extract faces and save directly to gallery
+            all_face_paths = []
+            for frame_path in frame_paths:
+                face_paths = detect_and_crop_faces(frame_path, gallery_student_dir)
+                all_face_paths.extend(face_paths)
+            
+            # Clean up temporary frames directory
+            shutil.rmtree(temp_frames_dir, ignore_errors=True)
+            
+            # Create student metadata in gallery
+            metadata_file = os.path.join(gallery_student_dir, 'metadata.json')
+            metadata = {
+                'regNo': student.regNo,
+                'name': student.name,
+                'dept': student.dept,
+                'year': student.year,
+                'group': f"{student.dept}_{student.year}",
+                'lastUpdated': datetime.now().isoformat(),
+                'processedImagesPath': gallery_student_dir,
+                'totalFaces': len(all_face_paths)
+            }
+            
+            with open(metadata_file, 'w') as f:
+                json.dump(metadata, f, indent=2)
+            
+            # Update student JSON file in data collection
+            json_file = os.path.join(student_folder, f"{student.regNo}.json")
+            student_data = student.dict()
+            student_data["facesExtracted"] = True
+            student_data["facesOrganized"] = True
+            student_data["facesCount"] = len(all_face_paths)
+            student_data["galleryPath"] = gallery_student_dir
+            student_data["processedTime"] = datetime.now().isoformat()
+            
+            with open(json_file, 'w') as f:
+                json.dump(student_data, f, indent=2)
+            
+            return {
+                "success": True, 
+                "faces_extracted": len(all_face_paths),
+                "frames_processed": len(frame_paths),
+                "gallery_path": gallery_student_dir
+            }
+            
+        except Exception as e:
+            # Clean up temp directory in case of error
+            if os.path.exists(temp_frames_dir):
+                shutil.rmtree(temp_frames_dir, ignore_errors=True)
+            raise e
+            
     except Exception as e:
         return {"success": False, "error": str(e)}
 
