@@ -78,6 +78,11 @@ module.exports = {
 }
 EOL
 
+# remove the exisiting PM2 process if it exists
+if pm2 list | grep -q "data-collection-app"; then
+    pm2 delete data-collection-app
+fi
+
 # Start the application in background with PM2
 echo "🚀 Launching Gallery Manager in production mode on $HOST:$PORT using PM2"
 echo "ℹ️ For production, ensure this is behind a secure reverse proxy"
