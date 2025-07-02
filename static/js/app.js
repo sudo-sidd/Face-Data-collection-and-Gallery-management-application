@@ -131,6 +131,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (checkStatusBtn) {
         checkStatusBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            console.log('Check status button clicked');
+            showAlert('info', 'Checking collection app status...');
             checkCollectionAppStatus();
         });
     }
@@ -243,6 +245,18 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize the application
     init();
     
+    // Check collection app status on page load only
+    setTimeout(() => {
+        // Debug: Check if collection section exists
+        const collectionSection = document.getElementById('collection');
+        const statusContainer = document.querySelector('.app-status-container');
+        console.log('DOM elements found:', {
+            collectionSection: !!collectionSection,
+            statusContainer: !!statusContainer
+        });
+        checkCollectionAppStatus();
+    }, 1000);
+    
     // Check if toast notifications system is working
     setTimeout(() => {
         // Show a welcome toast when the app first loads
@@ -250,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
             title: 'Welcome',
             duration: 5000
         });
-    }, 1000);
+    }, 1500);
 });
 
 // Initialize the application - update to include new gallery form selects
@@ -1626,6 +1640,11 @@ async function startCollectionAppServer() {
         
         if (result.success) {
             showAlert('success', result.message);
+            // Update status after successful start with a longer delay
+            setTimeout(() => {
+                console.log('Checking status after server start completion...');
+                checkCollectionAppStatus();
+            }, 3000);
             return result;
         } else {
             throw new Error(result.message || 'Failed to start collection app server');
@@ -1648,17 +1667,42 @@ async function checkCollectionAppStatus() {
         }
         
         const status = await response.json();
-        console.log('Collection app status:', status);
+        console.log('Collection app status response:', status);
         
         // Update UI based on status
         const statusElement = document.getElementById('collection-app-status');
+        const statusIndicator = document.getElementById('statusIndicator');
+        
         if (statusElement) {
             if (status.running) {
-                statusElement.textContent = `Face Collection App is running (PID: ${status.pid || 'unknown'})`;
-                statusElement.className = 'text-success';
+                statusElement.textContent = `Running`;
+                statusElement.className = 'ms-1 text-success';
+                console.log('Status updated to running, showing access link');
+                
+                // Get config for host/port to show access link
+                try {
+                    const configResponse = await fetch('/api/collection-app-config');
+                    const config = await configResponse.json();
+                    console.log('Config loaded:', config);
+                    showCollectionAppLink(config.host, config.port);
+                } catch (configError) {
+                    console.error('Error getting config:', configError);
+                }
             } else {
-                statusElement.textContent = 'Face Collection App is not running';
-                statusElement.className = 'text-danger';
+                statusElement.textContent = 'Not Running';
+                statusElement.className = 'ms-1 text-muted';
+                console.log('Status updated to not running, hiding access link');
+                
+                // Hide access link when not running
+                hideCollectionAppLink();
+            }
+        }
+        
+        if (statusIndicator) {
+            if (status.running) {
+                statusIndicator.className = 'fas fa-circle me-2 text-success';
+            } else {
+                statusIndicator.className = 'fas fa-circle me-2 text-danger';
             }
         }
         
@@ -1666,10 +1710,18 @@ async function checkCollectionAppStatus() {
     } catch (error) {
         console.error('Error checking collection app status:', error);
         const statusElement = document.getElementById('collection-app-status');
+        const statusIndicator = document.getElementById('statusIndicator');
+        
         if (statusElement) {
             statusElement.textContent = 'Error checking status';
-            statusElement.className = 'text-warning';
+            statusElement.className = 'ms-1 text-warning';
         }
+        
+        if (statusIndicator) {
+            statusIndicator.className = 'fas fa-circle me-2 text-warning';
+        }
+        
+        hideCollectionAppLink();
         return { running: false, error: error.message };
     }
 }
@@ -1696,23 +1748,164 @@ async function stopCollectionAppServer() {
             if (result.success) {
                 showAlert('success', result.message);
                 updateCollectionAppStatus('Not Running');
+                // Hide the access link when stopped
+                hideCollectionAppLink();
+                // Refresh status after a short delay to confirm
+                setTimeout(() => {
+                    console.log('Checking status after stop...');
+                    checkCollectionAppStatus();
+                }, 2000);
             } else {
                 showAlert('error', 'Failed to stop Face Collection App server: ' + result.message);
+                // Check status to see actual state
+                setTimeout(() => {
+                    checkCollectionAppStatus();
+                }, 1000);
             }
         }
     } catch (error) {
         console.error('Error stopping collection app server:', error);
         showAlert('error', 'Error stopping Face Collection App server');
+        // Check status to see actual state
+        setTimeout(() => {
+            checkCollectionAppStatus();
+        }, 1000);
     } finally {
         collectionAppState.isStopping = false;
     }
 }
 
+// Function to show collection app access link
+function showCollectionAppLink(host, port) {
+    console.log(`showCollectionAppLink called with host: ${host}, port: ${port}`);
+    const url = `http://${host}:${port}`;
+    
+    // Check if link container already exists
+    let linkContainer = document.getElementById('collection-app-link');
+    
+    if (!linkContainer) {
+        console.log('Creating new link container');
+        // Create link container
+        linkContainer = document.createElement('div');
+        linkContainer.id = 'collection-app-link';
+        linkContainer.className = 'mt-3 p-3 bg-light border rounded';
+        
+        // Find the best place to insert it - try multiple strategies
+        let insertionParent = null;
+        let insertionPosition = null;
+        
+        // Strategy 1: After the app-status-container
+        const statusContainer = document.querySelector('.app-status-container');
+        if (statusContainer && statusContainer.parentNode) {
+            console.log('Using strategy 1: after app-status-container');
+            insertionParent = statusContainer.parentNode;
+            insertionPosition = statusContainer.nextSibling;
+        }
+        
+        // Strategy 2: In the collection section card body
+        if (!insertionParent) {
+            const collectionSection = document.getElementById('collection');
+            if (collectionSection) {
+                const cardBody = collectionSection.querySelector('.card-body');
+                if (cardBody) {
+                    console.log('Using strategy 2: in collection section card body');
+                    insertionParent = cardBody;
+                }
+            }
+        }
+        
+        // Strategy 3: After the button container
+        if (!insertionParent) {
+            const buttonContainer = document.querySelector('.d-flex.gap-3.flex-wrap');
+            if (buttonContainer && buttonContainer.parentNode) {
+                console.log('Using strategy 3: after button container');
+                insertionParent = buttonContainer.parentNode;
+                insertionPosition = buttonContainer.nextSibling;
+            }
+        }
+        
+        // Strategy 4: Fallback - append to collection section or body
+        if (!insertionParent) {
+            const collectionSection = document.getElementById('collection');
+            if (collectionSection) {
+                console.log('Using fallback strategy: append to collection section');
+                insertionParent = collectionSection;
+            } else {
+                console.log('Using final fallback: append to body');
+                insertionParent = document.body;
+            }
+        }
+        
+        // Insert the link container
+        if (insertionPosition) {
+            insertionParent.insertBefore(linkContainer, insertionPosition);
+        } else {
+            insertionParent.appendChild(linkContainer);
+        }
+        
+        console.log('Link container inserted into DOM');
+    } else {
+        console.log('Using existing link container');
+    }
+    
+    // Update link content
+    linkContainer.innerHTML = `
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h6 class="mb-1 text-success">
+                    <i class="fas fa-external-link-alt me-2"></i>
+                    Face Collection App is Ready
+                </h6>
+                <small class="text-muted">Click to access the running application at ${host}:${port}</small>
+            </div>
+            <div>
+                <a href="${url}" target="_blank" class="btn btn-success btn-sm me-2">
+                    <i class="fas fa-external-link-alt me-1"></i>
+                    Open App
+                </a>
+            </div>
+        </div>
+    `;
+    
+    linkContainer.style.display = 'block';
+    console.log('Collection app link is now visible');
+}
+
+// Function to hide collection app access link
+function hideCollectionAppLink() {
+    console.log('hideCollectionAppLink called');
+    const linkContainer = document.getElementById('collection-app-link');
+    if (linkContainer) {
+        linkContainer.style.display = 'none';
+        console.log('Collection app link hidden');
+    } else {
+        console.log('No link container found to hide');
+    }
+}
+
 function updateCollectionAppStatus(status) {
-    const statusText = document.getElementById('statusText');
-    if (statusText) {
-        statusText.textContent = status;
-        statusText.className = status === 'Running' ? 'text-success fw-bold' : 'text-muted';
+    const statusElement = document.getElementById('collection-app-status');
+    const statusIndicator = document.getElementById('statusIndicator');
+    
+    if (statusElement) {
+        statusElement.textContent = status;
+        
+        if (status === 'Running') {
+            statusElement.className = 'ms-1 text-success';
+            if (statusIndicator) {
+                statusIndicator.className = 'fas fa-circle me-2 text-success';
+            }
+        } else if (status === 'Checking...' || status === 'Starting...' || status === 'Stopping...') {
+            statusElement.className = 'ms-1 text-warning';
+            if (statusIndicator) {
+                statusIndicator.className = 'fas fa-circle me-2 text-warning';
+            }
+        } else {
+            statusElement.className = 'ms-1 text-muted';
+            if (statusIndicator) {
+                statusIndicator.className = 'fas fa-circle me-2 text-secondary';
+            }
+        }
     }
 }
 
@@ -1727,19 +1920,55 @@ const launchCollectionAppWithServer = debounce(async function() {
     }
     
     updateCollectionAppStatus('Checking...');
+    collectionAppState.isStarting = true;
     
-    // First check if the app is already running
-    const isRunning = await checkCollectionAppStatus();
-    
-    if (isRunning) {
-        launchCollectionApp();
-        console.log("Face Collection App is already running, launching it...");
-    } else {
-        // Try to start the server
-        showAlert('info', 'Starting Face Collection App server...');
-        await startCollectionAppServer();
+    try {
+        // First check if the app is already running
+        const status = await checkCollectionAppStatus();
+        
+        if (status.running) {
+            // Get config and launch
+            const configResponse = await fetch('/api/collection-app-config');
+            const config = await configResponse.json();
+            const url = `http://${config.host}:${config.port}`;
+            
+            console.log(`Face Collection App is already running at ${url}`);
+            
+            // Try to open the window
+            collectionAppWindow = window.open(url, 'faceCollectionApp');
+            
+            if (!collectionAppWindow || collectionAppWindow.closed || typeof collectionAppWindow.closed === 'undefined') {
+                showAlert('warning', 'Pop-up blocked! Please allow pop-ups for this site or use the "Open App" button below.');
+                showPageAlert(`<a href="${url}" target="_blank" class="alert-link">Click here to open the Face Collection App</a>`, 'info');
+            } else {
+                collectionAppWindow.focus();
+                showAlert('success', 'Face Collection App opened in new tab');
+            }
+        } else {
+            // Try to start the server
+            updateCollectionAppStatus('Starting...');
+            showAlert('info', 'Starting Face Collection App server...');
+            await startCollectionAppServer();
+            
+            // Wait for server to start and then check status
+            setTimeout(async () => {
+                console.log('Checking status after server start...');
+                const newStatus = await checkCollectionAppStatus();
+                if (newStatus.running) {
+                    showAlert('success', 'Face Collection App server started successfully! Use the "Open App" button to access it.');
+                } else {
+                    showAlert('warning', 'Server may still be starting. Please wait a moment and check status again.');
+                }
+            }, 4000); // Wait a bit longer for server to fully start
+        }
+    } catch (error) {
+        console.error('Error in launchCollectionAppWithServer:', error);
+        showAlert('error', `Failed to launch Face Collection App: ${error.message}`);
+        updateCollectionAppStatus('Error');
+    } finally {
+        collectionAppState.isStarting = false;
     }
-}, 1000); // 1 second debounce
+}, 1000);
 
 
 

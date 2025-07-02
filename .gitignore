@@ -1,6 +1,7 @@
 envs/face-rec/
 
-data/student_data
+data/
+logs/
 venv/
 .fuse_hidden0000003400000022
 data/
