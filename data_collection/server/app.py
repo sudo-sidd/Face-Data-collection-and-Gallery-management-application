@@ -18,7 +18,7 @@ load_dotenv()
 
 # Get host, port, and workers from environment variables or use defaults
 host = os.environ.get("DATA_COLLECTION_HOST", "0.0.0.0")
-port = int(os.environ.get("DATA_COLLECTION_PORT", 8000))
+port = int(os.environ.get("DATA_COLLECTION_PORT", 8001))
 workers = int(os.environ.get("DATA_COLLECTION_WORKERS", "1").strip().split()[0])
 
 app = Flask(__name__, static_folder='static')
@@ -558,12 +558,19 @@ def get_batches():
 
 @app.route('/qr')
 def generate_qr():
-    # Generate QR code - use HTTP for better compatibility
-    # Check if we're running HTTPS or HTTP
-    if request.is_secure:
+    # Check if SSL certificates exist to determine protocol
+    cert_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'certs', 'cert.pem')
+    key_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'certs', 'key.pem')
+    
+    # Use HTTPS if certificates exist, otherwise HTTP
+    if os.path.exists(cert_file) and os.path.exists(key_file):
         url = f"https://{request.host}"
+        protocol_info = "HTTPS (Secure)"
+        alt_url = f"http://{request.host.split(':')[0]}:8001"
     else:
         url = f"http://{request.host}"
+        protocol_info = "HTTP (Insecure - Camera may not work)"
+        alt_url = f"https://{request.host.split(':')[0]}:8001"
     
     img = qrcode.make(url)
     
@@ -572,15 +579,26 @@ def generate_qr():
     img.save(buffered)
     img_str = base64.b64encode(buffered.getvalue()).decode()
     
-    # Return simple HTML with QR code and both HTTP/HTTPS options
+    # Return simple HTML with QR code and protocol information
     return f"""
     <html>
         <head><title>Scan to connect</title></head>
         <body style="text-align: center; padding: 50px;">
             <h1>Scan this QR code with your phone</h1>
             <img src="data:image/png;base64,{img_str}">
-            <p>Or visit: <a href="{url}">{url}</a></p>
-            <p><small>If HTTPS doesn't work, try: <a href="http://{request.host.split(':')[0]}:5001">http://{request.host.split(':')[0]}:5001</a></small></p>
+            <p>Protocol: <strong>{protocol_info}</strong></p>
+            <p>Primary URL: <a href="{url}">{url}</a></p>
+            <p><small>Alternative: <a href="{alt_url}">{alt_url}</a></small></p>
+            <br>
+            <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; max-width: 400px; margin: 0 auto;">
+                <h3>📱 Mobile Setup Instructions:</h3>
+                <ol style="text-align: left;">
+                    <li>Connect your phone to the same WiFi network</li>
+                    <li>Scan the QR code or visit the URL above</li>
+                    <li>If using HTTPS, accept the security warning</li>
+                    <li>Allow camera permissions when prompted</li>
+                </ol>
+            </div>
         </body>
     </html>
     """
@@ -592,5 +610,27 @@ if __name__ == '__main__':
     # Run migration on startup to ensure data is in correct structure
     migrate_student_data()
 
-    sys.argv = ["gunicorn", "app:app", f"--bind={host}:{port}", f"--workers={workers}"]
+    # Check if SSL certificates exist
+    cert_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'certs', 'cert.pem')
+    key_file = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'certs', 'key.pem')
+    
+    if os.path.exists(cert_file) and os.path.exists(key_file):
+        # Run with HTTPS
+        print(f"🔐 Starting HTTPS server on {host}:{port}")
+        print(f"📜 Using certificate: {cert_file}")
+        print(f"🔑 Using private key: {key_file}")
+        sys.argv = [
+            "gunicorn", 
+            "app:app", 
+            f"--bind={host}:{port}", 
+            f"--workers={workers}",
+            f"--certfile={cert_file}",
+            f"--keyfile={key_file}"
+        ]
+    else:
+        # Run with HTTP (fallback)
+        print(f"⚠️  SSL certificates not found. Starting HTTP server on {host}:{port}")
+        print(f"💡 To enable HTTPS, run: ./generate_ssl_certs.sh")
+        sys.argv = ["gunicorn", "app:app", f"--bind={host}:{port}", f"--workers={workers}"]
+    
     run()
