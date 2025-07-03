@@ -126,7 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function startRecording() {
   const startRecordBtn = document.getElementById('startRecord');
-  const stopRecordBtn = document.getElementById('stopRecord');
   const countdown = document.getElementById('countdown');
 
   // Clear previous recording data
@@ -135,7 +134,7 @@ async function startRecording() {
 
   // UI Setup
   startRecordBtn.disabled = true;
-  stopRecordBtn.disabled = false;
+  startRecordBtn.classList.add('hidden');
   elements.progress.style.width = '0%';
 
   // Start recording
@@ -168,7 +167,7 @@ async function startRecording() {
       if (state.mediaRecorder.state !== 'inactive') {
         state.mediaRecorder.stop();
         startRecordBtn.disabled = false;
-        stopRecordBtn.disabled = true;
+        startRecordBtn.classList.remove('hidden');
         countdown.textContent = "Processing...";
       }
     }
@@ -180,7 +179,7 @@ async function initCamera(autoStart = false) {
   elements.cameraSection.classList.remove('hidden');
 
   const startRecordBtn = document.getElementById('startRecord');
-  const stopRecordBtn = document.getElementById('stopRecord');
+  // Stop record button removed as requested
 
   try {
     // Access webcam
@@ -210,20 +209,9 @@ async function initCamera(autoStart = false) {
       uploadVideo(videoBlob);
     };
 
-    // Button listeners
+    // Button listeners - stop button removed as requested
     if (startRecordBtn) {
       startRecordBtn.addEventListener('click', startRecording);
-    }
-    if (stopRecordBtn) {
-      stopRecordBtn.addEventListener('click', () => {
-        if (state.countdownTimer) clearInterval(state.countdownTimer);
-        if (state.mediaRecorder.state !== 'inactive') {
-          state.mediaRecorder.stop();
-          startRecordBtn.disabled = false;
-          stopRecordBtn.disabled = true;
-          document.getElementById('countdown').textContent = "Processing...";
-        }
-      });
     }
 
     // Auto-start recording if requested
