@@ -603,6 +603,11 @@ def generate_qr():
     </html>
     """
 
+@app.route('/about')
+def about():
+    static_folder = app.static_folder or 'static'
+    return send_from_directory(static_folder, 'about.html')
+
 if __name__ == '__main__':
     import sys
     from gunicorn.app.wsgiapp import run
