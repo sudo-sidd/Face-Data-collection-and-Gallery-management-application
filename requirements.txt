@@ -1,6 +1,6 @@
 albumentations
 fastapi
-Flask
+Flask   
 flask_cors
 asgiref
 numpy

@@ -6806,3 +6806,15 @@
 2025-07-01 15:23:53: INFO:     Waiting for application shutdown.
 2025-07-01 15:23:53: INFO:     Application shutdown complete.
 2025-07-01 15:23:53: INFO:     Finished server process [136573]
+2025-07-03 10:44:13: INFO:     Started server process [99830]
+2025-07-03 10:44:13: INFO:     Waiting for application startup.
+2025-07-03 10:44:13: INFO:     Application startup complete.
+2025-07-03 10:44:13: INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-07-03 11:48:18: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/venv/lib/python3.13/site-packages/torch/cuda/__init__.py:174: UserWarning: CUDA initialization: CUDA driver initialization failed, you might not have a CUDA gpu. (Triggered internally at /pytorch/c10/cuda/CUDAFunctions.cpp:109.)
+2025-07-03 11:48:18:   return torch._C._cuda_getDeviceCount() > 0
+2025-07-03 11:48:43: INFO:     Started server process [149389]
+2025-07-03 11:48:43: INFO:     Waiting for application startup.
+2025-07-03 11:48:43: INFO:     Application startup complete.
+2025-07-03 11:48:43: INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-07-03 12:37:45: INFO:     Shutting down
+2025-07-03 12:37:45: INFO:     Finished server process [149389]

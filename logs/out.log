@@ -764,3 +764,1354 @@
 2025-07-01 15:23:11: INFO:     127.0.0.1:59050 - "GET /api/collection-app-status HTTP/1.1" 200 OK
 2025-07-01 15:23:16: INFO:     127.0.0.1:59050 - "POST /api/start-collection-app HTTP/1.1" 200 OK
 2025-07-01 15:23:19: INFO:     127.0.0.1:59050 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 10:44:13: Starting server on 0.0.0.0:8000 with 1 workers
+2025-07-03 11:16:47: INFO:     127.0.0.1:59944 - "GET / HTTP/1.1" 200 OK
+2025-07-03 11:16:47: INFO:     127.0.0.1:59946 - "GET /static/css/toast.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:16:47: INFO:     127.0.0.1:59944 - "GET /static/css/style.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:16:47: INFO:     127.0.0.1:59952 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /static/image.png HTTP/1.1" 200 OK
+2025-07-03 11:16:48: INFO:     127.0.0.1:59944 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:16:48: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:16:48: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:16:48: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:16:48: DEBUG: Returning galleries: []
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:16:48: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:16:48: DEBUG: Returning galleries: []
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:16:48: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:16:48: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:16:48: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:16:48: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:16:48: INFO:     127.0.0.1:59952 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:16:49: INFO:     127.0.0.1:59952 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:16:53: INFO:     127.0.0.1:59952 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:16:54: INFO:     127.0.0.1:59952 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:16:54: INFO:     127.0.0.1:59952 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:16:54: INFO:     127.0.0.1:59952 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:16:56: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:16:56: DEBUG: Returning galleries: []
+2025-07-03 11:16:56: INFO:     127.0.0.1:59952 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:16:56: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:16:56: DEBUG: Returning galleries: []
+2025-07-03 11:16:56: INFO:     127.0.0.1:59952 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:17:00: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:17:00: DEBUG: Returning galleries: []
+2025-07-03 11:17:00: INFO:     127.0.0.1:59952 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:17:00: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:17:00: DEBUG: Returning galleries: []
+2025-07-03 11:17:00: INFO:     127.0.0.1:59952 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:17:00: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:17:00: DEBUG: Returning galleries: []
+2025-07-03 11:17:00: INFO:     127.0.0.1:59952 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:17:00: INFO:     127.0.0.1:59952 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:17:00: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:17:00: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:17:00: INFO:     127.0.0.1:59952 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:17:00: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:17:00: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:17:00: INFO:     127.0.0.1:59952 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:17:03: INFO:     127.0.0.1:59952 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:17:08: INFO:     127.0.0.1:59952 - "POST /api/start-collection-app HTTP/1.1" 200 OK
+2025-07-03 11:17:12: INFO:     127.0.0.1:59952 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:17:12: INFO:     127.0.0.1:59952 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:17:13: INFO:     127.0.0.1:59952 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:17:13: INFO:     127.0.0.1:59952 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:17:35: INFO:     127.0.0.1:60456 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:18:39: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:39: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:39: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:42: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:18:42: DEBUG: Returning galleries: []
+2025-07-03 11:18:42: INFO:     127.0.0.1:59860 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:18:42: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:18:42: DEBUG: Returning galleries: []
+2025-07-03 11:18:42: INFO:     127.0.0.1:59860 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:18:45: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:18:45: DEBUG: Returning galleries: []
+2025-07-03 11:18:45: INFO:     127.0.0.1:59860 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:18:45: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:18:45: DEBUG: Returning galleries: []
+2025-07-03 11:18:45: INFO:     127.0.0.1:59860 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:18:45: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:18:45: DEBUG: Returning galleries: []
+2025-07-03 11:18:45: INFO:     127.0.0.1:59860 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:18:47: INFO:     127.0.0.1:59860 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:18:48: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:48: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:48: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:49: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:18:49: DEBUG: Returning galleries: []
+2025-07-03 11:18:49: INFO:     127.0.0.1:59860 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:18:49: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:18:49: DEBUG: Returning galleries: []
+2025-07-03 11:18:49: INFO:     127.0.0.1:59860 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:18:50: INFO:     127.0.0.1:59860 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:18:53: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:53: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:53: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:55: INFO:     127.0.0.1:59860 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:18:55: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:55: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:55: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:55: INFO:     127.0.0.1:59860 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:18:56: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:56: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:56: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:56: INFO:     127.0.0.1:59860 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:18:57: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:57: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:57: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:18:58: INFO:     127.0.0.1:59860 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:19:01: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:19:01: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:19:01: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:19:04: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:19:04: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:19:04: INFO:     127.0.0.1:59860 - "GET /check-directories HTTP/1.1" 200 OK
+2025-07-03 11:19:04: INFO:     127.0.0.1:59860 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:19:10: INFO:     127.0.0.1:45748 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:19:10: INFO:     127.0.0.1:45748 - "GET /static/css/style.css HTTP/1.1" 200 OK
+2025-07-03 11:19:10: INFO:     127.0.0.1:45758 - "GET /static/css/toast.css HTTP/1.1" 200 OK
+2025-07-03 11:19:10: INFO:     127.0.0.1:45758 - "GET /static/sai.png HTTP/1.1" 200 OK
+2025-07-03 11:19:10: INFO:     127.0.0.1:45748 - "GET /static/mithrajith.png HTTP/1.1" 200 OK
+2025-07-03 11:19:10: INFO:     127.0.0.1:45758 - "GET /static/siddharth.png HTTP/1.1" 200 OK
+2025-07-03 11:20:08: INFO:     127.0.0.1:52436 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:08: INFO:     127.0.0.1:52436 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:20:09: INFO:     127.0.0.1:60592 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:10: INFO:     127.0.0.1:60592 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:10: INFO:     127.0.0.1:60592 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:11: INFO:     127.0.0.1:60592 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:11: INFO:     127.0.0.1:60592 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:12: INFO:     127.0.0.1:60592 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:12: INFO:     127.0.0.1:60592 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:39: INFO:     127.0.0.1:54940 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:20:44: INFO:     127.0.0.1:54954 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 304 Not Modified
+2025-07-03 11:20:44: INFO:     127.0.0.1:54954 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:20:44: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:20:44: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:20:44: INFO:     127.0.0.1:54954 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:20:45: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:20:45: DEBUG: Returning galleries: []
+2025-07-03 11:20:45: INFO:     127.0.0.1:54954 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:20:45: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:20:45: DEBUG: Returning galleries: []
+2025-07-03 11:20:45: INFO:     127.0.0.1:54954 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:20:45: INFO:     127.0.0.1:54954 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:20:45: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:20:45: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:20:45: INFO:     127.0.0.1:54954 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:20:45: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:20:45: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:20:45: INFO:     127.0.0.1:54954 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:20:46: INFO:     127.0.0.1:54954 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:20:46: INFO:     127.0.0.1:54954 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:21:18: INFO:     127.0.0.1:48828 - "GET / HTTP/1.1" 200 OK
+2025-07-03 11:21:18: INFO:     127.0.0.1:48828 - "GET /static/css/style.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:21:18: INFO:     127.0.0.1:48830 - "GET /static/css/toast.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:21:18: INFO:     127.0.0.1:48834 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:21:18: INFO:     127.0.0.1:48850 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /static/image.png HTTP/1.1" 200 OK
+2025-07-03 11:21:18: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:21:18: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:21:18: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:21:18: DEBUG: Returning galleries: []
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:21:18: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:21:18: DEBUG: Returning galleries: []
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:21:18: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:21:18: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:21:18: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:21:18: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:21:18: INFO:     127.0.0.1:48832 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:21:19: INFO:     127.0.0.1:48832 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:21:19: INFO:     127.0.0.1:48832 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:21:21: INFO:     127.0.0.1:48832 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:21:21: INFO:     127.0.0.1:48832 - "GET /static/css/style.css HTTP/1.1" 200 OK
+2025-07-03 11:21:21: INFO:     127.0.0.1:48850 - "GET /static/css/toast.css HTTP/1.1" 200 OK
+2025-07-03 11:21:21: INFO:     127.0.0.1:48830 - "GET /static/mithrajith.png HTTP/1.1" 200 OK
+2025-07-03 11:21:21: INFO:     127.0.0.1:48828 - "GET /static/siddharth.png HTTP/1.1" 200 OK
+2025-07-03 11:21:21: INFO:     127.0.0.1:48834 - "GET /static/sai.png HTTP/1.1" 200 OK
+2025-07-03 11:31:44: INFO:     127.0.0.1:59476 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:31:44: INFO:     127.0.0.1:59476 - "GET /static/siddharth.png HTTP/1.1" 304 Not Modified
+2025-07-03 11:31:45: INFO:     127.0.0.1:59476 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:31:45: INFO:     127.0.0.1:59476 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 304 Not Modified
+2025-07-03 11:31:59: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:31:59: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:31:59: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:31:59: DEBUG: Returning galleries: []
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:31:59: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:31:59: DEBUG: Returning galleries: []
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:31:59: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:31:59: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:31:59: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:31:59: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:31:59: INFO:     127.0.0.1:46912 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:32:00: INFO:     127.0.0.1:46912 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:32:00: INFO:     127.0.0.1:46912 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:32:20: INFO:     127.0.0.1:46926 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:32:22: INFO:     127.0.0.1:46926 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:32:25: INFO:     127.0.0.1:46926 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:32:25: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:32:25: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:32:25: INFO:     127.0.0.1:46926 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:32:25: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:32:25: DEBUG: Returning galleries: []
+2025-07-03 11:32:25: INFO:     127.0.0.1:46926 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:32:25: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:32:25: DEBUG: Returning galleries: []
+2025-07-03 11:32:25: INFO:     127.0.0.1:46926 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:32:25: INFO:     127.0.0.1:46926 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:32:25: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:32:25: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:32:25: INFO:     127.0.0.1:46926 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:32:25: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:32:25: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:32:25: INFO:     127.0.0.1:46926 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:32:27: INFO:     127.0.0.1:46926 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:32:27: INFO:     127.0.0.1:46926 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:32:45: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:32:45: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:32:45: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:32:45: DEBUG: Returning galleries: []
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:32:45: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:32:45: DEBUG: Returning galleries: []
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:32:45: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:32:45: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:32:45: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:32:45: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:32:45: INFO:     127.0.0.1:39106 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:32:46: INFO:     127.0.0.1:39106 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:32:46: INFO:     127.0.0.1:39106 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:33:14: INFO:     127.0.0.1:40336 - "GET / HTTP/1.1" 200 OK
+2025-07-03 11:33:14: INFO:     127.0.0.1:40336 - "GET /static/css/style.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:33:14: INFO:     127.0.0.1:40350 - "GET /static/css/toast.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:33:14: INFO:     127.0.0.1:40336 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /static/image.png HTTP/1.1" 200 OK
+2025-07-03 11:33:14: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:14: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:14: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:33:14: DEBUG: Returning galleries: []
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:33:14: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:33:14: DEBUG: Returning galleries: []
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:33:14: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:14: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:14: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:14: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:14: INFO:     127.0.0.1:40356 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:16: INFO:     127.0.0.1:40356 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:33:16: INFO:     127.0.0.1:40356 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:33:17: INFO:     127.0.0.1:40356 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:33:21: INFO:     127.0.0.1:45700 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:33:37: INFO:     127.0.0.1:56466 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:33:37: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:37: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:37: INFO:     127.0.0.1:56466 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:37: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:33:37: DEBUG: Returning galleries: []
+2025-07-03 11:33:37: INFO:     127.0.0.1:56466 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:33:37: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:33:37: DEBUG: Returning galleries: []
+2025-07-03 11:33:37: INFO:     127.0.0.1:56466 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:33:37: INFO:     127.0.0.1:56466 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:33:37: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:37: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:37: INFO:     127.0.0.1:56466 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:37: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:37: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:37: INFO:     127.0.0.1:56466 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:39: INFO:     127.0.0.1:56466 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:33:39: INFO:     127.0.0.1:56466 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:33:56: INFO:     127.0.0.1:53702 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:33:56: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:56: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:56: INFO:     127.0.0.1:53702 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:56: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:33:56: DEBUG: Returning galleries: []
+2025-07-03 11:33:56: INFO:     127.0.0.1:53702 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:33:56: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:33:56: DEBUG: Returning galleries: []
+2025-07-03 11:33:56: INFO:     127.0.0.1:53702 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:33:56: INFO:     127.0.0.1:53702 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:33:56: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:56: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:56: INFO:     127.0.0.1:53702 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:56: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:33:56: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:33:56: INFO:     127.0.0.1:53702 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:33:58: INFO:     127.0.0.1:53702 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:33:58: INFO:     127.0.0.1:53702 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:34:18: INFO:     127.0.0.1:54578 - "GET / HTTP/1.1" 200 OK
+2025-07-03 11:34:18: INFO:     127.0.0.1:54578 - "GET /static/css/style.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:34:18: INFO:     127.0.0.1:54594 - "GET /static/css/toast.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:34:18: INFO:     127.0.0.1:54602 - "GET /static/image.png HTTP/1.1" 200 OK
+2025-07-03 11:34:18: INFO:     127.0.0.1:54602 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:34:18: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:34:18: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:34:18: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:34:18: DEBUG: Returning galleries: []
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:34:18: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:34:18: DEBUG: Returning galleries: []
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:34:18: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:34:18: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:34:18: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:34:18: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:34:18: INFO:     127.0.0.1:54606 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:34:19: INFO:     127.0.0.1:54606 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:34:20: INFO:     127.0.0.1:54606 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:34:20: INFO:     127.0.0.1:54606 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:34:21: INFO:     127.0.0.1:54606 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:34:21: INFO:     127.0.0.1:54602 - "GET /static/css/toast.css HTTP/1.1" 200 OK
+2025-07-03 11:34:21: INFO:     127.0.0.1:54606 - "GET /static/css/style.css HTTP/1.1" 200 OK
+2025-07-03 11:34:21: INFO:     127.0.0.1:54602 - "GET /static/sai.png HTTP/1.1" 200 OK
+2025-07-03 11:34:21: INFO:     127.0.0.1:54606 - "GET /static/mithrajith.png HTTP/1.1" 200 OK
+2025-07-03 11:34:21: INFO:     127.0.0.1:54594 - "GET /static/siddharth.png HTTP/1.1" 200 OK
+2025-07-03 11:39:27: INFO:     127.0.0.1:53260 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:39:27: INFO:     127.0.0.1:53260 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:39:27: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:39:27: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:39:27: INFO:     127.0.0.1:53260 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:39:27: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:39:27: DEBUG: Returning galleries: []
+2025-07-03 11:39:27: INFO:     127.0.0.1:53260 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:39:27: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:39:27: DEBUG: Returning galleries: []
+2025-07-03 11:39:27: INFO:     127.0.0.1:53260 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:39:27: INFO:     127.0.0.1:53260 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:39:28: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:39:28: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:39:28: INFO:     127.0.0.1:53260 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:39:28: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:39:28: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:39:28: INFO:     127.0.0.1:53260 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:39:29: INFO:     127.0.0.1:53260 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:39:29: INFO:     127.0.0.1:53260 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:39:29: INFO:     127.0.0.1:53260 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:39:29: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:39:29: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:39:29: INFO:     127.0.0.1:53260 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:39:29: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:39:29: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:39:29: INFO:     127.0.0.1:53260 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:40:21: INFO:     127.0.0.1:59350 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:40:21: INFO:     127.0.0.1:59352 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 304 Not Modified
+2025-07-03 11:40:21: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:40:21: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:40:21: INFO:     127.0.0.1:59350 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:40:21: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:40:21: DEBUG: Returning galleries: []
+2025-07-03 11:40:21: INFO:     127.0.0.1:59350 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:40:21: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:40:21: DEBUG: Returning galleries: []
+2025-07-03 11:40:21: INFO:     127.0.0.1:59350 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:40:21: INFO:     127.0.0.1:59350 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:40:21: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:40:21: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:40:21: INFO:     127.0.0.1:59350 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:40:21: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:40:21: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:40:21: INFO:     127.0.0.1:59350 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:40:22: INFO:     127.0.0.1:59350 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:40:22: INFO:     127.0.0.1:59350 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:40:23: INFO:     127.0.0.1:59350 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:40:23: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:40:23: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:40:23: INFO:     127.0.0.1:59350 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:40:23: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:40:23: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:40:23: INFO:     127.0.0.1:59350 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:47:37: INFO:     127.0.0.1:52780 - "GET /student-data/folders HTTP/1.1" 200 OK
+2025-07-03 11:48:10: INFO:     127.0.0.1:58576 - "GET /student-data/DPT005/2027/summary HTTP/1.1" 200 OK
+2025-07-03 11:48:14: INFO:     127.0.0.1:58576 - "GET /student-data/DPT005/2027/pending HTTP/1.1" 200 OK
+2025-07-03 11:48:18: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_000.jpg
+2025-07-03 11:48:18: 
+2025-07-03 11:48:18: 0: 480x640 2 faces, 82.3ms
+2025-07-03 11:48:18: Speed: 2.1ms preprocess, 82.3ms inference, 5.7ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:18: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_000.jpg
+2025-07-03 11:48:18: Face 0 dimensions before padding: 186x266
+2025-07-03 11:48:18: Face 0 dimensions after padding: 75-313x0-339
+2025-07-03 11:48:18: Face 1 dimensions before padding: 99x128
+2025-07-03 11:48:18: Face 1 dimensions after padding: 420-547x130-294
+2025-07-03 11:48:18: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_001.jpg
+2025-07-03 11:48:18: 
+2025-07-03 11:48:18: 0: 480x640 2 faces, 40.1ms
+2025-07-03 11:48:18: Speed: 0.9ms preprocess, 40.1ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_001.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 100x127
+2025-07-03 11:48:19: Face 0 dimensions after padding: 420-548x130-293
+2025-07-03 11:48:19: Face 1 dimensions before padding: 193x266
+2025-07-03 11:48:19: Face 1 dimensions after padding: 75-322x0-342
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_002.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:19: 0: 480x640 2 faces, 44.7ms
+2025-07-03 11:48:19: Speed: 1.1ms preprocess, 44.7ms inference, 0.6ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_002.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 207x266
+2025-07-03 11:48:19: Face 0 dimensions after padding: 70-335x0-340
+2025-07-03 11:48:19: Face 1 dimensions before padding: 99x127
+2025-07-03 11:48:19: Face 1 dimensions after padding: 421-548x131-294
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_003.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:19: 0: 480x640 2 faces, 53.4ms
+2025-07-03 11:48:19: Speed: 1.5ms preprocess, 53.4ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_003.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 203x261
+2025-07-03 11:48:19: Face 0 dimensions after padding: 70-331x1-336
+2025-07-03 11:48:19: Face 1 dimensions before padding: 99x128
+2025-07-03 11:48:19: Face 1 dimensions after padding: 421-548x130-294
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_004.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:19: 0: 480x640 2 faces, 50.1ms
+2025-07-03 11:48:19: Speed: 1.2ms preprocess, 50.1ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_004.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 197x260
+2025-07-03 11:48:19: Face 0 dimensions after padding: 72-325x1-335
+2025-07-03 11:48:19: Face 1 dimensions before padding: 99x129
+2025-07-03 11:48:19: Face 1 dimensions after padding: 421-548x130-295
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_005.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:19: 0: 480x640 2 faces, 52.8ms
+2025-07-03 11:48:19: Speed: 1.1ms preprocess, 52.8ms inference, 1.1ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_005.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 198x260
+2025-07-03 11:48:19: Face 0 dimensions after padding: 71-325x0-334
+2025-07-03 11:48:19: Face 1 dimensions before padding: 98x128
+2025-07-03 11:48:19: Face 1 dimensions after padding: 422-548x130-294
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_006.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:19: 0: 480x640 2 faces, 51.5ms
+2025-07-03 11:48:19: Speed: 1.3ms preprocess, 51.5ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_006.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 198x259
+2025-07-03 11:48:19: Face 0 dimensions after padding: 71-325x0-333
+2025-07-03 11:48:19: Face 1 dimensions before padding: 95x129
+2025-07-03 11:48:19: Face 1 dimensions after padding: 425-546x131-296
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_007.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:19: 0: 480x640 2 faces, 46.6ms
+2025-07-03 11:48:19: Speed: 1.3ms preprocess, 46.6ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_007.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 196x255
+2025-07-03 11:48:19: Face 0 dimensions after padding: 72-324x2-329
+2025-07-03 11:48:19: Face 1 dimensions before padding: 95x129
+2025-07-03 11:48:19: Face 1 dimensions after padding: 425-546x131-296
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_008.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:19: 0: 480x640 2 faces, 44.8ms
+2025-07-03 11:48:19: Speed: 1.3ms preprocess, 44.8ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:19: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_008.jpg
+2025-07-03 11:48:19: Face 0 dimensions before padding: 193x256
+2025-07-03 11:48:19: Face 0 dimensions after padding: 73-320x1-329
+2025-07-03 11:48:19: Face 1 dimensions before padding: 99x128
+2025-07-03 11:48:19: Face 1 dimensions after padding: 423-550x131-295
+2025-07-03 11:48:19: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_009.jpg
+2025-07-03 11:48:19: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 45.4ms
+2025-07-03 11:48:20: Speed: 1.6ms preprocess, 45.4ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_009.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 191x254
+2025-07-03 11:48:20: Face 0 dimensions after padding: 74-319x1-327
+2025-07-03 11:48:20: Face 1 dimensions before padding: 99x128
+2025-07-03 11:48:20: Face 1 dimensions after padding: 424-551x131-295
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_010.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 48.7ms
+2025-07-03 11:48:20: Speed: 0.9ms preprocess, 48.7ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_010.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 192x252
+2025-07-03 11:48:20: Face 0 dimensions after padding: 75-321x1-325
+2025-07-03 11:48:20: Face 1 dimensions before padding: 99x128
+2025-07-03 11:48:20: Face 1 dimensions after padding: 424-551x131-295
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_011.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 49.6ms
+2025-07-03 11:48:20: Speed: 1.3ms preprocess, 49.6ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_011.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 99x128
+2025-07-03 11:48:20: Face 0 dimensions after padding: 424-551x131-295
+2025-07-03 11:48:20: Face 1 dimensions before padding: 189x249
+2025-07-03 11:48:20: Face 1 dimensions after padding: 76-319x3-322
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_012.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 49.5ms
+2025-07-03 11:48:20: Speed: 1.4ms preprocess, 49.5ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_012.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 98x123
+2025-07-03 11:48:20: Face 0 dimensions after padding: 426-552x135-292
+2025-07-03 11:48:20: Face 1 dimensions before padding: 164x238
+2025-07-03 11:48:20: Face 1 dimensions after padding: 84-294x11-317
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_013.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 48.2ms
+2025-07-03 11:48:20: Speed: 1.0ms preprocess, 48.2ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_013.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 164x235
+2025-07-03 11:48:20: Face 0 dimensions after padding: 86-296x9-310
+2025-07-03 11:48:20: Face 1 dimensions before padding: 100x123
+2025-07-03 11:48:20: Face 1 dimensions after padding: 425-553x135-292
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_014.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 43.8ms
+2025-07-03 11:48:20: Speed: 1.4ms preprocess, 43.8ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_014.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 163x233
+2025-07-03 11:48:20: Face 0 dimensions after padding: 87-296x10-309
+2025-07-03 11:48:20: Face 1 dimensions before padding: 100x123
+2025-07-03 11:48:20: Face 1 dimensions after padding: 425-553x135-292
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_015.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 46.8ms
+2025-07-03 11:48:20: Speed: 1.5ms preprocess, 46.8ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_015.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 168x232
+2025-07-03 11:48:20: Face 0 dimensions after padding: 85-301x10-308
+2025-07-03 11:48:20: Face 1 dimensions before padding: 100x123
+2025-07-03 11:48:20: Face 1 dimensions after padding: 425-553x135-292
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_016.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:20: 0: 480x640 2 faces, 44.2ms
+2025-07-03 11:48:20: Speed: 1.0ms preprocess, 44.2ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:20: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_016.jpg
+2025-07-03 11:48:20: Face 0 dimensions before padding: 169x232
+2025-07-03 11:48:20: Face 0 dimensions after padding: 86-303x10-308
+2025-07-03 11:48:20: Face 1 dimensions before padding: 100x123
+2025-07-03 11:48:20: Face 1 dimensions after padding: 425-553x135-292
+2025-07-03 11:48:20: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_017.jpg
+2025-07-03 11:48:20: 
+2025-07-03 11:48:21: 0: 480x640 2 faces, 44.3ms
+2025-07-03 11:48:21: Speed: 1.4ms preprocess, 44.3ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:21: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_017.jpg
+2025-07-03 11:48:21: Face 0 dimensions before padding: 171x232
+2025-07-03 11:48:21: Face 0 dimensions after padding: 87-306x9-307
+2025-07-03 11:48:21: Face 1 dimensions before padding: 101x123
+2025-07-03 11:48:21: Face 1 dimensions after padding: 425-554x135-292
+2025-07-03 11:48:21: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_018.jpg
+2025-07-03 11:48:21: 
+2025-07-03 11:48:21: 0: 480x640 2 faces, 44.4ms
+2025-07-03 11:48:21: Speed: 1.4ms preprocess, 44.4ms inference, 0.6ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:21: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_018.jpg
+2025-07-03 11:48:21: Face 0 dimensions before padding: 172x233
+2025-07-03 11:48:21: Face 0 dimensions after padding: 87-307x8-307
+2025-07-03 11:48:21: Face 1 dimensions before padding: 100x123
+2025-07-03 11:48:21: Face 1 dimensions after padding: 425-553x135-292
+2025-07-03 11:48:21: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_019.jpg
+2025-07-03 11:48:21: 
+2025-07-03 11:48:21: 0: 480x640 2 faces, 45.1ms
+2025-07-03 11:48:21: Speed: 0.9ms preprocess, 45.1ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:21: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_019.jpg
+2025-07-03 11:48:21: Face 0 dimensions before padding: 176x233
+2025-07-03 11:48:21: Face 0 dimensions after padding: 84-310x7-306
+2025-07-03 11:48:21: Face 1 dimensions before padding: 101x123
+2025-07-03 11:48:21: Face 1 dimensions after padding: 425-554x135-292
+2025-07-03 11:48:21: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_020.jpg
+2025-07-03 11:48:21: 
+2025-07-03 11:48:21: 0: 480x640 2 faces, 45.9ms
+2025-07-03 11:48:21: Speed: 1.0ms preprocess, 45.9ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:21: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_020.jpg
+2025-07-03 11:48:21: Face 0 dimensions before padding: 176x233
+2025-07-03 11:48:21: Face 0 dimensions after padding: 83-309x7-306
+2025-07-03 11:48:21: Face 1 dimensions before padding: 101x126
+2025-07-03 11:48:21: Face 1 dimensions after padding: 425-554x132-294
+2025-07-03 11:48:21: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_021.jpg
+2025-07-03 11:48:21: 
+2025-07-03 11:48:21: 0: 480x640 2 faces, 45.8ms
+2025-07-03 11:48:21: Speed: 1.1ms preprocess, 45.8ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:21: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_021.jpg
+2025-07-03 11:48:21: Face 0 dimensions before padding: 175x233
+2025-07-03 11:48:21: Face 0 dimensions after padding: 82-307x7-306
+2025-07-03 11:48:21: Face 1 dimensions before padding: 100x123
+2025-07-03 11:48:21: Face 1 dimensions after padding: 425-553x135-292
+2025-07-03 11:48:21: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_022.jpg
+2025-07-03 11:48:21: 
+2025-07-03 11:48:21: 0: 480x640 2 faces, 46.0ms
+2025-07-03 11:48:21: Speed: 0.9ms preprocess, 46.0ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:21: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_022.jpg
+2025-07-03 11:48:21: Face 0 dimensions before padding: 171x233
+2025-07-03 11:48:21: Face 0 dimensions after padding: 82-301x7-306
+2025-07-03 11:48:21: Face 1 dimensions before padding: 100x123
+2025-07-03 11:48:21: Face 1 dimensions after padding: 425-553x135-292
+2025-07-03 11:48:21: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_023.jpg
+2025-07-03 11:48:21: 
+2025-07-03 11:48:21: 0: 480x640 2 faces, 49.8ms
+2025-07-03 11:48:21: Speed: 0.9ms preprocess, 49.8ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:21: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_023.jpg
+2025-07-03 11:48:21: Face 0 dimensions before padding: 176x234
+2025-07-03 11:48:21: Face 0 dimensions after padding: 80-306x6-306
+2025-07-03 11:48:21: Face 1 dimensions before padding: 102x127
+2025-07-03 11:48:21: Face 1 dimensions after padding: 424-554x132-295
+2025-07-03 11:48:21: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_024.jpg
+2025-07-03 11:48:21: 
+2025-07-03 11:48:21: 0: 480x640 1 face, 45.3ms
+2025-07-03 11:48:21: Speed: 1.6ms preprocess, 45.3ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:22: YOLO detected 1 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_024.jpg
+2025-07-03 11:48:22: Face 0 dimensions before padding: 94x123
+2025-07-03 11:48:22: Face 0 dimensions after padding: 428-548x134-291
+2025-07-03 11:48:22: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_025.jpg
+2025-07-03 11:48:22: 
+2025-07-03 11:48:22: 0: 480x640 2 faces, 43.5ms
+2025-07-03 11:48:22: Speed: 0.9ms preprocess, 43.5ms inference, 0.5ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:22: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_025.jpg
+2025-07-03 11:48:22: Face 0 dimensions before padding: 95x123
+2025-07-03 11:48:22: Face 0 dimensions after padding: 427-548x134-291
+2025-07-03 11:48:22: Face 1 dimensions before padding: 164x249
+2025-07-03 11:48:22: Face 1 dimensions after padding: 83-293x6-325
+2025-07-03 11:48:22: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_026.jpg
+2025-07-03 11:48:22: 
+2025-07-03 11:48:22: 0: 480x640 2 faces, 48.3ms
+2025-07-03 11:48:22: Speed: 1.3ms preprocess, 48.3ms inference, 0.6ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:22: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_026.jpg
+2025-07-03 11:48:22: Face 0 dimensions before padding: 162x247
+2025-07-03 11:48:22: Face 0 dimensions after padding: 84-292x7-324
+2025-07-03 11:48:22: Face 1 dimensions before padding: 95x123
+2025-07-03 11:48:22: Face 1 dimensions after padding: 427-548x134-291
+2025-07-03 11:48:22: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_027.jpg
+2025-07-03 11:48:22: 
+2025-07-03 11:48:22: 0: 480x640 2 faces, 54.8ms
+2025-07-03 11:48:22: Speed: 1.5ms preprocess, 54.8ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:22: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_027.jpg
+2025-07-03 11:48:22: Face 0 dimensions before padding: 163x242
+2025-07-03 11:48:22: Face 0 dimensions after padding: 83-292x10-320
+2025-07-03 11:48:22: Face 1 dimensions before padding: 94x122
+2025-07-03 11:48:22: Face 1 dimensions after padding: 427-547x135-291
+2025-07-03 11:48:22: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_028.jpg
+2025-07-03 11:48:22: 
+2025-07-03 11:48:22: 0: 480x640 2 faces, 63.6ms
+2025-07-03 11:48:22: Speed: 1.2ms preprocess, 63.6ms inference, 1.3ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:22: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_028.jpg
+2025-07-03 11:48:22: Face 0 dimensions before padding: 95x122
+2025-07-03 11:48:22: Face 0 dimensions after padding: 426-547x135-291
+2025-07-03 11:48:22: Face 1 dimensions before padding: 164x240
+2025-07-03 11:48:22: Face 1 dimensions after padding: 83-293x10-318
+2025-07-03 11:48:22: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_029.jpg
+2025-07-03 11:48:22: 
+2025-07-03 11:48:22: 0: 480x640 2 faces, 86.8ms
+2025-07-03 11:48:22: Speed: 2.0ms preprocess, 86.8ms inference, 1.7ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:22: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_029.jpg
+2025-07-03 11:48:22: Face 0 dimensions before padding: 95x122
+2025-07-03 11:48:22: Face 0 dimensions after padding: 426-547x135-291
+2025-07-03 11:48:22: Face 1 dimensions before padding: 168x241
+2025-07-03 11:48:22: Face 1 dimensions after padding: 82-298x10-319
+2025-07-03 11:48:22: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_030.jpg
+2025-07-03 11:48:22: 
+2025-07-03 11:48:22: 0: 480x640 2 faces, 87.2ms
+2025-07-03 11:48:22: Speed: 2.8ms preprocess, 87.2ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:23: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_030.jpg
+2025-07-03 11:48:23: Face 0 dimensions before padding: 95x123
+2025-07-03 11:48:23: Face 0 dimensions after padding: 426-547x134-291
+2025-07-03 11:48:23: Face 1 dimensions before padding: 170x240
+2025-07-03 11:48:23: Face 1 dimensions after padding: 82-300x11-319
+2025-07-03 11:48:23: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_031.jpg
+2025-07-03 11:48:23: 
+2025-07-03 11:48:23: 0: 480x640 2 faces, 87.1ms
+2025-07-03 11:48:23: Speed: 1.6ms preprocess, 87.1ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:23: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_031.jpg
+2025-07-03 11:48:23: Face 0 dimensions before padding: 94x123
+2025-07-03 11:48:23: Face 0 dimensions after padding: 426-546x134-291
+2025-07-03 11:48:23: Face 1 dimensions before padding: 171x241
+2025-07-03 11:48:23: Face 1 dimensions after padding: 83-302x8-317
+2025-07-03 11:48:23: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_032.jpg
+2025-07-03 11:48:23: 
+2025-07-03 11:48:23: 0: 480x640 2 faces, 88.6ms
+2025-07-03 11:48:23: Speed: 2.6ms preprocess, 88.6ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:23: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_032.jpg
+2025-07-03 11:48:23: Face 0 dimensions before padding: 175x240
+2025-07-03 11:48:23: Face 0 dimensions after padding: 82-307x4-312
+2025-07-03 11:48:23: Face 1 dimensions before padding: 94x123
+2025-07-03 11:48:23: Face 1 dimensions after padding: 426-546x134-291
+2025-07-03 11:48:23: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_033.jpg
+2025-07-03 11:48:23: 
+2025-07-03 11:48:23: 0: 480x640 2 faces, 88.2ms
+2025-07-03 11:48:23: Speed: 2.6ms preprocess, 88.2ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:23: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_033.jpg
+2025-07-03 11:48:23: Face 0 dimensions before padding: 169x228
+2025-07-03 11:48:23: Face 0 dimensions after padding: 86-303x9-301
+2025-07-03 11:48:23: Face 1 dimensions before padding: 94x126
+2025-07-03 11:48:23: Face 1 dimensions after padding: 426-546x132-294
+2025-07-03 11:48:23: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_034.jpg
+2025-07-03 11:48:23: 
+2025-07-03 11:48:23: 0: 480x640 2 faces, 104.7ms
+2025-07-03 11:48:23: Speed: 1.7ms preprocess, 104.7ms inference, 2.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:24: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_034.jpg
+2025-07-03 11:48:24: Face 0 dimensions before padding: 94x123
+2025-07-03 11:48:24: Face 0 dimensions after padding: 426-546x135-292
+2025-07-03 11:48:24: Face 1 dimensions before padding: 168x239
+2025-07-03 11:48:24: Face 1 dimensions after padding: 88-304x4-311
+2025-07-03 11:48:24: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_035.jpg
+2025-07-03 11:48:24: 
+2025-07-03 11:48:24: 0: 480x640 2 faces, 85.0ms
+2025-07-03 11:48:24: Speed: 2.5ms preprocess, 85.0ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:24: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_035.jpg
+2025-07-03 11:48:24: Face 0 dimensions before padding: 170x240
+2025-07-03 11:48:24: Face 0 dimensions after padding: 89-307x2-310
+2025-07-03 11:48:24: Face 1 dimensions before padding: 94x126
+2025-07-03 11:48:24: Face 1 dimensions after padding: 426-546x132-294
+2025-07-03 11:48:24: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_036.jpg
+2025-07-03 11:48:24: 
+2025-07-03 11:48:24: 0: 480x640 2 faces, 78.7ms
+2025-07-03 11:48:24: Speed: 2.1ms preprocess, 78.7ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:24: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_036.jpg
+2025-07-03 11:48:24: Face 0 dimensions before padding: 94x126
+2025-07-03 11:48:24: Face 0 dimensions after padding: 427-547x132-294
+2025-07-03 11:48:24: Face 1 dimensions before padding: 171x276
+2025-07-03 11:48:24: Face 1 dimensions after padding: 90-309x0-342
+2025-07-03 11:48:24: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_037.jpg
+2025-07-03 11:48:24: 
+2025-07-03 11:48:24: 0: 480x640 2 faces, 86.5ms
+2025-07-03 11:48:24: Speed: 1.5ms preprocess, 86.5ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:24: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_037.jpg
+2025-07-03 11:48:24: Face 0 dimensions before padding: 94x126
+2025-07-03 11:48:24: Face 0 dimensions after padding: 427-547x131-293
+2025-07-03 11:48:24: Face 1 dimensions before padding: 165x246
+2025-07-03 11:48:24: Face 1 dimensions after padding: 90-301x0-314
+2025-07-03 11:48:24: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_038.jpg
+2025-07-03 11:48:24: 
+2025-07-03 11:48:24: 0: 480x640 2 faces, 96.9ms
+2025-07-03 11:48:24: Speed: 2.4ms preprocess, 96.9ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:24: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_038.jpg
+2025-07-03 11:48:24: Face 0 dimensions before padding: 95x126
+2025-07-03 11:48:24: Face 0 dimensions after padding: 427-548x131-293
+2025-07-03 11:48:24: Face 1 dimensions before padding: 168x247
+2025-07-03 11:48:24: Face 1 dimensions after padding: 89-305x0-315
+2025-07-03 11:48:24: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_039.jpg
+2025-07-03 11:48:24: 
+2025-07-03 11:48:24: 0: 480x640 2 faces, 80.7ms
+2025-07-03 11:48:24: Speed: 2.2ms preprocess, 80.7ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:25: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_039.jpg
+2025-07-03 11:48:25: Face 0 dimensions before padding: 168x247
+2025-07-03 11:48:25: Face 0 dimensions after padding: 90-306x0-315
+2025-07-03 11:48:25: Face 1 dimensions before padding: 95x126
+2025-07-03 11:48:25: Face 1 dimensions after padding: 427-548x131-293
+2025-07-03 11:48:25: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_040.jpg
+2025-07-03 11:48:25: 
+2025-07-03 11:48:25: 0: 480x640 2 faces, 83.7ms
+2025-07-03 11:48:25: Speed: 1.4ms preprocess, 83.7ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:25: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_040.jpg
+2025-07-03 11:48:25: Face 0 dimensions before padding: 168x248
+2025-07-03 11:48:25: Face 0 dimensions after padding: 90-306x0-316
+2025-07-03 11:48:25: Face 1 dimensions before padding: 99x127
+2025-07-03 11:48:25: Face 1 dimensions after padding: 425-552x131-294
+2025-07-03 11:48:25: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_041.jpg
+2025-07-03 11:48:25: 
+2025-07-03 11:48:25: 0: 480x640 2 faces, 99.8ms
+2025-07-03 11:48:25: Speed: 2.3ms preprocess, 99.8ms inference, 1.2ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:25: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_041.jpg
+2025-07-03 11:48:25: Face 0 dimensions before padding: 165x248
+2025-07-03 11:48:25: Face 0 dimensions after padding: 93-304x0-316
+2025-07-03 11:48:25: Face 1 dimensions before padding: 99x127
+2025-07-03 11:48:25: Face 1 dimensions after padding: 426-553x131-294
+2025-07-03 11:48:25: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_042.jpg
+2025-07-03 11:48:25: 
+2025-07-03 11:48:25: 0: 480x640 2 faces, 104.7ms
+2025-07-03 11:48:25: Speed: 2.9ms preprocess, 104.7ms inference, 2.7ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:25: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_042.jpg
+2025-07-03 11:48:25: Face 0 dimensions before padding: 168x247
+2025-07-03 11:48:25: Face 0 dimensions after padding: 90-306x0-317
+2025-07-03 11:48:25: Face 1 dimensions before padding: 99x127
+2025-07-03 11:48:25: Face 1 dimensions after padding: 426-553x131-294
+2025-07-03 11:48:25: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_043.jpg
+2025-07-03 11:48:25: 
+2025-07-03 11:48:26: 0: 480x640 2 faces, 113.1ms
+2025-07-03 11:48:26: Speed: 1.9ms preprocess, 113.1ms inference, 1.2ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:26: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_043.jpg
+2025-07-03 11:48:26: Face 0 dimensions before padding: 169x248
+2025-07-03 11:48:26: Face 0 dimensions after padding: 90-307x0-318
+2025-07-03 11:48:26: Face 1 dimensions before padding: 101x127
+2025-07-03 11:48:26: Face 1 dimensions after padding: 426-555x131-294
+2025-07-03 11:48:26: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_044.jpg
+2025-07-03 11:48:26: 
+2025-07-03 11:48:26: 0: 480x640 2 faces, 85.0ms
+2025-07-03 11:48:26: Speed: 2.2ms preprocess, 85.0ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:26: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_044.jpg
+2025-07-03 11:48:26: Face 0 dimensions before padding: 169x248
+2025-07-03 11:48:26: Face 0 dimensions after padding: 90-307x0-318
+2025-07-03 11:48:26: Face 1 dimensions before padding: 99x128
+2025-07-03 11:48:26: Face 1 dimensions after padding: 426-553x130-294
+2025-07-03 11:48:26: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_045.jpg
+2025-07-03 11:48:26: 
+2025-07-03 11:48:26: 0: 480x640 2 faces, 83.0ms
+2025-07-03 11:48:26: Speed: 2.3ms preprocess, 83.0ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:26: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_045.jpg
+2025-07-03 11:48:26: Face 0 dimensions before padding: 170x242
+2025-07-03 11:48:26: Face 0 dimensions after padding: 90-308x3-313
+2025-07-03 11:48:26: Face 1 dimensions before padding: 95x126
+2025-07-03 11:48:26: Face 1 dimensions after padding: 429-550x131-293
+2025-07-03 11:48:26: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_046.jpg
+2025-07-03 11:48:26: 
+2025-07-03 11:48:26: 0: 480x640 2 faces, 82.6ms
+2025-07-03 11:48:26: Speed: 1.5ms preprocess, 82.6ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:26: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_046.jpg
+2025-07-03 11:48:26: Face 0 dimensions before padding: 171x242
+2025-07-03 11:48:26: Face 0 dimensions after padding: 91-310x3-313
+2025-07-03 11:48:26: Face 1 dimensions before padding: 99x126
+2025-07-03 11:48:26: Face 1 dimensions after padding: 427-554x131-293
+2025-07-03 11:48:26: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_047.jpg
+2025-07-03 11:48:26: 
+2025-07-03 11:48:26: 0: 480x640 2 faces, 108.7ms
+2025-07-03 11:48:26: Speed: 2.7ms preprocess, 108.7ms inference, 1.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:27: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_047.jpg
+2025-07-03 11:48:27: Face 0 dimensions before padding: 171x241
+2025-07-03 11:48:27: Face 0 dimensions after padding: 91-310x4-313
+2025-07-03 11:48:27: Face 1 dimensions before padding: 99x123
+2025-07-03 11:48:27: Face 1 dimensions after padding: 427-554x134-291
+2025-07-03 11:48:27: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_048.jpg
+2025-07-03 11:48:27: 
+2025-07-03 11:48:27: 0: 480x640 (no detections), 106.6ms
+2025-07-03 11:48:27: Speed: 3.7ms preprocess, 106.6ms inference, 1.4ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:27: YOLO detected 0 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_048.jpg
+2025-07-03 11:48:27: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_049.jpg
+2025-07-03 11:48:27: 
+2025-07-03 11:48:27: 0: 480x640 2 faces, 84.4ms
+2025-07-03 11:48:27: Speed: 1.6ms preprocess, 84.4ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:27: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_049.jpg
+2025-07-03 11:48:27: Face 0 dimensions before padding: 102x130
+2025-07-03 11:48:27: Face 0 dimensions after padding: 427-557x133-299
+2025-07-03 11:48:27: Face 1 dimensions before padding: 177x249
+2025-07-03 11:48:27: Face 1 dimensions after padding: 87-314x3-322
+2025-07-03 11:48:27: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_050.jpg
+2025-07-03 11:48:27: 
+2025-07-03 11:48:27: 0: 480x640 2 faces, 96.0ms
+2025-07-03 11:48:27: Speed: 2.7ms preprocess, 96.0ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:27: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_050.jpg
+2025-07-03 11:48:27: Face 0 dimensions before padding: 175x246
+2025-07-03 11:48:27: Face 0 dimensions after padding: 88-313x3-319
+2025-07-03 11:48:27: Face 1 dimensions before padding: 101x133
+2025-07-03 11:48:27: Face 1 dimensions after padding: 427-556x130-301
+2025-07-03 11:48:27: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_051.jpg
+2025-07-03 11:48:27: 
+2025-07-03 11:48:27: 0: 480x640 2 faces, 84.4ms
+2025-07-03 11:48:27: Speed: 1.6ms preprocess, 84.4ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:28: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_051.jpg
+2025-07-03 11:48:28: Face 0 dimensions before padding: 175x247
+2025-07-03 11:48:28: Face 0 dimensions after padding: 88-313x2-319
+2025-07-03 11:48:28: Face 1 dimensions before padding: 105x135
+2025-07-03 11:48:28: Face 1 dimensions after padding: 425-560x128-301
+2025-07-03 11:48:28: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_052.jpg
+2025-07-03 11:48:28: 
+2025-07-03 11:48:28: 0: 480x640 2 faces, 85.5ms
+2025-07-03 11:48:28: Speed: 1.7ms preprocess, 85.5ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:28: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_052.jpg
+2025-07-03 11:48:28: Face 0 dimensions before padding: 171x242
+2025-07-03 11:48:28: Face 0 dimensions after padding: 91-310x4-314
+2025-07-03 11:48:28: Face 1 dimensions before padding: 102x135
+2025-07-03 11:48:28: Face 1 dimensions after padding: 427-557x127-300
+2025-07-03 11:48:28: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_053.jpg
+2025-07-03 11:48:28: 
+2025-07-03 11:48:28: 0: 480x640 2 faces, 91.4ms
+2025-07-03 11:48:28: Speed: 1.5ms preprocess, 91.4ms inference, 1.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:28: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_053.jpg
+2025-07-03 11:48:28: Face 0 dimensions before padding: 172x240
+2025-07-03 11:48:28: Face 0 dimensions after padding: 90-310x3-311
+2025-07-03 11:48:28: Face 1 dimensions before padding: 101x136
+2025-07-03 11:48:28: Face 1 dimensions after padding: 427-556x126-300
+2025-07-03 11:48:28: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_054.jpg
+2025-07-03 11:48:28: 
+2025-07-03 11:48:28: 0: 480x640 2 faces, 100.1ms
+2025-07-03 11:48:28: Speed: 1.8ms preprocess, 100.1ms inference, 1.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:28: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_054.jpg
+2025-07-03 11:48:28: Face 0 dimensions before padding: 175x238
+2025-07-03 11:48:28: Face 0 dimensions after padding: 88-313x4-310
+2025-07-03 11:48:28: Face 1 dimensions before padding: 100x134
+2025-07-03 11:48:28: Face 1 dimensions after padding: 428-556x127-299
+2025-07-03 11:48:28: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_055.jpg
+2025-07-03 11:48:28: 
+2025-07-03 11:48:29: 0: 480x640 2 faces, 81.9ms
+2025-07-03 11:48:29: Speed: 1.6ms preprocess, 81.9ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:29: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_055.jpg
+2025-07-03 11:48:29: Face 0 dimensions before padding: 176x235
+2025-07-03 11:48:29: Face 0 dimensions after padding: 88-314x7-308
+2025-07-03 11:48:29: Face 1 dimensions before padding: 100x130
+2025-07-03 11:48:29: Face 1 dimensions after padding: 428-556x129-295
+2025-07-03 11:48:29: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_056.jpg
+2025-07-03 11:48:29: 
+2025-07-03 11:48:29: 0: 480x640 2 faces, 77.8ms
+2025-07-03 11:48:29: Speed: 1.5ms preprocess, 77.8ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:29: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_056.jpg
+2025-07-03 11:48:29: Face 0 dimensions before padding: 176x239
+2025-07-03 11:48:29: Face 0 dimensions after padding: 88-314x4-311
+2025-07-03 11:48:29: Face 1 dimensions before padding: 100x130
+2025-07-03 11:48:29: Face 1 dimensions after padding: 428-556x129-295
+2025-07-03 11:48:29: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_057.jpg
+2025-07-03 11:48:29: 
+2025-07-03 11:48:29: 0: 480x640 2 faces, 97.8ms
+2025-07-03 11:48:29: Speed: 1.9ms preprocess, 97.8ms inference, 1.3ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:29: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_057.jpg
+2025-07-03 11:48:29: Face 0 dimensions before padding: 175x239
+2025-07-03 11:48:29: Face 0 dimensions after padding: 88-313x5-312
+2025-07-03 11:48:29: Face 1 dimensions before padding: 101x130
+2025-07-03 11:48:29: Face 1 dimensions after padding: 428-557x129-295
+2025-07-03 11:48:29: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_058.jpg
+2025-07-03 11:48:29: 
+2025-07-03 11:48:29: 0: 480x640 2 faces, 77.8ms
+2025-07-03 11:48:29: Speed: 1.5ms preprocess, 77.8ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:29: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_058.jpg
+2025-07-03 11:48:29: Face 0 dimensions before padding: 176x245
+2025-07-03 11:48:29: Face 0 dimensions after padding: 88-314x2-317
+2025-07-03 11:48:29: Face 1 dimensions before padding: 101x130
+2025-07-03 11:48:29: Face 1 dimensions after padding: 428-557x129-295
+2025-07-03 11:48:29: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_059.jpg
+2025-07-03 11:48:29: 
+2025-07-03 11:48:29: 0: 480x640 2 faces, 97.0ms
+2025-07-03 11:48:29: Speed: 1.8ms preprocess, 97.0ms inference, 1.7ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:30: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_059.jpg
+2025-07-03 11:48:30: Face 0 dimensions before padding: 177x249
+2025-07-03 11:48:30: Face 0 dimensions after padding: 88-315x2-321
+2025-07-03 11:48:30: Face 1 dimensions before padding: 101x130
+2025-07-03 11:48:30: Face 1 dimensions after padding: 428-557x129-295
+2025-07-03 11:48:30: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_060.jpg
+2025-07-03 11:48:30: 
+2025-07-03 11:48:30: 0: 480x640 1 face, 93.4ms
+2025-07-03 11:48:30: Speed: 1.7ms preprocess, 93.4ms inference, 1.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:30: YOLO detected 1 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_060.jpg
+2025-07-03 11:48:30: Face 0 dimensions before padding: 94x122
+2025-07-03 11:48:30: Face 0 dimensions after padding: 432-552x137-293
+2025-07-03 11:48:30: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_061.jpg
+2025-07-03 11:48:30: 
+2025-07-03 11:48:30: 0: 480x640 2 faces, 79.3ms
+2025-07-03 11:48:30: Speed: 1.4ms preprocess, 79.3ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:30: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_061.jpg
+2025-07-03 11:48:30: Face 0 dimensions before padding: 171x268
+2025-07-03 11:48:30: Face 0 dimensions after padding: 88-307x0-335
+2025-07-03 11:48:30: Face 1 dimensions before padding: 93x127
+2025-07-03 11:48:30: Face 1 dimensions after padding: 433-552x133-296
+2025-07-03 11:48:30: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_062.jpg
+2025-07-03 11:48:30: 
+2025-07-03 11:48:30: 0: 480x640 2 faces, 78.3ms
+2025-07-03 11:48:30: Speed: 1.5ms preprocess, 78.3ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:30: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_062.jpg
+2025-07-03 11:48:30: Face 0 dimensions before padding: 170x266
+2025-07-03 11:48:30: Face 0 dimensions after padding: 89-307x0-331
+2025-07-03 11:48:30: Face 1 dimensions before padding: 93x127
+2025-07-03 11:48:30: Face 1 dimensions after padding: 433-552x133-296
+2025-07-03 11:48:30: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_063.jpg
+2025-07-03 11:48:30: 
+2025-07-03 11:48:30: 0: 480x640 2 faces, 76.5ms
+2025-07-03 11:48:30: Speed: 1.8ms preprocess, 76.5ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:30: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_063.jpg
+2025-07-03 11:48:30: Face 0 dimensions before padding: 171x267
+2025-07-03 11:48:30: Face 0 dimensions after padding: 89-308x0-331
+2025-07-03 11:48:30: Face 1 dimensions before padding: 93x127
+2025-07-03 11:48:30: Face 1 dimensions after padding: 433-552x133-296
+2025-07-03 11:48:30: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_064.jpg
+2025-07-03 11:48:30: 
+2025-07-03 11:48:30: 0: 480x640 2 faces, 79.2ms
+2025-07-03 11:48:30: Speed: 1.4ms preprocess, 79.2ms inference, 1.1ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:31: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_064.jpg
+2025-07-03 11:48:31: Face 0 dimensions before padding: 171x262
+2025-07-03 11:48:31: Face 0 dimensions after padding: 88-307x0-327
+2025-07-03 11:48:31: Face 1 dimensions before padding: 93x127
+2025-07-03 11:48:31: Face 1 dimensions after padding: 433-552x133-296
+2025-07-03 11:48:31: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_065.jpg
+2025-07-03 11:48:31: 
+2025-07-03 11:48:31: 0: 480x640 2 faces, 84.3ms
+2025-07-03 11:48:31: Speed: 2.4ms preprocess, 84.3ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:31: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_065.jpg
+2025-07-03 11:48:31: Face 0 dimensions before padding: 170x263
+2025-07-03 11:48:31: Face 0 dimensions after padding: 89-307x0-327
+2025-07-03 11:48:31: Face 1 dimensions before padding: 93x127
+2025-07-03 11:48:31: Face 1 dimensions after padding: 433-552x133-296
+2025-07-03 11:48:31: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_066.jpg
+2025-07-03 11:48:31: 
+2025-07-03 11:48:31: 0: 480x640 2 faces, 84.3ms
+2025-07-03 11:48:31: Speed: 2.3ms preprocess, 84.3ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:31: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_066.jpg
+2025-07-03 11:48:31: Face 0 dimensions before padding: 171x263
+2025-07-03 11:48:31: Face 0 dimensions after padding: 88-307x0-327
+2025-07-03 11:48:31: Face 1 dimensions before padding: 93x127
+2025-07-03 11:48:31: Face 1 dimensions after padding: 433-552x133-296
+2025-07-03 11:48:31: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_067.jpg
+2025-07-03 11:48:31: 
+2025-07-03 11:48:31: 0: 480x640 2 faces, 76.8ms
+2025-07-03 11:48:31: Speed: 1.4ms preprocess, 76.8ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:31: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_067.jpg
+2025-07-03 11:48:31: Face 0 dimensions before padding: 175x263
+2025-07-03 11:48:31: Face 0 dimensions after padding: 84-309x0-327
+2025-07-03 11:48:31: Face 1 dimensions before padding: 93x127
+2025-07-03 11:48:31: Face 1 dimensions after padding: 433-552x133-296
+2025-07-03 11:48:31: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_068.jpg
+2025-07-03 11:48:31: 
+2025-07-03 11:48:31: 0: 480x640 2 faces, 76.8ms
+2025-07-03 11:48:31: Speed: 2.2ms preprocess, 76.8ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:31: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_068.jpg
+2025-07-03 11:48:31: Face 0 dimensions before padding: 176x261
+2025-07-03 11:48:31: Face 0 dimensions after padding: 84-310x0-327
+2025-07-03 11:48:31: Face 1 dimensions before padding: 93x128
+2025-07-03 11:48:31: Face 1 dimensions after padding: 433-552x133-297
+2025-07-03 11:48:31: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_069.jpg
+2025-07-03 11:48:31: 
+2025-07-03 11:48:31: 0: 480x640 2 faces, 77.1ms
+2025-07-03 11:48:31: Speed: 2.2ms preprocess, 77.1ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:32: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_069.jpg
+2025-07-03 11:48:32: Face 0 dimensions before padding: 177x260
+2025-07-03 11:48:32: Face 0 dimensions after padding: 83-310x0-326
+2025-07-03 11:48:32: Face 1 dimensions before padding: 95x128
+2025-07-03 11:48:32: Face 1 dimensions after padding: 432-553x133-297
+2025-07-03 11:48:32: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_070.jpg
+2025-07-03 11:48:32: 
+2025-07-03 11:48:32: 0: 480x640 2 faces, 75.1ms
+2025-07-03 11:48:32: Speed: 1.5ms preprocess, 75.1ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:32: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_070.jpg
+2025-07-03 11:48:32: Face 0 dimensions before padding: 177x256
+2025-07-03 11:48:32: Face 0 dimensions after padding: 83-310x0-323
+2025-07-03 11:48:32: Face 1 dimensions before padding: 95x128
+2025-07-03 11:48:32: Face 1 dimensions after padding: 432-553x133-297
+2025-07-03 11:48:32: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_071.jpg
+2025-07-03 11:48:32: 
+2025-07-03 11:48:32: 0: 480x640 2 faces, 76.9ms
+2025-07-03 11:48:32: Speed: 2.2ms preprocess, 76.9ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:32: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_071.jpg
+2025-07-03 11:48:32: Face 0 dimensions before padding: 175x261
+2025-07-03 11:48:32: Face 0 dimensions after padding: 83-308x0-329
+2025-07-03 11:48:32: Face 1 dimensions before padding: 95x128
+2025-07-03 11:48:32: Face 1 dimensions after padding: 432-553x133-297
+2025-07-03 11:48:32: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_072.jpg
+2025-07-03 11:48:32: 
+2025-07-03 11:48:32: 0: 480x640 2 faces, 82.5ms
+2025-07-03 11:48:32: Speed: 2.3ms preprocess, 82.5ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:32: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_072.jpg
+2025-07-03 11:48:32: Face 0 dimensions before padding: 95x128
+2025-07-03 11:48:32: Face 0 dimensions after padding: 433-554x131-295
+2025-07-03 11:48:32: Face 1 dimensions before padding: 176x267
+2025-07-03 11:48:32: Face 1 dimensions after padding: 80-306x0-339
+2025-07-03 11:48:32: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_073.jpg
+2025-07-03 11:48:32: 
+2025-07-03 11:48:32: 0: 480x640 2 faces, 79.6ms
+2025-07-03 11:48:32: Speed: 1.4ms preprocess, 79.6ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:32: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_073.jpg
+2025-07-03 11:48:32: Face 0 dimensions before padding: 170x261
+2025-07-03 11:48:32: Face 0 dimensions after padding: 82-300x0-330
+2025-07-03 11:48:32: Face 1 dimensions before padding: 95x129
+2025-07-03 11:48:32: Face 1 dimensions after padding: 433-554x131-296
+2025-07-03 11:48:32: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_074.jpg
+2025-07-03 11:48:32: 
+2025-07-03 11:48:32: 0: 480x640 2 faces, 77.3ms
+2025-07-03 11:48:32: Speed: 1.8ms preprocess, 77.3ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:33: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_074.jpg
+2025-07-03 11:48:33: Face 0 dimensions before padding: 170x262
+2025-07-03 11:48:33: Face 0 dimensions after padding: 82-300x0-330
+2025-07-03 11:48:33: Face 1 dimensions before padding: 95x129
+2025-07-03 11:48:33: Face 1 dimensions after padding: 433-554x131-296
+2025-07-03 11:48:33: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_075.jpg
+2025-07-03 11:48:33: 
+2025-07-03 11:48:33: 0: 480x640 2 faces, 78.8ms
+2025-07-03 11:48:33: Speed: 2.2ms preprocess, 78.8ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:33: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_075.jpg
+2025-07-03 11:48:33: Face 0 dimensions before padding: 171x260
+2025-07-03 11:48:33: Face 0 dimensions after padding: 82-301x0-330
+2025-07-03 11:48:33: Face 1 dimensions before padding: 95x128
+2025-07-03 11:48:33: Face 1 dimensions after padding: 433-554x132-296
+2025-07-03 11:48:33: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_076.jpg
+2025-07-03 11:48:33: 
+2025-07-03 11:48:33: 0: 480x640 2 faces, 75.0ms
+2025-07-03 11:48:33: Speed: 1.4ms preprocess, 75.0ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:33: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_076.jpg
+2025-07-03 11:48:33: Face 0 dimensions before padding: 169x259
+2025-07-03 11:48:33: Face 0 dimensions after padding: 82-299x0-329
+2025-07-03 11:48:33: Face 1 dimensions before padding: 98x129
+2025-07-03 11:48:33: Face 1 dimensions after padding: 430-556x131-296
+2025-07-03 11:48:33: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_077.jpg
+2025-07-03 11:48:33: 
+2025-07-03 11:48:33: 0: 480x640 2 faces, 81.1ms
+2025-07-03 11:48:33: Speed: 1.8ms preprocess, 81.1ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:33: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_077.jpg
+2025-07-03 11:48:33: Face 0 dimensions before padding: 168x256
+2025-07-03 11:48:33: Face 0 dimensions after padding: 83-299x0-325
+2025-07-03 11:48:33: Face 1 dimensions before padding: 98x129
+2025-07-03 11:48:33: Face 1 dimensions after padding: 430-556x130-295
+2025-07-03 11:48:33: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_078.jpg
+2025-07-03 11:48:33: 
+2025-07-03 11:48:33: 0: 480x640 2 faces, 79.4ms
+2025-07-03 11:48:33: Speed: 1.9ms preprocess, 79.4ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:33: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_078.jpg
+2025-07-03 11:48:33: Face 0 dimensions before padding: 165x254
+2025-07-03 11:48:33: Face 0 dimensions after padding: 86-297x0-324
+2025-07-03 11:48:33: Face 1 dimensions before padding: 95x133
+2025-07-03 11:48:33: Face 1 dimensions after padding: 433-554x128-299
+2025-07-03 11:48:33: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_079.jpg
+2025-07-03 11:48:33: 
+2025-07-03 11:48:33: 0: 480x640 2 faces, 82.5ms
+2025-07-03 11:48:33: Speed: 1.5ms preprocess, 82.5ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:34: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_079.jpg
+2025-07-03 11:48:34: Face 0 dimensions before padding: 165x253
+2025-07-03 11:48:34: Face 0 dimensions after padding: 86-297x0-323
+2025-07-03 11:48:34: Face 1 dimensions before padding: 95x130
+2025-07-03 11:48:34: Face 1 dimensions after padding: 432-553x130-296
+2025-07-03 11:48:34: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_080.jpg
+2025-07-03 11:48:34: 
+2025-07-03 11:48:34: 0: 480x640 2 faces, 94.0ms
+2025-07-03 11:48:34: Speed: 2.2ms preprocess, 94.0ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:34: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_080.jpg
+2025-07-03 11:48:34: Face 0 dimensions before padding: 164x252
+2025-07-03 11:48:34: Face 0 dimensions after padding: 86-296x0-321
+2025-07-03 11:48:34: Face 1 dimensions before padding: 95x133
+2025-07-03 11:48:34: Face 1 dimensions after padding: 433-554x128-299
+2025-07-03 11:48:34: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_081.jpg
+2025-07-03 11:48:34: 
+2025-07-03 11:48:34: 0: 480x640 2 faces, 82.8ms
+2025-07-03 11:48:34: Speed: 2.3ms preprocess, 82.8ms inference, 0.9ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:34: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_081.jpg
+2025-07-03 11:48:34: Face 0 dimensions before padding: 165x253
+2025-07-03 11:48:34: Face 0 dimensions after padding: 86-297x0-321
+2025-07-03 11:48:34: Face 1 dimensions before padding: 95x134
+2025-07-03 11:48:34: Face 1 dimensions after padding: 433-554x127-299
+2025-07-03 11:48:34: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_082.jpg
+2025-07-03 11:48:34: 
+2025-07-03 11:48:34: 0: 480x640 2 faces, 78.7ms
+2025-07-03 11:48:34: Speed: 1.4ms preprocess, 78.7ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:34: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_082.jpg
+2025-07-03 11:48:34: Face 0 dimensions before padding: 165x254
+2025-07-03 11:48:34: Face 0 dimensions after padding: 86-297x0-322
+2025-07-03 11:48:34: Face 1 dimensions before padding: 95x133
+2025-07-03 11:48:34: Face 1 dimensions after padding: 433-554x128-299
+2025-07-03 11:48:34: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_083.jpg
+2025-07-03 11:48:34: 
+2025-07-03 11:48:34: 0: 480x640 2 faces, 85.3ms
+2025-07-03 11:48:34: Speed: 1.9ms preprocess, 85.3ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:34: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_083.jpg
+2025-07-03 11:48:34: Face 0 dimensions before padding: 168x254
+2025-07-03 11:48:34: Face 0 dimensions after padding: 85-301x0-324
+2025-07-03 11:48:34: Face 1 dimensions before padding: 98x133
+2025-07-03 11:48:34: Face 1 dimensions after padding: 430-556x128-299
+2025-07-03 11:48:34: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_084.jpg
+2025-07-03 11:48:34: 
+2025-07-03 11:48:35: 0: 480x640 1 face, 86.6ms
+2025-07-03 11:48:35: Speed: 2.5ms preprocess, 86.6ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:35: YOLO detected 1 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_084.jpg
+2025-07-03 11:48:35: Face 0 dimensions before padding: 94x133
+2025-07-03 11:48:35: Face 0 dimensions after padding: 434-554x128-299
+2025-07-03 11:48:35: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_085.jpg
+2025-07-03 11:48:35: 
+2025-07-03 11:48:35: 0: 480x640 2 faces, 76.2ms
+2025-07-03 11:48:35: Speed: 1.5ms preprocess, 76.2ms inference, 0.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:35: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_085.jpg
+2025-07-03 11:48:35: Face 0 dimensions before padding: 165x252
+2025-07-03 11:48:35: Face 0 dimensions after padding: 89-300x0-323
+2025-07-03 11:48:35: Face 1 dimensions before padding: 98x129
+2025-07-03 11:48:35: Face 1 dimensions after padding: 430-556x132-297
+2025-07-03 11:48:35: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_086.jpg
+2025-07-03 11:48:35: 
+2025-07-03 11:48:35: 0: 480x640 2 faces, 100.3ms
+2025-07-03 11:48:35: Speed: 1.8ms preprocess, 100.3ms inference, 1.7ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:35: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_086.jpg
+2025-07-03 11:48:35: Face 0 dimensions before padding: 165x252
+2025-07-03 11:48:35: Face 0 dimensions after padding: 89-300x0-323
+2025-07-03 11:48:35: Face 1 dimensions before padding: 98x130
+2025-07-03 11:48:35: Face 1 dimensions after padding: 430-556x131-297
+2025-07-03 11:48:35: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_087.jpg
+2025-07-03 11:48:35: 
+2025-07-03 11:48:35: 0: 480x640 2 faces, 89.5ms
+2025-07-03 11:48:35: Speed: 1.5ms preprocess, 89.5ms inference, 1.8ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:36: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_087.jpg
+2025-07-03 11:48:36: Face 0 dimensions before padding: 164x253
+2025-07-03 11:48:36: Face 0 dimensions after padding: 89-299x0-323
+2025-07-03 11:48:36: Face 1 dimensions before padding: 98x129
+2025-07-03 11:48:36: Face 1 dimensions after padding: 431-557x132-297
+2025-07-03 11:48:36: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_088.jpg
+2025-07-03 11:48:36: 
+2025-07-03 11:48:36: 0: 480x640 2 faces, 88.3ms
+2025-07-03 11:48:36: Speed: 1.5ms preprocess, 88.3ms inference, 1.7ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:36: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_088.jpg
+2025-07-03 11:48:36: Face 0 dimensions before padding: 168x253
+2025-07-03 11:48:36: Face 0 dimensions after padding: 86-302x0-322
+2025-07-03 11:48:36: Face 1 dimensions before padding: 98x130
+2025-07-03 11:48:36: Face 1 dimensions after padding: 430-556x131-297
+2025-07-03 11:48:36: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_089.jpg
+2025-07-03 11:48:36: 
+2025-07-03 11:48:36: 0: 480x640 2 faces, 79.8ms
+2025-07-03 11:48:36: Speed: 1.6ms preprocess, 79.8ms inference, 1.0ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:36: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_089.jpg
+2025-07-03 11:48:36: Face 0 dimensions before padding: 168x248
+2025-07-03 11:48:36: Face 0 dimensions after padding: 87-303x0-318
+2025-07-03 11:48:36: Face 1 dimensions before padding: 98x130
+2025-07-03 11:48:36: Face 1 dimensions after padding: 431-557x132-298
+2025-07-03 11:48:36: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_090.jpg
+2025-07-03 11:48:36: 
+2025-07-03 11:48:36: 0: 480x640 2 faces, 89.6ms
+2025-07-03 11:48:36: Speed: 1.6ms preprocess, 89.6ms inference, 1.2ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:36: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_090.jpg
+2025-07-03 11:48:36: Face 0 dimensions before padding: 163x249
+2025-07-03 11:48:36: Face 0 dimensions after padding: 90-299x0-318
+2025-07-03 11:48:36: Face 1 dimensions before padding: 98x134
+2025-07-03 11:48:36: Face 1 dimensions after padding: 431-557x128-300
+2025-07-03 11:48:36: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_091.jpg
+2025-07-03 11:48:36: 
+2025-07-03 11:48:36: 0: 480x640 2 faces, 92.1ms
+2025-07-03 11:48:36: Speed: 1.6ms preprocess, 92.1ms inference, 1.2ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:36: YOLO detected 2 faces in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_091.jpg
+2025-07-03 11:48:36: Face 0 dimensions before padding: 168x240
+2025-07-03 11:48:36: Face 0 dimensions after padding: 86-302x3-311
+2025-07-03 11:48:36: Face 1 dimensions before padding: 98x129
+2025-07-03 11:48:36: Face 1 dimensions after padding: 431-557x133-298
+2025-07-03 11:48:36: Processing image: /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/data/student_data/DPT005_2027/123567890/temp_frames/frame_092.jpg
+2025-07-03 11:48:36: 
+2025-07-03 11:48:37: 0: 480x640 2 faces, 94.2ms
+2025-07-03 11:48:37: Speed: 2.3ms preprocess, 94.2ms inference, 1.1ms postprocess per image at shape (1, 3, 480, 640)
+2025-07-03 11:48:43: Starting server on 0.0.0.0:8000 with 1 workers
+2025-07-03 11:55:19: INFO:     127.0.0.1:46300 - "GET / HTTP/1.1" 200 OK
+2025-07-03 11:55:19: INFO:     127.0.0.1:46324 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 304 Not Modified
+2025-07-03 11:55:19: INFO:     127.0.0.1:46300 - "GET /static/css/style.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:55:19: INFO:     127.0.0.1:46316 - "GET /static/css/toast.css?v=1.1 HTTP/1.1" 200 OK
+2025-07-03 11:55:19: INFO:     127.0.0.1:46316 - "GET /static/image.png HTTP/1.1" 304 Not Modified
+2025-07-03 11:55:19: INFO:     127.0.0.1:46300 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:55:19: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:55:19: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:55:19: INFO:     127.0.0.1:46300 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:55:20: DEBUG: Returning galleries: []
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:55:20: DEBUG: Returning galleries: []
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:55:20: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:55:20: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET / HTTP/1.1" 200 OK
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 11:55:20: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:55:20: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:55:20: DEBUG: Returning galleries: []
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 11:55:20: DEBUG: Returning galleries: []
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:55:20: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:55:20: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 11:55:20: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 11:55:20: INFO:     127.0.0.1:46300 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 11:55:22: INFO:     127.0.0.1:46300 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 11:55:22: INFO:     127.0.0.1:46300 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 11:55:25: INFO:     127.0.0.1:46300 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:55:25: INFO:     127.0.0.1:46300 - "GET /static/css/style.css HTTP/1.1" 200 OK
+2025-07-03 11:55:25: INFO:     127.0.0.1:46334 - "GET /static/css/toast.css HTTP/1.1" 200 OK
+2025-07-03 11:55:25: INFO:     127.0.0.1:46334 - "GET /static/sai.png HTTP/1.1" 304 Not Modified
+2025-07-03 11:55:25: INFO:     127.0.0.1:46300 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 11:55:25: INFO:     127.0.0.1:46344 - "GET /static/siddharth.png HTTP/1.1" 200 OK
+2025-07-03 11:55:25: INFO:     127.0.0.1:46344 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:59:08: INFO:     127.0.0.1:35138 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:59:08: INFO:     127.0.0.1:35138 - "GET /static/siddharth.png HTTP/1.1" 200 OK
+2025-07-03 11:59:08: INFO:     127.0.0.1:35138 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 11:59:09: INFO:     127.0.0.1:35152 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 11:59:09: INFO:     127.0.0.1:35152 - "GET /static/siddharth.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:19:51: INFO:     127.0.0.1:59804 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:19:51: INFO:     127.0.0.1:59804 - "GET /static/css/style.css HTTP/1.1" 200 OK
+2025-07-03 12:19:51: INFO:     127.0.0.1:59810 - "GET /static/css/toast.css HTTP/1.1" 200 OK
+2025-07-03 12:19:51: INFO:     127.0.0.1:59810 - "GET /static/image.png HTTP/1.1" 200 OK
+2025-07-03 12:19:51: INFO:     127.0.0.1:59804 - "GET /static/mithrajith.png HTTP/1.1" 404 Not Found
+2025-07-03 12:19:51: INFO:     127.0.0.1:59824 - "GET /static/sai.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:19:51: INFO:     127.0.0.1:59836 - "GET /static/siddharth.png HTTP/1.1" 200 OK
+2025-07-03 12:19:51: INFO:     127.0.0.1:59836 - "GET /favicon.ico HTTP/1.1" 404 Not Found
+2025-07-03 12:19:52: INFO:     127.0.0.1:59810 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:19:52: INFO:     127.0.0.1:59810 - "GET /static/mithrajith.png HTTP/1.1" 404 Not Found
+2025-07-03 12:20:48: INFO:     127.0.0.1:56878 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:20:48: INFO:     127.0.0.1:56878 - "GET /static/mithrajith.png HTTP/1.1" 200 OK
+2025-07-03 12:20:48: INFO:     127.0.0.1:56878 - "GET /static/siddharth.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:30:51: INFO:     127.0.0.1:41850 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:30:51: INFO:     127.0.0.1:41850 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:30:51: INFO:     127.0.0.1:41864 - "GET /static/siddharth.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:30:52: INFO:     127.0.0.1:41850 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:31:06: INFO:     127.0.0.1:44432 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:31:07: INFO:     127.0.0.1:44432 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET / HTTP/1.1" 200 OK
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /static/css/style.css?v=1.1 HTTP/1.1" 304 Not Modified
+2025-07-03 12:31:29: INFO:     127.0.0.1:52288 - "GET /static/css/toast.css?v=1.1 HTTP/1.1" 304 Not Modified
+2025-07-03 12:31:29: INFO:     127.0.0.1:52304 - "GET /static/js/app.js?v=1.1 HTTP/1.1" 304 Not Modified
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /static/img/placeholder.png HTTP/1.1" 404 Not Found
+2025-07-03 12:31:29: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 12:31:29: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /static/gallery.png HTTP/1.1" 200 OK
+2025-07-03 12:31:29: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 12:31:29: DEBUG: Returning galleries: []
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 12:31:29: DEBUG: All files in /mnt/data/project_backups/Test_projects/Face-Data-collection-and-Gallery-management-application/gallery/galleries: []
+2025-07-03 12:31:29: DEBUG: Returning galleries: []
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /galleries HTTP/1.1" 200 OK
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /database/stats HTTP/1.1" 200 OK
+2025-07-03 12:31:29: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 12:31:29: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 12:31:29: DEBUG: Years: ['2026', '2027', '2028', '2029', '2030']
+2025-07-03 12:31:29: DEBUG: Departments: [{'id': 'DPT006', 'name': 'AIML'}, {'id': 'DPT005', 'name': 'CIVIL'}, {'id': 'DPT001', 'name': 'CS'}, {'id': 'DPT003', 'name': 'ECE'}, {'id': 'DPT004', 'name': 'EEE'}, {'id': 'DPT002', 'name': 'IT'}, {'id': 'DPT007', 'name': 'MECH'}]
+2025-07-03 12:31:29: INFO:     127.0.0.1:52272 - "GET /batches HTTP/1.1" 200 OK
+2025-07-03 12:31:30: INFO:     127.0.0.1:52272 - "GET /api/collection-app-status HTTP/1.1" 200 OK
+2025-07-03 12:31:30: INFO:     127.0.0.1:52272 - "GET /api/collection-app-config HTTP/1.1" 200 OK
+2025-07-03 12:32:03: INFO:     127.0.0.1:59742 - "GET /static/siddharth.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:32:03: INFO:     127.0.0.1:59736 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:33:33: INFO:     127.0.0.1:48190 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:33:33: INFO:     127.0.0.1:48190 - "GET /static/face-scanner.gif HTTP/1.1" 200 OK
+2025-07-03 12:33:33: INFO:     127.0.0.1:48190 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:33:33: INFO:     127.0.0.1:48196 - "GET /static/siddharth.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:34:15: INFO:     127.0.0.1:35762 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:34:15: INFO:     127.0.0.1:35762 - "GET /static/face-scanner.gif HTTP/1.1" 304 Not Modified
+2025-07-03 12:34:57: INFO:     127.0.0.1:48780 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:34:57: INFO:     127.0.0.1:48780 - "GET /static/mithrajith.png HTTP/1.1" 200 OK
+2025-07-03 12:34:58: INFO:     127.0.0.1:48780 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:34:58: INFO:     127.0.0.1:48780 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:34:58: INFO:     127.0.0.1:48780 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:34:58: INFO:     127.0.0.1:48780 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:34:58: INFO:     127.0.0.1:48780 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:34:58: INFO:     127.0.0.1:48780 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:34:58: INFO:     127.0.0.1:48780 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:34:59: INFO:     127.0.0.1:48784 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:34:59: INFO:     127.0.0.1:48780 - "GET /static/face-scanner.gif HTTP/1.1" 304 Not Modified
+2025-07-03 12:34:59: INFO:     127.0.0.1:48798 - "GET /static/siddharth.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:35:25: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:25: INFO:     127.0.0.1:53014 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:35:25: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:25: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:26: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:26: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:26: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:26: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:26: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:35:26: INFO:     127.0.0.1:53014 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:36:48: INFO:     127.0.0.1:41962 - "GET /about HTTP/1.1" 200 OK
+2025-07-03 12:36:48: INFO:     127.0.0.1:41962 - "GET /static/face-scanner.gif HTTP/1.1" 304 Not Modified
+2025-07-03 12:36:48: INFO:     127.0.0.1:41962 - "GET /static/mithrajith.png HTTP/1.1" 304 Not Modified
+2025-07-03 12:36:48: INFO:     127.0.0.1:41976 - "GET /static/siddharth.png HTTP/1.1" 404 Not Found
+2025-07-03 12:36:48: INFO:     127.0.0.1:41962 - "GET /static/about.png HTTP/1.1" 200 OK
