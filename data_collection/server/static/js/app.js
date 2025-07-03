@@ -123,138 +123,117 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Failed to connect to the server. Please try again.');
         }
     }
-    
-    // Initialize camera using the simpler approach from test.html
-    async function initCamera() {
-        elements.registration.classList.add('hidden');
-        elements.cameraSection.classList.remove('hidden');
-        
-        // Create and add recording controls
-        const controls = document.createElement('div');
-        controls.className = 'recording-controls';
-        controls.innerHTML = `
-            <div id="countdown" class="timer">Ready to record</div>
-            <button id="startRecord" class="btn primary">Start Recording (15s)</button>
-            <button id="stopRecord" class="btn secondary" disabled>Stop Recording</button>
-            <div class="instructions-container">
-                <h3>Instructions:</h3>
-                <ul>
-                    <li><strong>Position:</strong> Hold phone at arm's length from your face</li>
-                    <li><strong>Lighting:</strong> Choose a well-lit area with light on your face</li>
-                    <li><strong>Framing:</strong> Ensure only your face is visible and avoid reflections</li>
-                    <li><strong>Follow this 15-second sequence:</strong></li>
-                    <li>1. <strong>Look directly at camera</strong> with neutral expression (3 sec)</li>
-                    <li>2. <strong>Slowly rotate head</strong> left then right, keeping eyes visible (6 sec)</li>
-                    <li>4. <strong>Change expression</strong> from neutral to smiling (3 sec)</li>
-                </ul>
-            </div>
-        `;
-        elements.cameraSection.appendChild(controls);
-        
-        const startRecordBtn = document.getElementById('startRecord');
-        const stopRecordBtn = document.getElementById('stopRecord');
-        const countdown = document.getElementById('countdown');
-        
-        try {
-            // Get camera stream
-            state.stream = await navigator.mediaDevices.getUserMedia({ 
-                video: {
-                    facingMode: 'user',
-                    width: { ideal: 640 },
-                    height: { ideal: 480 }
-                }
-            });
-            elements.video.srcObject = state.stream;
-            
-            // Set up MediaRecorder
-            state.mediaRecorder = new MediaRecorder(state.stream);
-            
-            // Collect data when available
-            state.mediaRecorder.ondataavailable = event => {
-                if (event.data && event.data.size > 0) {
-                    state.recordedChunks.push(event.data);
-                }
-            };
-            
-            // Handle recording completion
-            state.mediaRecorder.onstop = () => {
-                const videoBlob = new Blob(state.recordedChunks, { type: 'video/webm' });
-                
-                // Stop camera immediately after recording is complete
-                if (state.stream) {
-                    state.stream.getTracks().forEach(track => track.stop());
-                }
-                
-                // Now upload the video
-                uploadVideo(videoBlob);
-            };
-            
-            // Add event listeners to buttons
-            startRecordBtn.addEventListener('click', () => {
-                // Clear previous recording data
-                state.recordedChunks = [];
-                let timeLeft = config.videoLength;
-                
-                // Update UI
-                startRecordBtn.disabled = true;
-                stopRecordBtn.disabled = false;
-                elements.progress.style.width = '0%';
-                
-                // Start recording
-                state.mediaRecorder.start();
-                
-                // Start countdown
-                countdown.textContent = `Recording: ${timeLeft}s remaining`;
-                state.countdownTimer = setInterval(() => {
-                    timeLeft--;
-                    // Update progress bar
-                    const progressPercent = ((config.videoLength - timeLeft) / config.videoLength) * 100;
-                    elements.progress.style.width = `${progressPercent}%`;
-                    
-                    countdown.textContent = `Recording: ${timeLeft}s remaining`;
-                    
-                    // Update recording instructions - adjusted for 15 seconds
-                    if (timeLeft <= 3) {
-                        document.getElementById('instruction').textContent = "Make a neutral and then smiling expression";
-                    } else if (timeLeft <= 6) {
-                        document.getElementById('instruction').textContent = "Look slightly up and down";
-                    } else if (timeLeft <= 12) {
-                        document.getElementById('instruction').textContent = "Slowly turn your head left and right";
-                    } else {
-                        document.getElementById('instruction').textContent = "Look straight at the camera";
-                    }
-                    
-                    // Auto-stop when time is up
-                    if (timeLeft <= 0) {
-                        clearInterval(state.countdownTimer);
-                        if (state.mediaRecorder.state !== 'inactive') {
-                            state.mediaRecorder.stop();
-                            startRecordBtn.disabled = false;
-                            stopRecordBtn.disabled = true;
-                            countdown.textContent = "Processing...";
-                        }
-                    }
-                }, 1000);
-            });
-            
-            stopRecordBtn.addEventListener('click', () => {
-                if (state.countdownTimer) {
-                    clearInterval(state.countdownTimer);
-                }
-                if (state.mediaRecorder.state !== 'inactive') {
-                    state.mediaRecorder.stop();
-                    startRecordBtn.disabled = false;
-                    stopRecordBtn.disabled = true;
-                    countdown.textContent = "Processing...";
-                }
-            });
-            
-        } catch (error) {
-            console.error('Error accessing camera:', error);
-            alert('Failed to access camera. Please try accessing this site via localhost.');
-            handleRestart();
-        }
+
+async function startRecording() {
+  const startRecordBtn = document.getElementById('startRecord');
+  const stopRecordBtn = document.getElementById('stopRecord');
+  const countdown = document.getElementById('countdown');
+
+  // Clear previous recording data
+  state.recordedChunks = [];
+  let timeLeft = config.videoLength;
+
+  // UI Setup
+  startRecordBtn.disabled = true;
+  stopRecordBtn.disabled = false;
+  elements.progress.style.width = '0%';
+
+  // Start recording
+  state.mediaRecorder.start();
+
+  // Countdown logic
+  countdown.textContent = `Recording: ${timeLeft}s remaining`;
+  state.countdownTimer = setInterval(() => {
+    timeLeft--;
+
+    // Update progress
+    const progressPercent = ((config.videoLength - timeLeft) / config.videoLength) * 100;
+    elements.progress.style.width = `${progressPercent}%`;
+    countdown.textContent = `Recording: ${timeLeft}s remaining`;
+
+    // Instruction updates
+    if (timeLeft <= 3) {
+      document.getElementById('instruction').textContent = "Make a neutral and then smiling expression";
+    } else if (timeLeft <= 6) {
+      document.getElementById('instruction').textContent = "Look slightly up and down";
+    } else if (timeLeft <= 12) {
+      document.getElementById('instruction').textContent = "Slowly turn your head left and right";
+    } else {
+      document.getElementById('instruction').textContent = "Look straight at the camera";
     }
+
+    // Auto-stop
+    if (timeLeft <= 0) {
+      clearInterval(state.countdownTimer);
+      if (state.mediaRecorder.state !== 'inactive') {
+        state.mediaRecorder.stop();
+        startRecordBtn.disabled = false;
+        stopRecordBtn.disabled = true;
+        countdown.textContent = "Processing...";
+      }
+    }
+  }, 1000);
+}
+
+async function initCamera(autoStart = false) {
+  elements.registration.classList.add('hidden');
+  elements.cameraSection.classList.remove('hidden');
+
+  const startRecordBtn = document.getElementById('startRecord');
+  const stopRecordBtn = document.getElementById('stopRecord');
+
+  try {
+    // Access webcam
+    state.stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: 'user',
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      }
+    });
+    elements.video.srcObject = state.stream;
+
+    // Initialize MediaRecorder
+    state.mediaRecorder = new MediaRecorder(state.stream);
+
+    state.mediaRecorder.ondataavailable = event => {
+      if (event.data && event.data.size > 0) {
+        state.recordedChunks.push(event.data);
+      }
+    };
+
+    state.mediaRecorder.onstop = () => {
+      const videoBlob = new Blob(state.recordedChunks, { type: 'video/webm' });
+      if (state.stream) {
+        state.stream.getTracks().forEach(track => track.stop());
+      }
+      uploadVideo(videoBlob);
+    };
+
+    // Button listeners
+    startRecordBtn.addEventListener('click', startRecording);
+
+    stopRecordBtn.addEventListener('click', () => {
+      if (state.countdownTimer) clearInterval(state.countdownTimer);
+      if (state.mediaRecorder.state !== 'inactive') {
+        state.mediaRecorder.stop();
+        startRecordBtn.disabled = false;
+        stopRecordBtn.disabled = true;
+        document.getElementById('countdown').textContent = "Processing...";
+      }
+    });
+
+    // Auto-start recording if requested
+    if (autoStart) startRecording();
+
+  } catch (error) {
+    console.error('Error accessing camera:', error);
+    alert('Failed to access camera. Please try accessing this site via localhost.');
+    handleRestart();
+  }
+}
+
+
     
     // Upload video to server
 async function uploadVideo(blob) {

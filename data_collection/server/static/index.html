@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Face Video Collection</title>
   <link rel="stylesheet" href="/static/css/style.css"/>
-  <style>
+  <!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-  </style>
 </head>
 <body>
   <!-- Header -->
@@ -53,12 +53,40 @@
 
     <!-- Camera Section -->
     <div id="camera-section" class="section hidden">
+<div style=" margin-bottom: 8px; right:0">
+  <button id="infoBtn" type="button" aria-label="Show instructions" style="
+    background-color: rgba(0,0,0,0.05);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
+    font-size: 1.2rem;
+    color: #0d6efd;
+  " 
+    onmouseover="this.style.backgroundColor='rgba(0,0,0,0.1)'" 
+    onmouseout="this.style.backgroundColor='rgba(0,0,0,0.05)'"
+  >
+    <i class="bi bi-info-circle"></i>
+  </button>
+</div>
+
+
       <div class="camera-container">
         <video id="video" autoplay playsinline></video>
       </div>
       <div class="controls">
         <div id="progress-bar"><div id="progress"></div></div>
         <div id="instruction">Follow the instructions below</div>
+      </div>
+      <!-- Recording Controls UI (moved from JS to here) -->
+      <div class="recording-controls">
+        <div id="countdown" class="timer">Ready to record</div>
+        <button id="startRecord" class="btn primary">Start Recording (8s)</button>
       </div>
     </div>
 
@@ -89,17 +117,14 @@
         <li>⬇️ Look slightly down (2 sec)</li>
         <li>📷 Look straight again (1 sec)</li>
       </ol>
-<button id="startRecording" class="btn primary">Next →</button>
+      <!-- Trigger camera + recording -->
+      <button id="startRecording" onclick="initCamera(true)" class="btn primary">Next →</button>
     </div>
-  </div>
-
-
-  
   </div>
 
   <!-- JavaScript -->
   <script>
-        document.getElementById('student-form').addEventListener('submit', function (e) {
+    document.getElementById('student-form').addEventListener('submit', function (e) {
       e.preventDefault();
       document.getElementById('modal1').style.display = 'block';
     });
@@ -113,7 +138,6 @@
       if (typeof startRecording === 'function') startRecording();
     });
 
-    // Optional: close modal on outside click
     window.addEventListener('click', function(event) {
       const modal = document.getElementById('modal1');
       if (event.target === modal) {
@@ -123,5 +147,17 @@
   </script>
 
   <script src="/static/js/app.js"></script>
+  <script>
+    // Info button to show instructions modal again
+    document.addEventListener('DOMContentLoaded', function() {
+      var infoBtn = document.getElementById('infoBtn');
+      var modal1 = document.getElementById('modal1');
+      if (infoBtn && modal1) {
+        infoBtn.addEventListener('click', function() {
+          modal1.style.display = 'block';
+        });
+      }
+    });
+  </script>
 </body>
 </html>
