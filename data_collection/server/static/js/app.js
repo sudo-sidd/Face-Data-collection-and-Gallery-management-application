@@ -211,17 +211,20 @@ async function initCamera(autoStart = false) {
     };
 
     // Button listeners
-    startRecordBtn.addEventListener('click', startRecording);
-
-    stopRecordBtn.addEventListener('click', () => {
-      if (state.countdownTimer) clearInterval(state.countdownTimer);
-      if (state.mediaRecorder.state !== 'inactive') {
-        state.mediaRecorder.stop();
-        startRecordBtn.disabled = false;
-        stopRecordBtn.disabled = true;
-        document.getElementById('countdown').textContent = "Processing...";
-      }
-    });
+    if (startRecordBtn) {
+      startRecordBtn.addEventListener('click', startRecording);
+    }
+    if (stopRecordBtn) {
+      stopRecordBtn.addEventListener('click', () => {
+        if (state.countdownTimer) clearInterval(state.countdownTimer);
+        if (state.mediaRecorder.state !== 'inactive') {
+          state.mediaRecorder.stop();
+          startRecordBtn.disabled = false;
+          stopRecordBtn.disabled = true;
+          document.getElementById('countdown').textContent = "Processing...";
+        }
+      });
+    }
 
     // Auto-start recording if requested
     if (autoStart) startRecording();
@@ -387,3 +390,9 @@ async function uploadVideo(blob) {
         }
     }
 });
+
+// Expose functions to global scope
+window.initCamera = initCamera;
+window.startRecording = startRecording;
+window.handleRestart = handleRestart;
+window.handleRetry = handleRetry;
