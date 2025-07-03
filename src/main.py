@@ -658,7 +658,7 @@ async def process_videos(
     # Validation code remains the same
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_department_names():
+    if department not in database.get_department_ids():  # use department IDs instead of names
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     if not os.path.exists(videos_dir):
@@ -924,7 +924,7 @@ async def delete_gallery(year: str, department: str):
     # Validate batch year and department
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_department_names():
+    if department not in database.get_department_ids():  # use department IDs instead of names
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     # Get gallery path
@@ -954,7 +954,7 @@ async def sync_gallery_with_database(year: str, department: str):
     # Validate batch year and department
     if year not in database.get_batch_years():
         raise HTTPException(status_code=400, detail=f"Invalid batch year: {year}")
-    if department not in database.get_department_names():
+    if department not in database.get_department_ids():  # use department IDs instead of names
         raise HTTPException(status_code=400, detail=f"Invalid department: {department}")
     
     # Get gallery path

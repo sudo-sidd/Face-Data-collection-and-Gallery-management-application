@@ -443,6 +443,9 @@ async function loadGalleries() {
                 </div>
                 <div class="d-flex align-items-center">
                     <span class="badge bg-primary rounded-pill me-2 gallery-count">...</span>
+                    <button class="btn btn-outline-danger btn-sm delete-gallery-btn ms-2" title="Delete Gallery">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
                 </div>
             `;
             
@@ -464,6 +467,28 @@ async function loadGalleries() {
                     showAlert('error', 'Failed to load gallery details');
                 }
             });
+            
+            // Add click event for delete button
+            const deleteBtn = listItem.querySelector('.delete-gallery-btn');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    if (!confirm(`Are you sure you want to delete gallery for ${department} ${year}?`)) return;
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/galleries/${year}/${department}`, { method: 'DELETE' });
+                        if (!response.ok) {
+                            const errData = await response.json().catch(() => ({}));
+                            throw new Error(errData.detail || 'Failed to delete gallery');
+                        }
+                        showToast('success', `Deleted gallery for ${department} ${year}`, { duration: 3000 });
+                        // Reload galleries list
+                        await loadGalleries();
+                    } catch (error) {
+                        console.error('Error deleting gallery:', error);
+                        showToast('error', error.message || 'Error deleting gallery', { duration: 5000 });
+                    }
+                });
+            }
             
             galleriesList.appendChild(listItem);
             
