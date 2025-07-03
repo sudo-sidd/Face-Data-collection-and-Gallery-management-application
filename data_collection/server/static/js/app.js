@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     // Check for secure context
     if (!navigator.mediaDevices) {
         // Create error message
@@ -17,6 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
         
         document.querySelector('.container').prepend(errorSection);
     }
+    
+    // Initialize elements that might be missing
+    const ensureInstructionElement = () => {
+        if (!document.getElementById('instruction')) {
+            const controlsDiv = document.querySelector('.controls');
+            if (controlsDiv) {
+                const instructionDiv = document.createElement('div');
+                instructionDiv.id = 'instruction';
+                instructionDiv.textContent = 'Follow the instructions below';
+                controlsDiv.appendChild(instructionDiv);
+            }
+        }
+        return document.getElementById('instruction');
+    };
 
     // Configuration
     const config = {
@@ -52,33 +66,49 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set up event listeners - add retry handler
     elements.studentForm.addEventListener('submit', handleFormSubmit);
     elements.restart.addEventListener('click', handleRestart);
-    elements.retry.addEventListener('click', handleRetry);  // Add this line
     
 
     async function loadBatchYearsAndDepartments() {
+        const yearSelect = document.getElementById('year');
+        const deptSelect = document.getElementById('dept');
+        
+        if (!yearSelect || !deptSelect) return; // Guard clause if elements don't exist
+        
         try {
+            // Fetch years and departments from the API
             const response = await fetch('/api/batches');
+            if (response.ok) {
             const data = await response.json();
-
-            // Populate Batch Year
-            const batchYearSelect = document.getElementById('year');
-            if (batchYearSelect) {
-                batchYearSelect.innerHTML = '<option value="" selected disabled>Select Year</option>';
-                for (const year of data.years) {
-                    batchYearSelect.innerHTML += `<option value="${year}">${year}</option>`;
-                }
+            
+            // Populate year dropdown
+            yearSelect.innerHTML = '<option value="">Select Year</option>';
+            if (data.years && Array.isArray(data.years)) {
+                data.years.forEach(year => {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year;
+                yearSelect.appendChild(option);
+                });
             }
 
-            // Populate Department
-            const departmentSelect = document.getElementById('dept');
-            if (departmentSelect) {
-                departmentSelect.innerHTML = '<option value="" selected disabled>Select Department</option>';
-                for (const dept of data.departments) {
-                    departmentSelect.innerHTML += `<option value="${dept.id}">${dept.name} (${dept.id})</option>`;
-                }
+            deptSelect.innerHTML = '<option value="">Select Department</option>';
+            if (data.departments && Array.isArray(data.departments)) {
+                data.departments.forEach(dept => {
+                const option = document.createElement('option');
+                option.value = dept.id || dept.name; // Use id if available, otherwise name
+                option.textContent = dept.name;
+                deptSelect.appendChild(option);
+                });
+            }
+            } else {
+            console.error('Failed to fetch batch data:', response.status);
+            // Provide fallback values if API call fails
+            populateFallbackOptions(yearSelect, deptSelect);
             }
         } catch (error) {
-            console.error('Error loading batch years and departments:', error);
+            console.error('Error loading batch data:', error);
+            // Provide fallback values if API call fails
+            populateFallbackOptions(yearSelect, deptSelect);
         }
     }
 
@@ -126,19 +156,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function startRecording() {
   const startRecordBtn = document.getElementById('startRecord');
-  const countdown = document.getElementById('countdown');
+  const countdown = document.getElementById('countdown') || document.createElement('div');
+  
+  if (!countdown.id) {
+    countdown.id = 'countdown';
+    const controlsDiv = document.querySelector('.controls');
+    if (controlsDiv) {
+      controlsDiv.appendChild(countdown);
+    }
+  }
+
+  // Ensure instruction element exists
+  const instructionEl = ensureInstructionElement();
 
   // Clear previous recording data
   state.recordedChunks = [];
   let timeLeft = config.videoLength;
 
   // UI Setup
-  startRecordBtn.disabled = true;
-  startRecordBtn.classList.add('hidden');
+  if (startRecordBtn) {
+    startRecordBtn.disabled = true;
+    startRecordBtn.classList.add('hidden');
+  }
   elements.progress.style.width = '0%';
 
   // Start recording
-  state.mediaRecorder.start();
+  if (state.mediaRecorder) {
+    state.mediaRecorder.start();
+  } else {
+    console.error('MediaRecorder not initialized');
+    alert('Camera not ready. Please reload the page and try again.');
+    return;
+  }
 
   // Countdown logic
   countdown.textContent = `Recording: ${timeLeft}s remaining`;
@@ -152,13 +201,13 @@ async function startRecording() {
 
     // Instruction updates
     if (timeLeft <= 3) {
-      document.getElementById('instruction').textContent = "Make a neutral and then smiling expression";
+      instructionEl.textContent = "Make a neutral and then smiling expression";
     } else if (timeLeft <= 6) {
-      document.getElementById('instruction').textContent = "Look slightly up and down";
+      instructionEl.textContent = "Look slightly up and down";
     } else if (timeLeft <= 12) {
-      document.getElementById('instruction').textContent = "Slowly turn your head left and right";
+      instructionEl.textContent = "Slowly turn your head left and right";
     } else {
-      document.getElementById('instruction').textContent = "Look straight at the camera";
+      instructionEl.textContent = "Look straight at the camera";
     }
 
     // Auto-stop
@@ -376,6 +425,66 @@ async function uploadVideo(blob) {
             elements.retry.disabled = false;
             elements.retry.textContent = "Try Again";
         }
+    }
+    // Add the retry handler function
+    async function handleRetry() {
+        try {
+            // Show loading state
+            elements.retry.disabled = true;
+            elements.retry.textContent = "Processing...";
+            
+            // Reset faces folder via API
+            const response = await fetch(`${config.apiBase}/reset-faces/${state.sessionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    studentId: state.studentId,
+                    year: state.year,
+                    dept: state.dept
+                })
+            });
+            
+            if (!response.ok) {
+                throw new Error("Failed to reset data");
+            }
+            
+            // Keep student information but reset recording state
+            state.mediaRecorder = null;
+            state.recordedChunks = [];
+            state.stream = null;
+            
+            // Reset UI
+            elements.progress.style.width = '0%';
+            
+            // Remove recording controls if they exist
+            const controls = document.querySelector('.recording-controls');
+            if (controls) controls.remove();
+            
+            // Go back to camera screen
+            elements.completion.classList.add('hidden');
+            elements.cameraSection.classList.remove('hidden');
+            
+            // Reset retry button for next time
+            elements.retry.disabled = false;
+            elements.retry.textContent = "Try Again";
+            
+            // Initialize camera for new recording
+            initCamera();
+        } catch (error) {
+            console.error('Error during retry:', error);
+            alert('Failed to reset. Please try again.');
+            
+            // Reset retry button state
+            elements.retry.disabled = false;
+            elements.retry.textContent = "Try Again";
+        }
+    }
+    
+    // Add event listener for retry button if it exists
+    if (elements.retry) {
+        elements.retry.addEventListener('click', handleRetry);
     }
 });
 

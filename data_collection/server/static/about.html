@@ -11,7 +11,7 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <link favicon rel="icon" href="/static/about.png" type="image/x-icon">
+    <link favicon rel="icon" href="./about.png" type="image/x-icon">
 
     <!-- About Page Specific CSS -->
     <style>
@@ -148,6 +148,46 @@
         .back-to-home:hover {
             background-color: #0b5ed7;
             transform: scale(1.1);
+        }
+        
+        /* Fixed/Sticky Footer Styles */
+        .fixed-footer {
+            transition: all 0.3s ease;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.08);
+        }
+        
+        /* Adjust back-to-home button to not overlap with footer */
+        .back-to-home {
+            bottom: 90px;
+        }
+        
+        /* Mobile responsiveness for sticky footer */
+        @media (max-width: 767px) {
+            .fixed-footer {
+                padding: 15px 5px;
+                width: 100%;
+                left: 0;
+                transform: none;
+                border-radius: 0;
+            }
+            
+            .fixed-footer h5 {
+                font-size: 1rem;
+            }
+            
+            .fixed-footer p {
+                font-size: 0.8rem;
+            }
+            
+            .fixed-footer .fa-2x {
+                font-size: 1.5rem;
+            }
+            
+            /* Make home button appear above footer but in different corner */
+            .back-to-home {
+                bottom: 80px;
+                right: 20px;
+            }
         }
     </style>
 </head>
@@ -395,30 +435,33 @@
         </div>
     </section>
 
-    <!-- Enhanced Footer -->
-    <footer class="footer bg-gradient mt-5 py-4" style="background-color: #f8f9fa; border-top: 1px solid rgba(0,0,0,0.05);">
+    <!-- Enhanced Fixed/Sticky Footer -->
+    <footer class="footer fixed-footer bg-gradient py-3" style="position: fixed; bottom: 0; left: 0; width: 100%; background-color: white; border-top: 1px solid rgba(0,0,0,0.05); z-index: 999;">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-md-4 mb-3 mb-md-0">
-                    <div class="d-flex align-items-center">
+                <div class="col-md-4 mb-2 mb-md-0">
+                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
                         <i class="fas fa-user-circle text-primary fa-2x me-3"></i>
                         <div>
-                            <h5 class="mb-0 fw-bold">Face Recognition</h5>
-                            <p class="mb-0 text-muted small">Gallery Manager</p>
+                            <h5 class="mb-0 fw-bold">Face Data Collection</h5>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                <div class="col-md-4 mb-2 mb-md-0 text-center">
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill d-none d-md-inline-block"></span>
                 </div>
-                <div class="col-md-4 text-md-end">
+                <div class="col-md-4 text-center text-md-end">
                     <p class="mb-0">
-                        <span class="text-muted">Designed & Developed with ❤️ by</span>
+                        <span class="text-muted">Designed & Developed by</span>
                         <span class="fw-medium ms-1"><a href="/about" style="list-style: none;">AI & ML Students</a></span>
                     </p>
                 </div>
             </div>
         </div>
     </footer>
+    
+    <!-- Spacer for fixed footer -->
+    <div style="height: 70px;"></div>
 
     <!-- Back to Home Button -->
     <a href="/" class="back-to-home">

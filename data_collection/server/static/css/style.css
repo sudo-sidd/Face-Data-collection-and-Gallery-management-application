@@ -920,42 +920,42 @@ canvas {
     }
 }
 
-/* Enhanced Footer Styles */
-.footer {
-    margin-top: auto;
-    border-top: 1px solid rgba(0,0,0,0.05);
+/* Fixed/Sticky Footer Styles */
+.fixed-footer {
+    transition: all 0.3s ease;
+    box-shadow: 0 -5px 20px rgba(0,0,0,0.08);
 }
 
-.footer .bi {
-    transition: var(--transition);
+/* Adjust back-to-home button to not overlap with footer */
+.back-to-home {
+    bottom: 90px;
 }
 
-.footer a {
-    color: var(--primary-color);
-    text-decoration: none;
-    transition: var(--transition);
-    font-weight: 500;
-}
-
-.footer a:hover {
-    color: var(--primary-dark);
-}
-
-.footer a:hover .bi {
-    transform: scale(1.2);
-}
-
-.bg-gradient {
-    background: linear-gradient(180deg, #ffffff, #f8f9fa);
-}
-
-@media screen and (max-width: 480px) {
-    .footer {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1.5rem !important;
+/* Mobile responsiveness for sticky footer */
+@media (max-width: 767px) {
+    .fixed-footer {
+        padding: 15px 5px;
+        width: 100%;
+        left: 0;
+        transform: none;
+        border-radius: 0;
     }
     
-    .footer .col-md-4 {
-        margin-bottom: 0.75rem;
+    .fixed-footer h5 {
+        font-size: 1rem;
+    }
+    
+    .fixed-footer p {
+        font-size: 0.8rem;
+    }
+    
+    .fixed-footer .fa-2x {
+        font-size: 1.5rem;
+    }
+    
+    /* Make home button appear above footer but in different corner */
+    .back-to-home {
+        bottom: 80px;
+        right: 20px;
     }
 }
