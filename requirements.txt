@@ -17,4 +17,7 @@ torchvision
 tqdm
 ultralytics
 uvicorn
+uvicorn[standard]
+gunicorn 
 rich
+python-multipart

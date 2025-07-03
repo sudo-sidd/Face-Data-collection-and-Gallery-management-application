@@ -323,7 +323,7 @@ async function loadBatchYearsAndDepartments() {
         const response = await fetch(`${API_BASE_URL}/batches`);
         
         if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            throw new Error(`HTTPS ${response.status}: ${response.statusText}`);
         }
         
         const data = await response.json();
@@ -1577,7 +1577,7 @@ function launchCollectionApp() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+                throw new Error(`HTTPS error! Status: ${response.status}`);
             }
             return response.json();
         })
@@ -1586,7 +1586,7 @@ function launchCollectionApp() {
             // Use the values from the server endpoint
             const host = config.host || 'localhost';
             const port = config.port || 5001;
-            const url = `http://${host}:${port}`;
+            const url = `https://${host}:${port}`;
             console.log(`Attempting to launch Face Collection App at ${url}`);
             
             // Try to open the window and store the reference
@@ -1632,7 +1632,7 @@ async function startCollectionAppServer() {
         if (!response.ok) {
             const errorText = await response.text();
             console.error('Response error:', errorText);
-            throw new Error(`HTTP error! Status: ${response.status} - ${errorText}`);
+            throw new Error(`HTTPS error! Status: ${response.status} - ${errorText}`);
         }
         
         const result = await response.json();
@@ -1663,7 +1663,7 @@ async function checkCollectionAppStatus() {
         const response = await fetch('/api/collection-app-status');
         
         if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+            throw new Error(`HTTPS error! Status: ${response.status}`);
         }
         
         const status = await response.json();
@@ -1778,7 +1778,7 @@ async function stopCollectionAppServer() {
 // Function to show collection app access link
 function showCollectionAppLink(host, port) {
     console.log(`showCollectionAppLink called with host: ${host}, port: ${port}`);
-    const url = `http://${host}:${port}`;
+    const url = `https://${host}:${port}`;
     
     // Check if link container already exists
     let linkContainer = document.getElementById('collection-app-link');
@@ -1930,7 +1930,7 @@ const launchCollectionAppWithServer = debounce(async function() {
             // Get config and launch
             const configResponse = await fetch('/api/collection-app-config');
             const config = await configResponse.json();
-            const url = `http://${config.host}:${config.port}`;
+            const url = `https://${config.host}:${config.port}`;
             
             console.log(`Face Collection App is already running at ${url}`);
             
