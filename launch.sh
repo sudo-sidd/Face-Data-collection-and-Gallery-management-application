@@ -1,50 +1,48 @@
 #!/bin/bash
 
 # Launch script for the Gallery Manager (Main App)
-# This script starts the staff-only gallery management application
-#!/bin/bash
-
-# Launch script for the Gallery Manager (Main App)
-# This script starts the staff-only gallery management application
+# This script starts the staff-only gallery management application using PM2
 
 echo "✨ Starting Gallery Manager Application... ✨"
 
 # Get the directory of this script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-
-# Change to the application directory
 cd "$SCRIPT_DIR"
 
-# Check if Python environment is set up
+# Ensure Python 3 is available
 if ! command -v python3 &> /dev/null; then
     echo "❌ Error: Python3 is not installed or not in PATH"
     exit 1
 fi
 
-# Check if uvicorn is installed
-if ! python3 -m pip show uvicorn &> /dev/null; then
-    echo "🔄 Installing uvicorn..."
-    python3 -m pip install uvicorn
+# Check virtual environment
+if [ ! -d "./venv" ]; then
+    echo "❌ Error: Virtual environment not found at ./venv"
+    echo "ℹ️ Please run ./setup-production.sh first to create the virtual environment"
+    exit 1
 fi
 
-# Production configuration
-# Use environment variables for host and port configuration
-HOST=${GALLERY_HOST:-127.0.0.1}  # Default to localhost for security
-PORT=${GALLERY_PORT:-5564}       # Default port
+# Activate virtual environment
+echo "🔄 Activating virtual environment..."
+source ./venv/bin/activate
 
-# Determine optimal number of workers based on CPU count
-WORKERS=${GALLERY_WORKERS:-$(( $(nproc) * 2 + 1 ))}
+# Check activation
+if [[ "$VIRTUAL_ENV" != *"venv" ]]; then
+    echo "❌ Error: Failed to activate virtual environment"
+    exit 1
+fi
 
-# Check if gunicorn is installed (recommended for production)
+echo "✅ Virtual environment activated: $VIRTUAL_ENV"
+
+# Ensure dependencies are installed
 if ! python3 -m pip show gunicorn &> /dev/null; then
-    echo "🔄 Installing gunicorn for production deployment..."
+    echo "🔄 Installing gunicorn and uvicorn..."
     python3 -m pip install -q gunicorn uvicorn[standard]
 fi
 
-# Check if PM2 is installed
+# Ensure PM2 is installed
 if ! command -v pm2 &> /dev/null; then
-    echo "🔄 PM2 not found. Installing PM2 for background process management..."
-    # Check if npm is installed
+    echo "🔄 PM2 not found. Installing PM2..."
     if ! command -v npm &> /dev/null; then
         echo "❌ Error: npm is not installed. Please install Node.js and npm first."
         exit 1
@@ -52,10 +50,10 @@ if ! command -v pm2 &> /dev/null; then
     npm install -g pm2
 fi
 
-# Create logs directory if it doesn't exist
+# Create logs directory
 mkdir -p ./logs
 
-# Create PM2 ecosystem file
+# Create PM2 config
 cat > ecosystem.config.js << EOL
 module.exports = {
     apps: [{
@@ -78,17 +76,13 @@ module.exports = {
 }
 EOL
 
-# remove the exisiting PM2 process if it exists
-if pm2 list | grep -q "data-collection-app"; then
-    pm2 delete data-collection-app
-fi
+# Remove previous instance if running
+pm2 delete gallery-manager 2>/dev/null || true
 
-# Start the application in background with PM2
-echo "🚀 Launching Gallery Manager in production mode on $HOST:$PORT using PM2"
-echo "ℹ️ For production, ensure this is behind a secure reverse proxy"
+# Start application
+echo "🚀 Launching Gallery Manager..."
 pm2 start ecosystem.config.js
 
-echo "✅ Gallery Manager Application is running in the background"
-echo "ℹ️ Use 'pm2 status' to check application status"
+echo "✅ Gallery Manager is running in the background"
+echo "ℹ️ Use 'pm2 status' to check status"
 echo "ℹ️ Use 'pm2 logs gallery-manager' to view logs"
-echo "ℹ️ Use 'pm2 stop gallery-manager' to stop the application"

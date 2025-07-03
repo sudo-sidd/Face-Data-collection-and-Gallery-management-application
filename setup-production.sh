@@ -19,16 +19,39 @@ mkdir -p gallery/data
 mkdir -p gallery/galleries
 mkdir -p logs
 
+# Creating python virtual environment
+echo -e "${BLUE}Creating Python virtual environment...${NC}"
+if ! command -v python3 &> /dev/null; then
+    echo -e "${RED}Python3 is not installed. Please install Python 3.x before running this script.${NC}"
+    exit 1
+fi
+
+python3 -m venv venv
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Failed to create Python virtual environment. Please check your Python installation.${NC}"
+    exit 1
+fi
+echo -e "${GREEN}Python virtual environment created successfully.${NC}"
+
+# Activate the virtual environment
+echo -e "${BLUE}Activating Python virtual environment...${NC}"
+source venv/bin/activate
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Failed to activate Python virtual environment. Please check your shell configuration.${NC}"
+    exit 1
+fi  
+echo -e "${GREEN}Python virtual environment activated.${NC}"
+
 # Install Python dependencies
-# echo -e "${BLUE}Installing Python dependencies...${NC}"
-# python -m pip install --upgrade pip
-# if [ -f requirements.txt ]; then
-#     pip install -r requirements.txt
-# else
-#     # Install core dependencies based on imports in main.py
-#     echo -e "${YELLOW}No requirements.txt found, installing core dependencies...${NC}"
-#     pip install fastapi uvicorn python-multipart torch torchvision scipy pillow opencv-python ultralytics albumentations
-# fi
+echo -e "${BLUE}Installing Python dependencies...${NC}"
+python -m pip install --upgrade pip
+if [ -f requirements.txt ]; then
+    pip install -r requirements.txt
+else
+    # Install core dependencies based on imports in main.py
+    echo -e "${YELLOW}No requirements.txt found, installing core dependencies...${NC}"
+    pip install fastapi uvicorn python-multipart torch torchvision scipy pillow opencv-python ultralytics albumentations
+fi
 
 # Initialize database if it doesn't exist
 echo -e "${BLUE}Checking database...${NC}"
@@ -67,6 +90,7 @@ fi
 
 # Set proper permissions
 chmod +x src/*.py
+
 
 # Install pm2 if not found
 echo -e "${BLUE}Checking for PM2...${NC}"
