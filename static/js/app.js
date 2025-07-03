@@ -24,7 +24,6 @@ function debounce(func, wait) {
 // DOM ready event
 document.addEventListener('DOMContentLoaded', function() {
     // Add debug logging
-    console.log("DOM content loaded");
     
     // Navigation handling
     document.querySelectorAll('.nav-link, button[data-section]').forEach(link => {
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const section = this.getAttribute('data-section');
             activateSection(section);
-            console.log(`Activated section: ${section}`);
             
             if (section === 'createGalleries') {
                 loadProcessedDatasets();
@@ -71,7 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (btnRecognize) {
                     btnRecognize.removeEventListener('click', performRecognition); // Remove any existing
                     btnRecognize.addEventListener('click', performRecognition);
-                    console.log("Recognition button listener initialized");
                 }
                 
                 // Update button state
@@ -81,12 +78,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Add debug logging for forms
-    console.log("Adding form event listeners");
     
     // Add event listeners for admin forms
     const addBatchYearForm = document.getElementById('addBatchYearForm');
     if (addBatchYearForm) {
-        console.log("Batch year form found");
         addBatchYearForm.addEventListener('submit', handleAddBatchYear);
     } else {
         console.log("Batch year form not found");
@@ -94,7 +89,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const addDepartmentForm = document.getElementById('addDepartmentForm');
     if (addDepartmentForm) {
-        console.log("Department form found");
         addDepartmentForm.addEventListener('submit', handleAddDepartment);
     } else {
         console.log("Department form not found");
@@ -103,7 +97,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for process videos form
     const processVideosForm = document.getElementById('processVideosForm');
     if (processVideosForm) {
-        console.log("Adding event listener for process videos form");
         processVideosForm.addEventListener('submit', handleProcessVideos);
     } else {
         console.log("Process videos form not found");
@@ -112,7 +105,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add event listener for create gallery form
     const createGalleryForm = document.getElementById('createGalleryForm');
     if (createGalleryForm) {
-        console.log("Adding event listener for create gallery form");
         createGalleryForm.addEventListener('submit', handleCreateGallery);
     } else {
         console.log("Create gallery form not found");
@@ -131,7 +123,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (checkStatusBtn) {
         checkStatusBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            console.log('Check status button clicked');
             showAlert('info', 'Checking collection app status...');
             checkCollectionAppStatus();
         });
@@ -235,9 +226,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: 'Custom Notification',
                 duration: 8000,
                 timestamp: 'Just now',
-                onClose: function() {
-                    console.log('Custom toast was closed');
-                }
             });
         });
     }
