@@ -877,6 +877,21 @@ canvas {
     }
 }
 
+/* Make camera container smaller on desktop/laptop so controls are visible without scrolling */
+@media (min-width: 992px) {
+  .camera-container {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 30%; /* Reduced height for less tall aspect ratio */
+  }
+  .camera-container video {
+    border-radius: var(--border-radius);
+  }
+}
+
+
+
 @media screen and (max-width: 480px) {
     .nba-logo {
         height: 30px;
