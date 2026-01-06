@@ -138,13 +138,19 @@ async function handleFormSubmit(event) {
     
     state.studentId = document.getElementById('studentId').value;
     state.name = document.getElementById('name').value; // Get the name from the form
-    state.year = document.getElementById('year').value; // Get the year from the form
+    state.year = document.getElementById('year').value; // Get the year from the form (e.g., "2023 - 2027")
     state.dept = document.getElementById('dept').value;
     state.section = document.getElementById('section').value.trim().toUpperCase(); // Get and preprocess section
 
     // Validate that year field has a value
     if (!state.year) {
         alert('Please enter a valid registration number to auto-fill the year field.');
+        return;
+    }
+
+    // Validate that dept field has a value
+    if (!state.dept) {
+        alert('Please enter a valid registration number to auto-fill the department field.');
         return;
     }
 
@@ -160,7 +166,7 @@ async function handleFormSubmit(event) {
         return;
     }
 
-    // Handle year splitting safely
+    // Handle year splitting safely - extract graduation year for backend
     let passOutYear;
     if (state.year.includes(' - ')) {
         const [batchYear, gradYear] = state.year.split(" - ");
@@ -178,8 +184,9 @@ async function handleFormSubmit(event) {
             body: JSON.stringify({
                 studentId: state.studentId,
                 name: state.name, // Send name to backend
-                year: passOutYear,
-                dept: state.dept,
+                year: passOutYear, // Send graduation year
+                year_display: state.year, // Send full display format (e.g., "2023 - 2027")
+                dept: state.dept, // Send department name (e.g., "AIML")
                 section: state.section // Send section to backend
             })
         });

@@ -684,12 +684,10 @@
   //   }
   // }
   
-  // Run on load and resize
-  window.addEventListener('DOMContentLoaded', optimizeLayout);
-  window.addEventListener('resize', optimizeLayout);
-  
-  // Also run after fonts load to account for any layout shifts
-  document.fonts.ready.then(optimizeLayout);
+  // Removed: optimizeLayout event listeners (function is commented out)
+  // window.addEventListener('DOMContentLoaded', optimizeLayout);
+  // window.addEventListener('resize', optimizeLayout);
+  // document.fonts.ready.then(optimizeLayout);
   </script>
 </body>
 </html>

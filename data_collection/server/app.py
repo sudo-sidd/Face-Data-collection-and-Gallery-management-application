@@ -1,7 +1,6 @@
 import os
 import json
 import uuid
-import sqlite3
 import shutil
 import subprocess
 from flask import Flask, request, jsonify, send_from_directory
@@ -10,7 +9,12 @@ from datetime import datetime
 import qrcode
 from io import BytesIO
 import base64
-from db_utils import get_batch_years_and_departments
+from db_utils import (
+    get_batch_years_and_departments,
+    validate_student_login,
+    get_student_name as db_get_student_name,
+    get_department_code as db_get_department_code
+)
 from dotenv import load_dotenv
 
 import sys
@@ -221,14 +225,9 @@ def extract_dept_code_from_regno(regno: str) -> str:
 def get_department_name_by_code(dept_code: str) -> str:
     """Get department name from department code"""
     try:
-        db_path = os.path.join(PROJECT_ROOT, 'data', 'app.db')
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT name FROM departments WHERE department_id=?", (dept_code,))
-        result = cur.fetchone()
-        conn.close()
-        if result:
-            return result[0]
+        result, status_code = db_get_department_code(dept_code)
+        if result.get('success'):
+            return result.get('dept_code')  # This returns the department name
     except Exception as e:
         print(f"Error getting department name: {e}")
     
@@ -259,8 +258,8 @@ def start_session():
         
     student_id = data.get('studentId')  # Registration Number
     name = data.get('name')  # Full Name
-    year_display = data.get('year')  # This is now the display format like "2023 - 2027"
-    dept_name = data.get('dept')
+    year_display = data.get('year_display') or data.get('year')  # Full display format like "2023 - 2027"
+    dept_name = data.get('dept')  # Department name like "AIML"
     section = data.get('section', '').strip().upper()  # Section with preprocessing
     
     if not all([student_id, dept_name]):
@@ -860,19 +859,9 @@ def student_login():
     dob = data.get('dob')
     if not regno or not dob:
         return jsonify({'success': False, 'message': 'Register number and DOB required.'}), 400
-    try:
-        db_path = os.path.join(PROJECT_ROOT, 'data', 'app.db')
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT 1 FROM students WHERE register_no=? AND dob=?", (regno, dob))
-        result = cur.fetchone()
-        conn.close()
-        if result:
-            return jsonify({'success': True})
-        else:
-            return jsonify({'success': False, 'message': 'Invalid register number or date of birth.'}), 401
-    except Exception as e:
-        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
+    
+    result, status_code = validate_student_login(regno, dob)
+    return jsonify(result), status_code
 
 @app.route('/api/get-student-name', methods=['POST'])
 def get_student_name():
@@ -880,38 +869,9 @@ def get_student_name():
     regno = data.get('regno')
     if not regno:
         return jsonify({'success': False, 'message': 'Register number required.'}), 400
-    try:
-        # Extract department code from registration number
-        dept_code = extract_dept_code_from_regno(regno)
-        if not dept_code:
-            return jsonify({'success': False, 'message': 'Invalid registration number format.'}), 400
-        
-        # Get department name from code
-        department_name = get_department_name_by_code(dept_code)
-        if not department_name:
-            return jsonify({'success': False, 'message': 'Department not found for this registration number.'}), 404
-        
-        db_path = os.path.join(PROJECT_ROOT, 'data', 'app.db')
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT name FROM students WHERE register_no=?", (regno,))
-        result = cur.fetchone()
-        conn.close()
-        
-        if result:
-            name = result[0]
-            # Get year display format (admission - graduation)
-            year_display = get_year_display(regno)
-            return jsonify({
-                'success': True, 
-                'name': name,
-                'year': year_display,
-                'department': department_name
-            })
-        else:
-            return jsonify({'success': False, 'message': 'No student found.'}), 404
-    except Exception as e:
-        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
+    
+    result, status_code = db_get_student_name(regno)
+    return jsonify(result), status_code
 
 @app.route('/api/get-department-code', methods=['POST'])
 def get_department_code():
@@ -919,19 +879,9 @@ def get_department_code():
     dept_id = data.get('dept_id')
     if not dept_id:
         return jsonify({'success': False, 'message': 'Department ID required.'}), 400
-    try:
-        db_path = os.path.join(PROJECT_ROOT, 'data', 'app.db')
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT name FROM departments WHERE department_id=?", (dept_id,))
-        result = cur.fetchone()
-        conn.close()
-        if result:
-            return jsonify({'success': True, 'dept_code': result[0]})
-        else:
-            return jsonify({'success': False, 'message': 'No department found.'}), 404
-    except Exception as e:
-        return jsonify({'success': False, 'message': f'Error: {str(e)}'}), 500
+    
+    result, status_code = db_get_department_code(dept_id)
+    return jsonify(result), status_code
 
 @app.route('/api/get-student-status', methods=['POST'])
 def get_student_status():
@@ -952,17 +902,12 @@ def get_student_status():
             return jsonify({'success': False, 'message': 'Department not found for this registration number.'}), 404
         
         # Get student info from database
-        db_path = os.path.join(PROJECT_ROOT, 'data', 'app.db')
-        conn = sqlite3.connect(db_path)
-        cur = conn.cursor()
-        cur.execute("SELECT name FROM students WHERE register_no=?", (regno,))
-        student_result = cur.fetchone()
-        conn.close()
+        student_result, status_code = db_get_student_name(regno)
         
-        if not student_result:
+        if not student_result.get('success'):
             return jsonify({'success': False, 'message': 'Student not found.'}), 404
         
-        name = student_result[0]
+        name = student_result.get('name')
         graduation_year = get_graduation_year(regno)
         
         # Construct the expected folder path based on department code and graduation year
