@@ -123,7 +123,7 @@ if [ ! -f "$ENV_FILE" ]; then
     cat > "$ENV_FILE" << EOF
 # Gallery Manager Configuration
 GALLERY_MANAGER_HOST=0.0.0.0
-GALLERY_MANAGER_PORT=8000
+GALLERY_MANAGER_PORT=8888
 GALLERY_WORKERS=2  # Adjust based on your server's CPU cores
 
 # Data Collection Configuration
@@ -140,7 +140,7 @@ else
         echo "GALLERY_MANAGER_HOST=0.0.0.0" >> "$ENV_FILE"
     fi
     if ! grep -q "GALLERY_MANAGER_PORT" "$ENV_FILE"; then
-        echo "GALLERY_MANAGER_PORT=8000" >> "$ENV_FILE"
+        echo "GALLERY_MANAGER_PORT=8888" >> "$ENV_FILE"
     fi
     if ! grep -q "DATA_COLLECTION_HOST" "$ENV_FILE"; then
         echo "DATA_COLLECTION_HOST=0.0.0.0" >> "$ENV_FILE"

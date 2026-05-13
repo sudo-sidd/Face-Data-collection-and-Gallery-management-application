@@ -20,7 +20,7 @@ COPY . .
 RUN mkdir -p /app/data/student_data /app/gallery
 
 # Expose port
-EXPOSE 8000
+EXPOSE 8888
 
 # Run the application
 CMD ["python", "app.py"]

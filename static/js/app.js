@@ -1783,7 +1783,7 @@ function showPageAlert(message, type = 'info') {
     setTimeout(() => {
         alertDiv.classList.remove('show');
         setTimeout(() => alertDiv.remove(), 300);
-    }, 8000);
+    }, 8873);
     
     // Return the alert div in case the caller wants to do something with it
     return alertDiv;

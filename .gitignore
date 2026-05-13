@@ -19,3 +19,7 @@ src/checkpoints/
 *.log
 populate.py
 backups/
+venv/
+*.db
+*.sql
+*.txt

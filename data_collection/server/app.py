@@ -27,7 +27,7 @@ load_dotenv()
 # Get host, port, and workers from environment variables or use defaults
 host = os.environ.get("DATA_COLLECTION_HOST", "0.0.0.0")
 # print(f"Data PORT : ", os.environ.get("DATA_COLLECTION_PORT", 8001))
-port = 8000 #int(os.environ.get("DATA_COLLECTION_PORT", 8001))
+port = 8873 #int(os.environ.get("DATA_COLLECTION_PORT", 8001))
 workers = int(os.environ.get("DATA_COLLECTION_WORKERS", "1").strip().split()[0])
 
 app = Flask(__name__, static_folder='static')
@@ -1015,7 +1015,7 @@ if __name__ == '__main__':
             f"--keyfile={key_file}"
         ]
     else:
-        # port=8000
+        # port=8873
         # Run with HTTP (fallback)
         print(f"⚠️  SSL certificates not found. Starting HTTP server on {host}:{port}")
         print(f"💡 To enable HTTPS, run: ./generate_ssl_certs.sh")

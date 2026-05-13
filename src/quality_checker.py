@@ -99,7 +99,11 @@ class VideoQualityChecker:
         Estimate face pose: 'front' , 'side' , or 'unknown'.
         Returns a tuple: (label, yaw, pitch, roll)
         """
-        mp_face_mesh = mp.solutions.face_mesh
+        mp_solutions = getattr(mp, "solutions", None)
+        if mp_solutions is None or not hasattr(mp_solutions, "face_mesh"):
+            return "unknown", 0.0, 0.0, 0.0
+
+        mp_face_mesh = mp_solutions.face_mesh
         with mp_face_mesh.FaceMesh(static_image_mode=True) as face_mesh:
             results = face_mesh.process(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
             if not results.multi_face_landmarks:
@@ -137,9 +141,9 @@ class VideoQualityChecker:
         """
         pose_categories = set()
         for frame, face in zip(frames, faces_data):
-            pose = self.estimate_face_pose(frame, face['bbox'])
-            if pose != "unknown":
-                pose_categories.add(pose)
+            pose_label, _, _, _ = self.estimate_face_pose(frame, face['bbox'])
+            if pose_label != "unknown":
+                pose_categories.add(pose_label)
         return list(pose_categories)
 
     def check_single_video_quality(self, video_path: str, save_failed_frames: bool = False) -> Dict[str, Any]:
